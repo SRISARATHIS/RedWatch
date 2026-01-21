@@ -1,0 +1,31 @@
+# Python junk
+__pycache__/
+*.pyc
+
+# Virtual Environments (CRITICAL: Never upload these)
+venv/
+env/
+.env
+.venv/
+
+# IDE settings (VS Code, Pycharm)
+.vscode/
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Large Data files (ML specific)
+# You generally don't want to upload raw datasets to GitHub
+data/
+*.csv
+*.zip
+*.tar.gz
+*.parquet
+
+# Large Model weights
+*.pt
+*.pth
+*.h5
+*.onnx
+models/
