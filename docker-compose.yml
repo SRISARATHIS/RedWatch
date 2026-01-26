@@ -1,0 +1,114 @@
+services:
+  kafka:
+    image: apache/kafka:latest
+    container_name: broker
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9092
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  producer:
+    build: ./producer
+    container_name: time-warp-producer
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=broker:9092
+      - KAFKA_TOPIC=REDSET
+      - TIME_WARP_FACTOR=60
+      - INPUT_PATH=/data/sample_0.01.parquet
+      - TIMESTAMP_COL=arrival_timestamp
+      - MAX_SLEEP_SECONDS=0.5
+      - MIN_SLEEP_SECONDS=0.0
+    volumes:
+      - ./data:/data:ro
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: "no"
+
+  postgres:
+    image: postgres:16
+    container_name: redset-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # ✅ CHANGED: consumer now targets Postgres (instead of Snowflake)
+  consumer:
+    build: ./consumer
+    container_name: postgres-sink-consumer
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS}
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_GROUP_ID=redset_postgres_sink
+      - BATCH_SIZE=500
+      - POLL_TIMEOUT_MS=1000
+      - PYTHONUNBUFFERED=1
+
+      - PG_DSN=${PG_DSN}
+      - PG_TABLE=redset_events
+
+      # Postgres connection (inside docker network: host is "postgres")
+      - PG_DSN=postgresql://redset:redset@postgres:5432/redset_db
+      - PG_TABLE=redset_events
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+  
+
+  cleaner:
+    build: ./cleaner
+    container_name: redset_cleaner
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      consumer:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  kafka_data:
+  pgdata:
