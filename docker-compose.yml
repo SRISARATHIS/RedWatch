@@ -94,12 +94,36 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q consumer"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
     restart: unless-stopped
   
 
-  cleaner:
-    build: ./cleaner
-    container_name: redset_cleaner
+  loader:
+    build: ./loader
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_RAW_TABLE: ${PG_RAW_TABLE}
+      PG_STATE_TABLE: ${PG_STATE_TABLE}
+      BATCH_SIZE: ${BATCH_SIZE}
+      POLL_SECONDS: ${POLL_SECONDS}
+      CLEANER_NAME: ${CLEANER_NAME}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      consumer:
+        condition: service_started
+    restart: unless-stopped
+
+  dbt:
+    build: ./dbt
     env_file:
       - .env
     depends_on:
@@ -107,7 +131,14 @@ services:
         condition: service_healthy
       consumer:
         condition: service_started
-    restart: unless-stopped
+    working_dir: /usr/app
+    volumes:
+      - ./dbt:/usr/app
+    command: >
+      sh -c "while true; do
+        dbt run --profiles-dir /usr/app --project-dir /usr/app;
+        sleep ${DBT_RUN_SECONDS:-${DBT_RUN_SECONDS}};
+      done"
 
 volumes:
   kafka_data:

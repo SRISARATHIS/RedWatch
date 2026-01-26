@@ -1,0 +1,1 @@
+{"_invocation_id": "99bd281f-a5ea-4e15-af82-37eaa78baeb3", "linked": {"0": {"name": "model.redwatch.raw_clean", "type": "model", "succ": [1]}, "1": {"name": "model.redwatch.cluster_clean", "type": "model", "succ": [2]}, "2": {"name": "model.redwatch.clean_table", "type": "model"}}}
