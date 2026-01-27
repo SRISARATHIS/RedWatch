@@ -8,5 +8,6 @@ redwatch_profile:
       user: "{{ env_var('POSTGRES_USER') }}"
       password: "{{ env_var('POSTGRES_PASSWORD') }}"
       dbname: "{{ env_var('POSTGRES_DB') }}"
-      schema: "{{ env_var('DBT_SCHEMA', 'analytics') }}"
+      schema: analytics
       threads: 2
+

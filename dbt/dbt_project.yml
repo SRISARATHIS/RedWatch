@@ -3,14 +3,18 @@ version: "1.0.0"
 config-version: 2
 
 profile: redwatch_profile
-
 model-paths: ["models"]
 
 models:
   redwatch:
+    +schema: analytics
+
     raw_clean:
       +materialized: view
     cluster_clean:
       +materialized: view
     clean_table:
       +materialized: table
+    kpi:
+      +materialized: incremental
+
