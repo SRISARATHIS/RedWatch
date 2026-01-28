@@ -1,2 +1,0 @@
-total_queries,total_cost_score,cache_hit_rate_pct,abort_rate_pct,spill_rate_pct,peak_hour_of_day,peak_hour_total_cost
-4331078,84487392041.0,10.64,0.5,2.29,14,8096998669.5
