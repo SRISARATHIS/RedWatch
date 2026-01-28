@@ -3,18 +3,29 @@ version: "1.0.0"
 config-version: 2
 
 profile: redwatch_profile
+
 model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
 
 models:
   redwatch:
-    +schema: analytics
+    +schema: "{{ env_var('DBT_SCHEMA', 'analytics') }}"
+    +materialized: view
 
-    raw_clean:
+    staging:
       +materialized: view
-    cluster_clean:
-      +materialized: view
-    clean_table:
-      +materialized: table
+
+    marts:
+      +materialized: incremental
+      +incremental_strategy: delete+insert
+
     kpi:
       +materialized: incremental
-
+      +incremental_strategy: delete+insert
