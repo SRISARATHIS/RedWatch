@@ -60792,3 +60792,3193 @@ FROM scored
 [0m10:48:50.283670 [debug] [MainThread]: On master: COMMIT
 [0m10:48:50.284183 [debug] [MainThread]: Using postgres connection "master"
 [0m10:48:50.284637 [debug] [MainThread]: On master: COMMIT
+[0m11:43:16.882671 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261b05f50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261b07410>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261b05610>]}
+
+
+============================== 11:43:16.891613 | 5cc7533b-bf02-4102-a3c9-b229bca9fe46 ==============================
+[0m11:43:16.891613 [info ] [MainThread]: Running with dbt=1.8.2
+[0m11:43:16.892307 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': '/usr/app/logs', 'profiles_dir': '/usr/app', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'invocation_command': 'dbt run --profiles-dir /usr/app --project-dir /usr/app', 'log_format': 'default', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m11:43:17.126736 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7472620d6f10>]}
+[0m11:43:17.182579 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747263f52690>]}
+[0m11:43:17.183886 [info ] [MainThread]: Registered adapter: postgres=1.8.2
+[0m11:43:17.259898 [debug] [MainThread]: checksum: f0a141b9de567cb7f131613ba2682f40b3a1c6a157f81c6e5435862eff68f109, vars: {}, profile: , target: , version: 1.8.2
+[0m11:43:17.404908 [debug] [MainThread]: Partial parsing enabled: 6 files deleted, 6 files added, 1 files changed.
+[0m11:43:17.405484 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_minute_query_efficiency.sql
+[0m11:43:17.405813 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_minute_concurrency_cluster.sql
+[0m11:43:17.406046 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_resource_predator_15m.sql
+[0m11:43:17.406245 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_leaderboard_15m.sql
+[0m11:43:17.406437 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_minute_shadow_cost.sql
+[0m11:43:17.406630 [debug] [MainThread]: Partial parsing: added file: redwatch://models/kpis/kpi_minute_cluster_workload.sql
+[0m11:43:17.406813 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_minute_cluster_workload.sql
+[0m11:43:17.407045 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_leaderboard_15m.sql
+[0m11:43:17.407240 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_minute_shadow_cost.sql
+[0m11:43:17.407476 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_minute_concurrency_cluster.sql
+[0m11:43:17.407649 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_minute_query_efficiency.sql
+[0m11:43:17.407821 [debug] [MainThread]: Partial parsing: deleted file: redwatch://models/kpi/kpi_resource_predator_15m.sql
+[0m11:43:17.408148 [debug] [MainThread]: Partial parsing: updated file: redwatch://models/marts/clean_table.sql
+[0m11:43:17.659857 [warn ] [MainThread]: [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.redwatch.kpi
+[0m11:43:17.666005 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74725fda7b50>]}
+[0m11:43:17.778054 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74725fd80110>]}
+[0m11:43:17.778695 [info ] [MainThread]: Found 8 models, 428 macros
+[0m11:43:17.779258 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261b4ced0>]}
+[0m11:43:17.782112 [info ] [MainThread]: 
+[0m11:43:17.783712 [debug] [MainThread]: Acquiring new postgres connection 'master'
+[0m11:43:17.789714 [debug] [ThreadPool]: Acquiring new postgres connection 'list_redset_db'
+[0m11:43:17.846282 [debug] [ThreadPool]: Using postgres connection "list_redset_db"
+[0m11:43:17.846694 [debug] [ThreadPool]: On list_redset_db: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "list_redset_db"} */
+
+    select distinct nspname from pg_namespace
+  
+[0m11:43:17.847013 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m11:43:17.883872 [debug] [ThreadPool]: SQL status: SELECT 4 in 0.037 seconds
+[0m11:43:17.885225 [debug] [ThreadPool]: On list_redset_db: Close
+[0m11:43:17.886789 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_redset_db, now create_redset_db_analytics_analytics)
+[0m11:43:17.887559 [debug] [ThreadPool]: Creating schema "database: "redset_db"
+schema: "analytics_analytics"
+"
+[0m11:43:17.894379 [debug] [ThreadPool]: Using postgres connection "create_redset_db_analytics_analytics"
+[0m11:43:17.894942 [debug] [ThreadPool]: On create_redset_db_analytics_analytics: BEGIN
+[0m11:43:17.895284 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m11:43:17.905825 [debug] [ThreadPool]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:17.906346 [debug] [ThreadPool]: Using postgres connection "create_redset_db_analytics_analytics"
+[0m11:43:17.907576 [debug] [ThreadPool]: On create_redset_db_analytics_analytics: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "create_redset_db_analytics_analytics"} */
+create schema if not exists "analytics_analytics"
+[0m11:43:17.909164 [debug] [ThreadPool]: SQL status: CREATE SCHEMA in 0.001 seconds
+[0m11:43:17.910618 [debug] [ThreadPool]: On create_redset_db_analytics_analytics: COMMIT
+[0m11:43:17.911322 [debug] [ThreadPool]: Using postgres connection "create_redset_db_analytics_analytics"
+[0m11:43:17.911788 [debug] [ThreadPool]: On create_redset_db_analytics_analytics: COMMIT
+[0m11:43:17.914568 [debug] [ThreadPool]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:17.915317 [debug] [ThreadPool]: On create_redset_db_analytics_analytics: Close
+[0m11:43:17.918487 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly create_redset_db_analytics_analytics, now list_redset_db_analytics_analytics)
+[0m11:43:17.925108 [debug] [ThreadPool]: Using postgres connection "list_redset_db_analytics_analytics"
+[0m11:43:17.925513 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: BEGIN
+[0m11:43:17.925850 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m11:43:17.937496 [debug] [ThreadPool]: SQL status: BEGIN in 0.012 seconds
+[0m11:43:17.938111 [debug] [ThreadPool]: Using postgres connection "list_redset_db_analytics_analytics"
+[0m11:43:17.938593 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "list_redset_db_analytics_analytics"} */
+select
+      'redset_db' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'analytics_analytics'
+    union all
+    select
+      'redset_db' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'analytics_analytics'
+    union all
+    select
+      'redset_db' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'analytics_analytics'
+  
+[0m11:43:17.942908 [debug] [ThreadPool]: SQL status: SELECT 0 in 0.004 seconds
+[0m11:43:17.944280 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: ROLLBACK
+[0m11:43:17.945255 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: Close
+[0m11:43:17.953161 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:17.953879 [debug] [MainThread]: On master: BEGIN
+[0m11:43:17.954365 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m11:43:17.964645 [debug] [MainThread]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:17.965301 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:17.965839 [debug] [MainThread]: On master: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "master"} */
+with relation as (
+        select
+            pg_rewrite.ev_class as class,
+            pg_rewrite.oid as id
+        from pg_rewrite
+    ),
+    class as (
+        select
+            oid as id,
+            relname as name,
+            relnamespace as schema,
+            relkind as kind
+        from pg_class
+    ),
+    dependency as (
+        select distinct
+            pg_depend.objid as id,
+            pg_depend.refobjid as ref
+        from pg_depend
+    ),
+    schema as (
+        select
+            pg_namespace.oid as id,
+            pg_namespace.nspname as name
+        from pg_namespace
+        where nspname != 'information_schema' and nspname not like 'pg\_%'
+    ),
+    referenced as (
+        select
+            relation.id AS id,
+            referenced_class.name ,
+            referenced_class.schema ,
+            referenced_class.kind
+        from relation
+        join class as referenced_class on relation.class=referenced_class.id
+        where referenced_class.kind in ('r', 'v', 'm')
+    ),
+    relationships as (
+        select
+            referenced.name as referenced_name,
+            referenced.schema as referenced_schema_id,
+            dependent_class.name as dependent_name,
+            dependent_class.schema as dependent_schema_id,
+            referenced.kind as kind
+        from referenced
+        join dependency on referenced.id=dependency.id
+        join class as dependent_class on dependency.ref=dependent_class.id
+        where
+            (referenced.name != dependent_class.name or
+             referenced.schema != dependent_class.schema)
+    )
+
+    select
+        referenced_schema.name as referenced_schema,
+        relationships.referenced_name as referenced_name,
+        dependent_schema.name as dependent_schema,
+        relationships.dependent_name as dependent_name
+    from relationships
+    join schema as dependent_schema on relationships.dependent_schema_id=dependent_schema.id
+    join schema as referenced_schema on relationships.referenced_schema_id=referenced_schema.id
+    group by referenced_schema, referenced_name, dependent_schema, dependent_name
+    order by referenced_schema, referenced_name, dependent_schema, dependent_name;
+[0m11:43:17.971993 [debug] [MainThread]: SQL status: SELECT 0 in 0.005 seconds
+[0m11:43:17.973420 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74725fd81710>]}
+[0m11:43:17.973913 [debug] [MainThread]: On master: ROLLBACK
+[0m11:43:17.974767 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:17.975204 [debug] [MainThread]: On master: BEGIN
+[0m11:43:17.976085 [debug] [MainThread]: SQL status: BEGIN in 0.001 seconds
+[0m11:43:17.976464 [debug] [MainThread]: On master: COMMIT
+[0m11:43:17.976773 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:17.977093 [debug] [MainThread]: On master: COMMIT
+[0m11:43:17.977876 [debug] [MainThread]: SQL status: COMMIT in 0.000 seconds
+[0m11:43:17.978400 [debug] [MainThread]: On master: Close
+[0m11:43:17.979279 [info ] [MainThread]: Concurrency: 2 threads (target='dev')
+[0m11:43:17.979844 [info ] [MainThread]: 
+[0m11:43:17.992934 [debug] [Thread-1 (]: Began running node model.redwatch.stg_redset_events
+[0m11:43:17.993672 [info ] [Thread-1 (]: 1 of 8 START sql view model analytics_analytics.stg_redset_events .............. [RUN]
+[0m11:43:17.994292 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly list_redset_db_analytics_analytics, now model.redwatch.stg_redset_events)
+[0m11:43:17.994823 [debug] [Thread-1 (]: Began compiling node model.redwatch.stg_redset_events
+[0m11:43:18.004238 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.stg_redset_events"
+[0m11:43:18.005693 [debug] [Thread-1 (]: Began executing node model.redwatch.stg_redset_events
+[0m11:43:18.045814 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.stg_redset_events"
+[0m11:43:18.047365 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:18.047829 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: BEGIN
+[0m11:43:18.048085 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:18.058879 [debug] [Thread-1 (]: SQL status: BEGIN in 0.011 seconds
+[0m11:43:18.059598 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:18.060122 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+
+  create view "redset_db"."analytics_analytics"."stg_redset_events__dbt_tmp"
+    
+    
+  as (
+    
+
+SELECT
+  id AS raw_id,
+
+  NULLIF(event->>'instance_id','')::int AS instance_id,
+  NULLIF(event->>'user_id','')::int     AS user_id,
+  NULLIF(event->>'database_id','')::int AS database_id,
+  NULLIF(event->>'query_id','')::bigint AS query_id,
+
+  NULLIF(event->>'cluster_size','')::numeric AS cluster_size,
+
+  NULLIF(event->>'arrival_timestamp','')::timestamptz AS arrival_timestamp,
+
+  COALESCE(NULLIF(event->>'compile_duration_ms','')::numeric, 0)   AS compile_duration_ms,
+  COALESCE(NULLIF(event->>'queue_duration_ms','')::numeric, 0)     AS queue_duration_ms,
+  COALESCE(NULLIF(event->>'execution_duration_ms','')::numeric, 0) AS execution_duration_ms,
+
+  COALESCE(NULLIF(event->>'feature_fingerprint',''), 'UNKNOWN_FINGERPRINT') AS feature_fingerprint,
+
+  COALESCE(NULLIF(event->>'was_aborted','')::int, 0) AS was_aborted,
+  COALESCE(NULLIF(event->>'was_cached','')::int, 0)  AS was_cached,
+
+  NULLIF(event->>'query_type','') AS query_type,
+
+  COALESCE(NULLIF(event->>'num_permanent_tables_accessed','')::numeric, 0) AS num_permanent_tables_accessed,
+  COALESCE(NULLIF(event->>'num_external_tables_accessed','')::numeric, 0)  AS num_external_tables_accessed,
+  COALESCE(NULLIF(event->>'num_system_tables_accessed','')::numeric, 0)    AS num_system_tables_accessed,
+
+  COALESCE(NULLIF(event->>'mbytes_scanned','')::numeric, 0) AS mbytes_scanned,
+  COALESCE(NULLIF(event->>'mbytes_spilled','')::numeric, 0) AS mbytes_spilled,
+
+  COALESCE(NULLIF(event->>'num_joins','')::numeric, 0)        AS num_joins,
+  COALESCE(NULLIF(event->>'num_scans','')::numeric, 0)        AS num_scans,
+  COALESCE(NULLIF(event->>'num_aggregations','')::numeric, 0) AS num_aggregations,
+
+  (NULLIF(btrim(event->>'read_table_ids'), '') IS NOT NULL)  AS has_read,
+  (NULLIF(btrim(event->>'write_table_ids'), '') IS NOT NULL) AS has_write
+
+FROM public.redset_events
+WHERE event IS NOT NULL
+  );
+[0m11:43:18.064209 [debug] [Thread-1 (]: SQL status: CREATE VIEW in 0.004 seconds
+[0m11:43:18.072134 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:18.072877 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+alter table "redset_db"."analytics_analytics"."stg_redset_events__dbt_tmp" rename to "stg_redset_events"
+[0m11:43:18.074472 [debug] [Thread-1 (]: SQL status: ALTER TABLE in 0.001 seconds
+[0m11:43:18.091979 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: COMMIT
+[0m11:43:18.092512 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:18.092800 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: COMMIT
+[0m11:43:18.095414 [debug] [Thread-1 (]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:18.101882 [debug] [Thread-1 (]: Applying DROP to: "redset_db"."analytics_analytics"."stg_redset_events__dbt_backup"
+[0m11:43:18.107764 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:18.108921 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+drop view if exists "redset_db"."analytics_analytics"."stg_redset_events__dbt_backup" cascade
+[0m11:43:18.110148 [debug] [Thread-1 (]: SQL status: DROP VIEW in 0.001 seconds
+[0m11:43:18.113334 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: Close
+[0m11:43:18.115398 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74725fd81ad0>]}
+[0m11:43:18.116210 [info ] [Thread-1 (]: 1 of 8 OK created sql view model analytics_analytics.stg_redset_events ......... [[32mCREATE VIEW[0m in 0.12s]
+[0m11:43:18.116896 [debug] [Thread-1 (]: Finished running node model.redwatch.stg_redset_events
+[0m11:43:18.118685 [debug] [Thread-2 (]: Began running node model.redwatch.clean_table
+[0m11:43:18.119437 [info ] [Thread-2 (]: 2 of 8 START sql incremental model analytics_analytics.clean_table ............. [RUN]
+[0m11:43:18.120075 [debug] [Thread-2 (]: Acquiring new postgres connection 'model.redwatch.clean_table'
+[0m11:43:18.120390 [debug] [Thread-2 (]: Began compiling node model.redwatch.clean_table
+[0m11:43:18.126595 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.clean_table"
+[0m11:43:18.127658 [debug] [Thread-2 (]: Began executing node model.redwatch.clean_table
+[0m11:43:18.166725 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.clean_table"
+[0m11:43:18.168549 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:18.169038 [debug] [Thread-2 (]: On model.redwatch.clean_table: BEGIN
+[0m11:43:18.169319 [debug] [Thread-2 (]: Opening a new connection, currently in state init
+[0m11:43:18.179532 [debug] [Thread-2 (]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:18.180473 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:18.181160 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."clean_table"
+  
+  
+    as
+  
+  (
+    
+
+WITH src AS (
+
+  SELECT
+    *
+  FROM "redset_db"."analytics_analytics"."stg_redset_events"
+
+  
+
+),
+
+/* 1) Normalize numeric fields (force non-nulls where you want zeros) */
+enriched AS (
+
+  SELECT
+    -- identifiers
+    raw_id,
+    instance_id,
+    user_id,
+    database_id,
+    query_id,
+
+    -- timestamps
+    arrival_timestamp,
+    DATE_TRUNC('minute', arrival_timestamp) AS minute_ts,
+
+    -- durations & resources (impute missing -> 0 here)
+    COALESCE(compile_duration_ms, 0)   AS compile_duration_ms,
+    COALESCE(queue_duration_ms, 0)     AS queue_duration_ms,
+    COALESCE(execution_duration_ms, 0) AS execution_duration_ms,
+    COALESCE(mbytes_scanned, 0)        AS mbytes_scanned,
+    COALESCE(mbytes_spilled, 0)        AS mbytes_spilled,
+
+    -- query metadata
+    feature_fingerprint,
+    (
+      feature_fingerprint IS NULL
+      OR feature_fingerprint = ''
+      OR UPPER(feature_fingerprint) IN ('UNKNOWN', 'UNKNOWN_FINGERPRINT')
+    ) AS is_unknown_fingerprint,
+
+    was_aborted,
+    was_cached,
+    query_type,
+
+    num_permanent_tables_accessed,
+    num_external_tables_accessed,
+    num_system_tables_accessed,
+
+    -- raw cluster size (may be null)
+    cluster_size AS cluster_size_raw,
+
+    has_read,
+    has_write,
+
+    -- query end timestamp (Postgres-safe)
+    arrival_timestamp
+      + (COALESCE(execution_duration_ms, 0)::double precision * INTERVAL '1 millisecond')
+      AS query_end_timestamp,
+
+    -- access_scope
+    CASE
+      WHEN COALESCE(num_external_tables_accessed, 0) > 0 THEN 'External (Data Lake)'
+      WHEN COALESCE(num_system_tables_accessed, 0) > 0 THEN 'System Internal'
+      WHEN COALESCE(num_permanent_tables_accessed, 0) > 0 THEN 'Core Warehousing'
+      ELSE 'Metadata only'
+    END AS access_scope,
+
+    -- workload_is_system_metadata
+    CASE
+      WHEN COALESCE(num_system_tables_accessed, 0) > 0 THEN TRUE
+      WHEN query_type IS NOT NULL AND LOWER(query_type) IN (
+        'analyze','vacuum','commit','rollback','begin','set','show','describe','explain'
+      ) THEN TRUE
+      ELSE FALSE
+    END AS workload_is_system_metadata
+
+  FROM src
+),
+
+/* 2) Precompute median cluster size per instance (fallback) */
+instance_median AS (
+  SELECT
+    instance_id,
+    percentile_cont(0.5) WITHIN GROUP (ORDER BY cluster_size_raw) AS median_cluster_size
+  FROM enriched
+  WHERE cluster_size_raw IS NOT NULL
+  GROUP BY 1
+),
+
+/* 3) Forward-fill + backward-fill within each instance (no IGNORE NULLS needed) */
+filled AS (
+  SELECT
+    e.*,
+    m.median_cluster_size,
+
+    -- forward-fill: create a running "group id" that increments when a non-null appears
+    COUNT(e.cluster_size_raw) FILTER (WHERE e.cluster_size_raw IS NOT NULL)
+      OVER (PARTITION BY e.instance_id ORDER BY e.arrival_timestamp, e.raw_id) AS ff_grp,
+
+    -- backward-fill: same idea, but from the end backwards
+    COUNT(e.cluster_size_raw) FILTER (WHERE e.cluster_size_raw IS NOT NULL)
+      OVER (PARTITION BY e.instance_id ORDER BY e.arrival_timestamp DESC, e.raw_id DESC) AS bf_grp
+
+  FROM enriched e
+  LEFT JOIN instance_median m
+    ON e.instance_id = m.instance_id
+),
+
+cluster_imputed AS (
+  SELECT
+    f.*,
+
+    -- forward filled value for this row
+    MAX(f.cluster_size_raw) OVER (PARTITION BY f.instance_id, f.ff_grp) AS cluster_size_ff,
+
+    -- backward filled value for this row
+    MAX(f.cluster_size_raw) OVER (PARTITION BY f.instance_id, f.bf_grp) AS cluster_size_bf
+
+  FROM filled f
+),
+
+final AS (
+
+  SELECT
+    -- carry everything, but replace cluster size with the imputed value (guaranteed non-null)
+    ci.raw_id,
+    ci.instance_id,
+    ci.user_id,
+    ci.database_id,
+    ci.query_id,
+
+    ci.arrival_timestamp,
+    ci.minute_ts,
+
+    ci.compile_duration_ms,
+    ci.queue_duration_ms,
+    ci.execution_duration_ms,
+    ci.mbytes_scanned,
+    ci.mbytes_spilled,
+
+    ci.feature_fingerprint,
+    ci.is_unknown_fingerprint,
+
+    ci.was_aborted,
+    ci.was_cached,
+    ci.query_type,
+
+    ci.num_permanent_tables_accessed,
+    ci.num_external_tables_accessed,
+    ci.num_system_tables_accessed,
+
+    -- cluster_size: forward-fill -> backward-fill -> median -> final fallback(1)
+    COALESCE(ci.cluster_size_ff, ci.cluster_size_bf, ci.median_cluster_size, 1)::numeric
+      AS cluster_size_clean,
+
+    ci.has_read,
+    ci.has_write,
+
+    ci.query_end_timestamp,
+
+    ci.access_scope,
+    ci.workload_is_system_metadata,
+
+    -- workload_classification
+    CASE
+      WHEN ci.workload_is_system_metadata THEN 'System/Metadata'
+      WHEN COALESCE(ci.has_read, FALSE) = TRUE AND COALESCE(ci.has_write, FALSE) = TRUE  THEN 'Read/Write'
+      WHEN COALESCE(ci.has_read, FALSE) = TRUE AND COALESCE(ci.has_write, FALSE) = FALSE THEN 'Read only'
+      WHEN COALESCE(ci.has_read, FALSE) = FALSE AND COALESCE(ci.has_write, FALSE) = TRUE THEN 'Write only'
+      ELSE 'Unknown/Other'
+    END AS workload_classification,
+
+    -- heavy_unit (same logic as before; inputs already zero-imputed)
+    CASE
+      WHEN ci.was_cached = 1 THEN 0.05
+      WHEN ci.was_cached <> 1 AND ci.was_aborted = 1 THEN 0.10
+      ELSE
+        LEAST(
+          1.0,
+          GREATEST(
+            0.05,
+            (
+              0.4 * LEAST(COALESCE(ci.execution_duration_ms, 0) / 300000.0, 1.0)
+            + 0.4 * LEAST(COALESCE(ci.mbytes_scanned, 0) / 10240.0, 1.0)
+            + 0.2 * LEAST(COALESCE(ci.mbytes_spilled, 0) / 1024.0, 1.0)
+            )
+          )
+        )
+    END AS heavy_unit
+
+  FROM cluster_imputed ci
+)
+
+SELECT * FROM final
+  );
+  
+  
+[0m11:43:18.191634 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.010 seconds
+[0m11:43:18.197037 [debug] [Thread-2 (]: On model.redwatch.clean_table: COMMIT
+[0m11:43:18.197607 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:18.197966 [debug] [Thread-2 (]: On model.redwatch.clean_table: COMMIT
+[0m11:43:18.200258 [debug] [Thread-2 (]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:18.201042 [debug] [Thread-2 (]: On model.redwatch.clean_table: Close
+[0m11:43:18.201687 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74725e783790>]}
+[0m11:43:18.202316 [info ] [Thread-2 (]: 2 of 8 OK created sql incremental model analytics_analytics.clean_table ........ [[32mSELECT 0[0m in 0.08s]
+[0m11:43:18.203040 [debug] [Thread-2 (]: Finished running node model.redwatch.clean_table
+[0m11:43:18.204970 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_leaderboard_15m
+[0m11:43:18.206028 [info ] [Thread-1 (]: 3 of 8 START sql incremental model analytics_analytics.kpi_leaderboard_15m ..... [RUN]
+[0m11:43:18.206643 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:18.207405 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.stg_redset_events, now model.redwatch.kpi_leaderboard_15m)
+[0m11:43:18.208447 [info ] [Thread-2 (]: 4 of 8 START sql incremental model analytics_analytics.kpi_minute_cluster_workload  [RUN]
+[0m11:43:18.209080 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_leaderboard_15m
+[0m11:43:18.209926 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.clean_table, now model.redwatch.kpi_minute_cluster_workload)
+[0m11:43:18.214522 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:18.215308 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:18.222255 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:18.223492 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_leaderboard_15m
+[0m11:43:18.229728 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:18.230690 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:18.295980 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:18.296867 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:18.297583 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: BEGIN
+[0m11:43:18.297933 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:18.298605 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:18.298990 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: BEGIN
+[0m11:43:18.299301 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:18.309648 [debug] [Thread-1 (]: SQL status: BEGIN in 0.012 seconds
+[0m11:43:18.310327 [debug] [Thread-2 (]: SQL status: BEGIN in 0.011 seconds
+[0m11:43:18.311139 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:18.311726 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:18.312335 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_window_start
+  
+
+),
+
+base AS (
+  SELECT
+    arrival_timestamp,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    was_cached,
+    was_aborted,
+    execution_duration_ms,
+    mbytes_scanned,
+    mbytes_spilled,
+
+    raw_id
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  
+),
+
+with_window AS (
+  SELECT
+    (
+      date_trunc('hour', arrival_timestamp)
+      + (floor(extract(minute from arrival_timestamp)::numeric / 15) * interval '15 minutes')
+    ) AS window_start,
+
+    (
+      date_trunc('hour', arrival_timestamp)
+      + (floor(extract(minute from arrival_timestamp)::numeric / 15) * interval '15 minutes')
+      + interval '15 minutes'
+    ) AS window_end,
+
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    CASE
+      WHEN was_cached = 1 THEN 0.05
+      WHEN was_cached <> 1 AND was_aborted = 1 THEN 0.10
+      ELSE LEAST(
+        1.0,
+        GREATEST(
+          0.05,
+          (
+            0.4 * LEAST(COALESCE(execution_duration_ms, 0) / 300000.0, 1.0)
+          + 0.4 * LEAST(COALESCE(mbytes_scanned, 0) / 10240.0, 1.0)
+          + 0.2 * LEAST(COALESCE(mbytes_spilled, 0) / 1024.0, 1.0)
+          )
+        )
+      )
+    END AS heavy_unit
+  FROM base
+),
+
+unioned AS (
+  SELECT window_start, window_end, 'user' AS dimension_type, CAST(user_id AS varchar) AS dimension_value, heavy_unit
+  FROM with_window
+  WHERE user_id IS NOT NULL
+
+  UNION ALL
+  SELECT window_start, window_end, 'query_type', COALESCE(query_type, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'workload', COALESCE(workload_classification, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'access_scope', COALESCE(access_scope, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'fingerprint', COALESCE(feature_fingerprint, 'UNKNOWN'), heavy_unit
+  FROM with_window
+),
+
+agg AS (
+  SELECT
+    window_start,
+    window_end,
+    dimension_type,
+    dimension_value,
+    COUNT(*) AS queries_count,
+    SUM(heavy_unit) AS heavy_units_sum
+  FROM unioned
+  GROUP BY 1,2,3,4
+),
+
+ranked AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY window_start, dimension_type
+      ORDER BY heavy_units_sum DESC
+    ) AS rank_position
+  FROM agg
+)
+
+SELECT
+  md5(
+    CAST(window_start AS varchar)
+    || '-' || dimension_type
+    || '-' || dimension_value
+  ) AS lb_key,
+
+  window_start,
+  window_end,
+  dimension_type,
+  dimension_value,
+  rank_position,
+  queries_count,
+  heavy_units_sum
+FROM ranked
+WHERE rank_position <= 10
+  );
+  
+  
+[0m11:43:18.313018 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_minute_cluster_workload"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_minute_ts
+  
+
+),
+
+-- ✅ gate: only produce KPI rows up to "clean_table is at least 10 minutes ahead"
+watermark AS (
+  SELECT
+    COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    workload_classification,
+    access_scope,
+    query_type,
+
+    heavy_unit,
+    mbytes_scanned,
+    mbytes_spilled,
+    execution_duration_ms,
+    queue_duration_ms,
+    cluster_size_clean,
+    raw_id
+
+  FROM "redset_db"."analytics_analytics"."clean_table"
+
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    workload_classification,
+    access_scope,
+    query_type,
+
+    COUNT(*) AS queries_count,
+    SUM(heavy_unit) AS heavy_units_sum,
+
+    SUM(COALESCE(mbytes_scanned, 0)) AS scanned_mb_sum,
+    SUM(COALESCE(mbytes_spilled, 0)) AS spilled_mb_sum,
+
+    SUM(COALESCE(execution_duration_ms, 0)) AS exec_ms_sum,
+    SUM(COALESCE(queue_duration_ms, 0)) AS queue_ms_sum,
+
+    MAX(cluster_size_clean) AS cluster_size_clean_max,
+    MAX(raw_id) AS source_max_raw_id
+
+  FROM base
+  GROUP BY 1,2,3,4,5
+)
+
+SELECT
+  MD5(
+    CAST(minute_ts AS VARCHAR) || '-' ||
+    CAST(instance_id AS VARCHAR) || '-' ||
+    COALESCE(workload_classification, 'UNKNOWN') || '-' ||
+    COALESCE(access_scope, 'UNKNOWN') || '-' ||
+    COALESCE(query_type, 'UNKNOWN')
+  ) AS kpi_key,
+
+  minute_ts,
+  instance_id,
+  workload_classification,
+  access_scope,
+  query_type,
+
+  queries_count,
+  heavy_units_sum,
+
+  scanned_mb_sum,
+  spilled_mb_sum,
+
+  exec_ms_sum,
+  queue_ms_sum,
+
+  cluster_size_clean_max,
+  source_max_raw_id
+
+FROM agg
+  );
+  
+  
+[0m11:43:18.320619 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.007 seconds
+[0m11:43:18.322425 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: COMMIT
+[0m11:43:18.322877 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:18.323332 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: COMMIT
+[0m11:43:18.323847 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.010 seconds
+[0m11:43:18.325582 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: COMMIT
+[0m11:43:18.326119 [debug] [Thread-2 (]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:18.326590 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:18.327690 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: Close
+[0m11:43:18.328279 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: COMMIT
+[0m11:43:18.329126 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747262171190>]}
+[0m11:43:18.329851 [info ] [Thread-2 (]: 4 of 8 OK created sql incremental model analytics_analytics.kpi_minute_cluster_workload  [[32mSELECT 0[0m in 0.12s]
+[0m11:43:18.330524 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:18.331236 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:18.331974 [info ] [Thread-2 (]: 5 of 8 START sql incremental model analytics_analytics.kpi_minute_concurrency_cluster  [RUN]
+[0m11:43:18.332793 [debug] [Thread-1 (]: SQL status: COMMIT in 0.004 seconds
+[0m11:43:18.333461 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_cluster_workload, now model.redwatch.kpi_minute_concurrency_cluster)
+[0m11:43:18.334461 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: Close
+[0m11:43:18.335023 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:18.341965 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747262171350>]}
+[0m11:43:18.343008 [info ] [Thread-1 (]: 3 of 8 OK created sql incremental model analytics_analytics.kpi_leaderboard_15m  [[32mSELECT 0[0m in 0.13s]
+[0m11:43:18.344909 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:18.345871 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_leaderboard_15m
+[0m11:43:18.346630 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:18.347234 [info ] [Thread-1 (]: 6 of 8 START sql incremental model analytics_analytics.kpi_minute_query_efficiency  [RUN]
+[0m11:43:18.348775 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_leaderboard_15m, now model.redwatch.kpi_minute_query_efficiency)
+[0m11:43:18.349359 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:18.354090 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:18.354764 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:18.360330 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:18.361331 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:18.369184 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:18.370683 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:18.371494 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_concurrency_cluster: BEGIN
+[0m11:43:18.372168 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:18.372818 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:18.373639 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_query_efficiency: BEGIN
+[0m11:43:18.374485 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:18.384041 [debug] [Thread-2 (]: SQL status: BEGIN in 0.011 seconds
+[0m11:43:18.385015 [debug] [Thread-1 (]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:18.385794 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:18.386393 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:18.387025 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_minute_concurrency_cluster"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_minute_ts
+  
+
+),
+
+-- ✅ gate: only compute up to minutes that are safely "closed"
+watermark AS (
+  SELECT
+    COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    raw_id,
+    instance_id,
+    minute_ts AS start_minute,
+    DATE_TRUNC('minute', query_end_timestamp) AS end_minute,
+    cluster_size_clean
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+),
+
+expanded AS (
+  -- expand each query into the minutes it overlaps
+  SELECT
+    b.instance_id,
+    gs.minute_ts,
+    b.raw_id,
+    b.start_minute,
+    b.end_minute
+  FROM base b
+  JOIN LATERAL generate_series(b.start_minute, b.end_minute, INTERVAL '1 minute') AS gs(minute_ts)
+    ON TRUE
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+
+    COUNT(DISTINCT raw_id) AS active_queries,
+    COUNT(DISTINCT CASE WHEN start_minute = minute_ts THEN raw_id END) AS started_queries,
+    COUNT(DISTINCT CASE WHEN end_minute = minute_ts THEN raw_id END) AS ended_queries
+  FROM expanded
+  GROUP BY 1, 2
+),
+
+cluster_size AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+
+  GROUP BY 1, 2
+)
+
+SELECT
+  MD5(CAST(a.minute_ts AS VARCHAR) || '-' || CAST(a.instance_id AS VARCHAR)) AS kpi_key,
+
+  a.minute_ts,
+  a.instance_id,
+
+  a.active_queries,
+  a.started_queries,
+  a.ended_queries,
+
+  cs.cluster_size_clean_max,
+
+  (a.active_queries::numeric / NULLIF(cs.cluster_size_clean_max, 0)) AS query_pressure
+
+FROM agg a
+LEFT JOIN cluster_size cs
+  ON a.minute_ts = cs.minute_ts
+ AND a.instance_id = cs.instance_id
+  );
+  
+  
+[0m11:43:18.387928 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_minute_ts
+  
+
+),
+
+-- ✅ compute only "closed" minutes (avoid late arriving / still-running distortion)
+watermark AS (
+  SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    was_cached,
+    was_aborted,
+
+    execution_duration_ms,
+    queue_duration_ms,
+    compile_duration_ms,
+
+    mbytes_scanned,
+    mbytes_spilled,
+
+    raw_id
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+),
+
+row_metrics AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+    raw_id,
+
+    -- ✅ heavy_unit = your exact method (SQL translation)
+    CASE
+      WHEN was_cached = 1 THEN 0.05
+      WHEN was_cached <> 1 AND was_aborted = 1 THEN 0.10
+      ELSE
+        LEAST(
+          1.0,
+          GREATEST(
+            0.05,
+            (
+              0.4 * LEAST(COALESCE(execution_duration_ms, 0) / 300000.0, 1.0)
+            + 0.4 * LEAST(COALESCE(mbytes_scanned, 0) / 10240.0, 1.0)
+            + 0.2 * LEAST(COALESCE(mbytes_spilled, 0) / 1024.0, 1.0)
+            )
+          )
+        )
+    END AS heavy_unit
+  FROM base
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+
+    COUNT(*) AS queries_count,
+
+    -- time
+    SUM(COALESCE(execution_duration_ms, 0)) AS exec_ms_sum,
+    AVG(COALESCE(execution_duration_ms, 0)) AS exec_ms_avg,
+    SUM(COALESCE(queue_duration_ms, 0))     AS queue_ms_sum,
+    AVG(COALESCE(queue_duration_ms, 0))     AS queue_ms_avg,
+    SUM(COALESCE(compile_duration_ms, 0))   AS compile_ms_sum,
+
+    -- scan/spill
+    SUM(COALESCE(mbytes_scanned, 0)) AS scanned_mb_sum,
+    SUM(COALESCE(mbytes_spilled, 0)) AS spilled_mb_sum,
+
+    -- heavy units
+    SUM(heavy_unit) AS heavy_units_sum,
+    AVG(heavy_unit) AS heavy_unit_avg,
+
+    -- quality flags
+    SUM(CASE WHEN COALESCE(was_cached, 0) = 1 THEN 1 ELSE 0 END) AS cached_queries,
+    SUM(CASE WHEN COALESCE(was_aborted, 0) = 1 THEN 1 ELSE 0 END) AS aborted_queries
+
+  FROM (
+    SELECT
+      b.minute_ts,
+      b.instance_id,
+      b.execution_duration_ms,
+      b.queue_duration_ms,
+      b.compile_duration_ms,
+      b.mbytes_scanned,
+      b.mbytes_spilled,
+      b.was_cached,
+      b.was_aborted,
+      rm.heavy_unit
+    FROM base b
+    JOIN row_metrics rm
+      ON b.raw_id = rm.raw_id
+  ) x
+  GROUP BY 1, 2
+)
+
+SELECT
+  MD5(CAST(minute_ts AS VARCHAR) || '-' || CAST(instance_id AS VARCHAR)) AS kpi_key,
+
+  minute_ts,
+  instance_id,
+
+  queries_count,
+
+  exec_ms_sum,
+  exec_ms_avg,
+  queue_ms_sum,
+  queue_ms_avg,
+  compile_ms_sum,
+
+  scanned_mb_sum,
+  spilled_mb_sum,
+
+  heavy_units_sum,
+  heavy_unit_avg,
+
+  cached_queries,
+  aborted_queries,
+
+  -- ✅ “waste” proxy (simple + explainable)
+  -- spilled / scanned (0..1+). If scanned is 0, waste is 0.
+  (spilled_mb_sum::numeric / NULLIF(scanned_mb_sum, 0)) AS spill_to_scan_ratio
+
+FROM agg
+  );
+  
+  
+[0m11:43:18.398773 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.010 seconds
+[0m11:43:18.399500 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.011 seconds
+[0m11:43:18.401689 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_query_efficiency: COMMIT
+[0m11:43:18.403602 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_concurrency_cluster: COMMIT
+[0m11:43:18.404212 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:18.404728 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:18.405178 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_query_efficiency: COMMIT
+[0m11:43:18.405589 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_concurrency_cluster: COMMIT
+[0m11:43:18.408317 [debug] [Thread-1 (]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:18.409433 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_query_efficiency: Close
+[0m11:43:18.410061 [debug] [Thread-2 (]: SQL status: COMMIT in 0.004 seconds
+[0m11:43:18.410784 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747260514c90>]}
+[0m11:43:18.412019 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_concurrency_cluster: Close
+[0m11:43:18.413200 [info ] [Thread-1 (]: 6 of 8 OK created sql incremental model analytics_analytics.kpi_minute_query_efficiency  [[32mSELECT 0[0m in 0.06s]
+[0m11:43:18.414629 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:18.415840 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261c6dad0>]}
+[0m11:43:18.416489 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_resource_predator_15m
+[0m11:43:18.417560 [info ] [Thread-2 (]: 5 of 8 OK created sql incremental model analytics_analytics.kpi_minute_concurrency_cluster  [[32mSELECT 0[0m in 0.08s]
+[0m11:43:18.419570 [info ] [Thread-1 (]: 7 of 8 START sql incremental model analytics_analytics.kpi_resource_predator_15m  [RUN]
+[0m11:43:18.421367 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:18.422265 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_query_efficiency, now model.redwatch.kpi_resource_predator_15m)
+[0m11:43:18.423217 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:18.424332 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_resource_predator_15m
+[0m11:43:18.425117 [info ] [Thread-2 (]: 8 of 8 START sql incremental model analytics_analytics.kpi_minute_shadow_cost .. [RUN]
+[0m11:43:18.431019 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:18.432194 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_concurrency_cluster, now model.redwatch.kpi_minute_shadow_cost)
+[0m11:43:18.433149 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:18.438197 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:18.439065 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_resource_predator_15m
+[0m11:43:18.443109 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:18.444087 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:18.444492 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: BEGIN
+[0m11:43:18.444908 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:18.445330 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:18.450444 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:18.451715 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:18.452117 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: BEGIN
+[0m11:43:18.452423 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:18.460876 [debug] [Thread-1 (]: SQL status: BEGIN in 0.015 seconds
+[0m11:43:18.461581 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:18.462082 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_resource_predator_15m"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_window_start
+  
+
+),
+
+base AS (
+  SELECT
+    window_start,
+    window_end,
+    dimension_type,
+    dimension_value,
+    heavy_units_sum,
+    queries_count
+  FROM "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+  WHERE dimension_type IN ('user', 'fingerprint')
+  
+),
+
+totals AS (
+  SELECT
+    window_start,
+    dimension_type,
+    SUM(heavy_units_sum) AS total_heavy_units
+  FROM base
+  GROUP BY 1,2
+),
+
+scored AS (
+  SELECT
+    b.window_start,
+    b.window_end,
+    b.dimension_type AS predator_type,
+    b.dimension_value AS predator_value,
+    b.queries_count,
+    b.heavy_units_sum,
+    t.total_heavy_units,
+    (b.heavy_units_sum::numeric / NULLIF(t.total_heavy_units, 0)) AS cost_share_pct
+  FROM base b
+  JOIN totals t
+    ON b.window_start = t.window_start
+   AND b.dimension_type = t.dimension_type
+),
+
+ranked AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY window_start, predator_type
+      ORDER BY cost_share_pct DESC, heavy_units_sum DESC
+    ) AS rank_position
+  FROM scored
+)
+
+SELECT
+  md5(CAST(window_start AS varchar) || '-' || predator_type || '-' || predator_value) AS pred_key,
+  window_start,
+  window_end,
+  predator_type,
+  predator_value,
+  rank_position,
+  queries_count,
+  heavy_units_sum,
+  total_heavy_units,
+  cost_share_pct
+FROM ranked
+WHERE rank_position <= 10
+  );
+  
+  
+[0m11:43:18.462831 [debug] [Thread-2 (]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:18.463813 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:18.464279 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+      
+  
+    
+
+  create  table "redset_db"."analytics_analytics"."kpi_minute_shadow_cost"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT TIMESTAMP '1970-01-01' AS max_minute_ts
+  
+
+),
+
+-- ✅ closed-minute gate (same as other KPIs)
+watermark AS (
+  SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+-- ✅ heavy units come from KPI 3
+eff AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    heavy_units_sum,
+    queries_count
+  FROM "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+),
+
+-- ✅ cluster size comes from clean_table (max seen that minute)
+cluster_size AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+  GROUP BY 1, 2
+),
+
+joined AS (
+  SELECT
+    e.minute_ts,
+    e.instance_id,
+    COALESCE(e.heavy_units_sum, 0) AS heavy_units_sum,
+    COALESCE(e.queries_count, 0)   AS queries_count,
+    COALESCE(cs.cluster_size_clean_max, 0) AS cluster_size_clean_max
+  FROM eff e
+  LEFT JOIN cluster_size cs
+    ON e.minute_ts = cs.minute_ts
+   AND e.instance_id = cs.instance_id
+),
+
+scored AS (
+  SELECT
+    *,
+    -- ✅ simple “shadow cost units per minute”
+    -- We keep this as “cost_units_per_min” (not dollars yet).
+    (heavy_units_sum::numeric) AS cost_units_per_min,
+
+    -- ✅ normalize for cluster size if you want a fairness metric
+    (heavy_units_sum::numeric / NULLIF(cluster_size_clean_max, 0)) AS cost_units_per_min_per_node
+  FROM joined
+)
+
+SELECT
+  MD5(CAST(minute_ts AS VARCHAR) || '-' || CAST(instance_id AS VARCHAR)) AS kpi_key,
+  minute_ts,
+  instance_id,
+
+  queries_count,
+  heavy_units_sum,
+  cluster_size_clean_max,
+
+  cost_units_per_min,
+  cost_units_per_min_per_node
+
+FROM scored
+  );
+  
+  
+[0m11:43:18.473050 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.009 seconds
+[0m11:43:18.475282 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: COMMIT
+[0m11:43:18.475767 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:18.476061 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: COMMIT
+[0m11:43:18.478449 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.014 seconds
+[0m11:43:18.482005 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: COMMIT
+[0m11:43:18.482871 [debug] [Thread-1 (]: SQL status: COMMIT in 0.006 seconds
+[0m11:43:18.483421 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:18.484389 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: Close
+[0m11:43:18.484975 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: COMMIT
+[0m11:43:18.486009 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747261b34e90>]}
+[0m11:43:18.487123 [info ] [Thread-1 (]: 7 of 8 OK created sql incremental model analytics_analytics.kpi_resource_predator_15m  [[32mSELECT 0[0m in 0.06s]
+[0m11:43:18.488459 [debug] [Thread-2 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:18.489796 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_resource_predator_15m
+[0m11:43:18.491220 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: Close
+[0m11:43:18.492382 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': '5cc7533b-bf02-4102-a3c9-b229bca9fe46', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7472627e6bd0>]}
+[0m11:43:18.493008 [info ] [Thread-2 (]: 8 of 8 OK created sql incremental model analytics_analytics.kpi_minute_shadow_cost  [[32mSELECT 0[0m in 0.06s]
+[0m11:43:18.493697 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:18.496497 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:18.497051 [debug] [MainThread]: On master: BEGIN
+[0m11:43:18.497453 [debug] [MainThread]: Opening a new connection, currently in state closed
+[0m11:43:18.507133 [debug] [MainThread]: SQL status: BEGIN in 0.010 seconds
+[0m11:43:18.507583 [debug] [MainThread]: On master: COMMIT
+[0m11:43:18.507999 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:18.508224 [debug] [MainThread]: On master: COMMIT
+[0m11:43:18.508888 [debug] [MainThread]: SQL status: COMMIT in 0.000 seconds
+[0m11:43:18.509348 [debug] [MainThread]: On master: Close
+[0m11:43:18.510099 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m11:43:18.510469 [debug] [MainThread]: Connection 'model.redwatch.kpi_resource_predator_15m' was properly closed.
+[0m11:43:18.510850 [debug] [MainThread]: Connection 'model.redwatch.kpi_minute_shadow_cost' was properly closed.
+[0m11:43:18.511428 [info ] [MainThread]: 
+[0m11:43:18.511887 [info ] [MainThread]: Finished running 1 view model, 7 incremental models in 0 hours 0 minutes and 0.73 seconds (0.73s).
+[0m11:43:18.513575 [debug] [MainThread]: Command end result
+[0m11:43:18.545886 [info ] [MainThread]: 
+[0m11:43:18.546641 [info ] [MainThread]: [32mCompleted successfully[0m
+[0m11:43:18.547154 [info ] [MainThread]: 
+[0m11:43:18.547729 [info ] [MainThread]: Done. PASS=8 WARN=0 ERROR=0 SKIP=0 TOTAL=8
+[0m11:43:18.549980 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": true, "command_wall_clock_time": 1.7243408, "process_user_time": 2.953469, "process_kernel_time": 0.598266, "process_mem_max_rss": "121652", "process_in_blocks": "82528", "process_out_blocks": "4888"}
+[0m11:43:18.550506 [debug] [MainThread]: Command `dbt run` succeeded at 11:43:18.550398 after 1.72 seconds
+[0m11:43:18.550842 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747266000810>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x747266000790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7472660017d0>]}
+[0m11:43:18.551293 [debug] [MainThread]: Flushing usage events
+[0m11:43:38.514615 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da8497dd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da8687690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da8687790>]}
+
+
+============================== 11:43:38.517378 | bc831cd9-5359-4948-ab48-09c6da5f1f6b ==============================
+[0m11:43:38.517378 [info ] [MainThread]: Running with dbt=1.8.2
+[0m11:43:38.517892 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'debug': 'False', 'log_path': '/usr/app/logs', 'fail_fast': 'False', 'profiles_dir': '/usr/app', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt run --profiles-dir /usr/app --project-dir /usr/app', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m11:43:38.687224 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da83e0ed0>]}
+[0m11:43:38.734976 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'adapter_info', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713daa902550>]}
+[0m11:43:38.735811 [info ] [MainThread]: Registered adapter: postgres=1.8.2
+[0m11:43:38.798951 [debug] [MainThread]: checksum: f0a141b9de567cb7f131613ba2682f40b3a1c6a157f81c6e5435862eff68f109, vars: {}, profile: , target: , version: 1.8.2
+[0m11:43:38.874538 [debug] [MainThread]: Partial parsing enabled: 0 files deleted, 0 files added, 0 files changed.
+[0m11:43:38.874929 [debug] [MainThread]: Partial parsing enabled, no changes found, skipping parsing
+[0m11:43:38.880273 [warn ] [MainThread]: [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.redwatch.kpi
+[0m11:43:38.901300 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'load_project', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da6f68d10>]}
+[0m11:43:38.990246 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'resource_counts', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da851cc90>]}
+[0m11:43:38.991055 [info ] [MainThread]: Found 8 models, 428 macros
+[0m11:43:38.991592 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da6fad3d0>]}
+[0m11:43:38.994532 [info ] [MainThread]: 
+[0m11:43:38.995338 [debug] [MainThread]: Acquiring new postgres connection 'master'
+[0m11:43:39.000141 [debug] [ThreadPool]: Acquiring new postgres connection 'list_redset_db'
+[0m11:43:39.069072 [debug] [ThreadPool]: Using postgres connection "list_redset_db"
+[0m11:43:39.069546 [debug] [ThreadPool]: On list_redset_db: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "list_redset_db"} */
+
+    select distinct nspname from pg_namespace
+  
+[0m11:43:39.069805 [debug] [ThreadPool]: Opening a new connection, currently in state init
+[0m11:43:39.085296 [debug] [ThreadPool]: SQL status: SELECT 5 in 0.015 seconds
+[0m11:43:39.088099 [debug] [ThreadPool]: On list_redset_db: Close
+[0m11:43:39.091590 [debug] [ThreadPool]: Re-using an available connection from the pool (formerly list_redset_db, now list_redset_db_analytics_analytics)
+[0m11:43:39.097270 [debug] [ThreadPool]: Using postgres connection "list_redset_db_analytics_analytics"
+[0m11:43:39.097674 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: BEGIN
+[0m11:43:39.097942 [debug] [ThreadPool]: Opening a new connection, currently in state closed
+[0m11:43:39.107518 [debug] [ThreadPool]: SQL status: BEGIN in 0.009 seconds
+[0m11:43:39.108010 [debug] [ThreadPool]: Using postgres connection "list_redset_db_analytics_analytics"
+[0m11:43:39.108442 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "list_redset_db_analytics_analytics"} */
+select
+      'redset_db' as database,
+      tablename as name,
+      schemaname as schema,
+      'table' as type
+    from pg_tables
+    where schemaname ilike 'analytics_analytics'
+    union all
+    select
+      'redset_db' as database,
+      viewname as name,
+      schemaname as schema,
+      'view' as type
+    from pg_views
+    where schemaname ilike 'analytics_analytics'
+    union all
+    select
+      'redset_db' as database,
+      matviewname as name,
+      schemaname as schema,
+      'materialized_view' as type
+    from pg_matviews
+    where schemaname ilike 'analytics_analytics'
+  
+[0m11:43:39.111214 [debug] [ThreadPool]: SQL status: SELECT 8 in 0.002 seconds
+[0m11:43:39.112760 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: ROLLBACK
+[0m11:43:39.113583 [debug] [ThreadPool]: On list_redset_db_analytics_analytics: Close
+[0m11:43:39.121300 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:39.121742 [debug] [MainThread]: On master: BEGIN
+[0m11:43:39.122062 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m11:43:39.134425 [debug] [MainThread]: SQL status: BEGIN in 0.012 seconds
+[0m11:43:39.134946 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:39.135395 [debug] [MainThread]: On master: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "connection_name": "master"} */
+with relation as (
+        select
+            pg_rewrite.ev_class as class,
+            pg_rewrite.oid as id
+        from pg_rewrite
+    ),
+    class as (
+        select
+            oid as id,
+            relname as name,
+            relnamespace as schema,
+            relkind as kind
+        from pg_class
+    ),
+    dependency as (
+        select distinct
+            pg_depend.objid as id,
+            pg_depend.refobjid as ref
+        from pg_depend
+    ),
+    schema as (
+        select
+            pg_namespace.oid as id,
+            pg_namespace.nspname as name
+        from pg_namespace
+        where nspname != 'information_schema' and nspname not like 'pg\_%'
+    ),
+    referenced as (
+        select
+            relation.id AS id,
+            referenced_class.name ,
+            referenced_class.schema ,
+            referenced_class.kind
+        from relation
+        join class as referenced_class on relation.class=referenced_class.id
+        where referenced_class.kind in ('r', 'v', 'm')
+    ),
+    relationships as (
+        select
+            referenced.name as referenced_name,
+            referenced.schema as referenced_schema_id,
+            dependent_class.name as dependent_name,
+            dependent_class.schema as dependent_schema_id,
+            referenced.kind as kind
+        from referenced
+        join dependency on referenced.id=dependency.id
+        join class as dependent_class on dependency.ref=dependent_class.id
+        where
+            (referenced.name != dependent_class.name or
+             referenced.schema != dependent_class.schema)
+    )
+
+    select
+        referenced_schema.name as referenced_schema,
+        relationships.referenced_name as referenced_name,
+        dependent_schema.name as dependent_schema,
+        relationships.dependent_name as dependent_name
+    from relationships
+    join schema as dependent_schema on relationships.dependent_schema_id=dependent_schema.id
+    join schema as referenced_schema on relationships.referenced_schema_id=referenced_schema.id
+    group by referenced_schema, referenced_name, dependent_schema, dependent_name
+    order by referenced_schema, referenced_name, dependent_schema, dependent_name;
+[0m11:43:39.142857 [debug] [MainThread]: SQL status: SELECT 1 in 0.006 seconds
+[0m11:43:39.144273 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'runnable_timing', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713daa5dd7d0>]}
+[0m11:43:39.144865 [debug] [MainThread]: On master: ROLLBACK
+[0m11:43:39.145772 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:39.146104 [debug] [MainThread]: On master: BEGIN
+[0m11:43:39.147284 [debug] [MainThread]: SQL status: BEGIN in 0.001 seconds
+[0m11:43:39.147595 [debug] [MainThread]: On master: COMMIT
+[0m11:43:39.147879 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:39.148269 [debug] [MainThread]: On master: COMMIT
+[0m11:43:39.149052 [debug] [MainThread]: SQL status: COMMIT in 0.000 seconds
+[0m11:43:39.149392 [debug] [MainThread]: On master: Close
+[0m11:43:39.149962 [info ] [MainThread]: Concurrency: 2 threads (target='dev')
+[0m11:43:39.150315 [info ] [MainThread]: 
+[0m11:43:39.155722 [debug] [Thread-1 (]: Began running node model.redwatch.stg_redset_events
+[0m11:43:39.157201 [info ] [Thread-1 (]: 1 of 8 START sql view model analytics_analytics.stg_redset_events .............. [RUN]
+[0m11:43:39.158282 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly list_redset_db_analytics_analytics, now model.redwatch.stg_redset_events)
+[0m11:43:39.159403 [debug] [Thread-1 (]: Began compiling node model.redwatch.stg_redset_events
+[0m11:43:39.179983 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.stg_redset_events"
+[0m11:43:39.180825 [debug] [Thread-1 (]: Began executing node model.redwatch.stg_redset_events
+[0m11:43:39.215125 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.stg_redset_events"
+[0m11:43:39.216709 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.217498 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: BEGIN
+[0m11:43:39.218075 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:39.226725 [debug] [Thread-1 (]: SQL status: BEGIN in 0.009 seconds
+[0m11:43:39.227487 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.229050 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+
+  create view "redset_db"."analytics_analytics"."stg_redset_events__dbt_tmp"
+    
+    
+  as (
+    
+
+SELECT
+  id AS raw_id,
+
+  NULLIF(event->>'instance_id','')::int AS instance_id,
+  NULLIF(event->>'user_id','')::int     AS user_id,
+  NULLIF(event->>'database_id','')::int AS database_id,
+  NULLIF(event->>'query_id','')::bigint AS query_id,
+
+  NULLIF(event->>'cluster_size','')::numeric AS cluster_size,
+
+  NULLIF(event->>'arrival_timestamp','')::timestamptz AS arrival_timestamp,
+
+  COALESCE(NULLIF(event->>'compile_duration_ms','')::numeric, 0)   AS compile_duration_ms,
+  COALESCE(NULLIF(event->>'queue_duration_ms','')::numeric, 0)     AS queue_duration_ms,
+  COALESCE(NULLIF(event->>'execution_duration_ms','')::numeric, 0) AS execution_duration_ms,
+
+  COALESCE(NULLIF(event->>'feature_fingerprint',''), 'UNKNOWN_FINGERPRINT') AS feature_fingerprint,
+
+  COALESCE(NULLIF(event->>'was_aborted','')::int, 0) AS was_aborted,
+  COALESCE(NULLIF(event->>'was_cached','')::int, 0)  AS was_cached,
+
+  NULLIF(event->>'query_type','') AS query_type,
+
+  COALESCE(NULLIF(event->>'num_permanent_tables_accessed','')::numeric, 0) AS num_permanent_tables_accessed,
+  COALESCE(NULLIF(event->>'num_external_tables_accessed','')::numeric, 0)  AS num_external_tables_accessed,
+  COALESCE(NULLIF(event->>'num_system_tables_accessed','')::numeric, 0)    AS num_system_tables_accessed,
+
+  COALESCE(NULLIF(event->>'mbytes_scanned','')::numeric, 0) AS mbytes_scanned,
+  COALESCE(NULLIF(event->>'mbytes_spilled','')::numeric, 0) AS mbytes_spilled,
+
+  COALESCE(NULLIF(event->>'num_joins','')::numeric, 0)        AS num_joins,
+  COALESCE(NULLIF(event->>'num_scans','')::numeric, 0)        AS num_scans,
+  COALESCE(NULLIF(event->>'num_aggregations','')::numeric, 0) AS num_aggregations,
+
+  (NULLIF(btrim(event->>'read_table_ids'), '') IS NOT NULL)  AS has_read,
+  (NULLIF(btrim(event->>'write_table_ids'), '') IS NOT NULL) AS has_write
+
+FROM public.redset_events
+WHERE event IS NOT NULL
+  );
+[0m11:43:39.233860 [debug] [Thread-1 (]: SQL status: CREATE VIEW in 0.004 seconds
+[0m11:43:39.240734 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.241228 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+alter table "redset_db"."analytics_analytics"."stg_redset_events" rename to "stg_redset_events__dbt_backup"
+[0m11:43:39.242716 [debug] [Thread-1 (]: SQL status: ALTER TABLE in 0.001 seconds
+[0m11:43:39.248385 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.249324 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+alter table "redset_db"."analytics_analytics"."stg_redset_events__dbt_tmp" rename to "stg_redset_events"
+[0m11:43:39.250848 [debug] [Thread-1 (]: SQL status: ALTER TABLE in 0.001 seconds
+[0m11:43:39.285196 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: COMMIT
+[0m11:43:39.285751 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.286060 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: COMMIT
+[0m11:43:39.289010 [debug] [Thread-1 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:39.296785 [debug] [Thread-1 (]: Applying DROP to: "redset_db"."analytics_analytics"."stg_redset_events__dbt_backup"
+[0m11:43:39.303794 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.stg_redset_events"
+[0m11:43:39.304443 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.stg_redset_events"} */
+drop view if exists "redset_db"."analytics_analytics"."stg_redset_events__dbt_backup" cascade
+[0m11:43:39.308270 [debug] [Thread-1 (]: SQL status: DROP VIEW in 0.003 seconds
+[0m11:43:39.311131 [debug] [Thread-1 (]: On model.redwatch.stg_redset_events: Close
+[0m11:43:39.313184 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da5f9d950>]}
+[0m11:43:39.313952 [info ] [Thread-1 (]: 1 of 8 OK created sql view model analytics_analytics.stg_redset_events ......... [[32mCREATE VIEW[0m in 0.15s]
+[0m11:43:39.314651 [debug] [Thread-1 (]: Finished running node model.redwatch.stg_redset_events
+[0m11:43:39.317203 [debug] [Thread-2 (]: Began running node model.redwatch.clean_table
+[0m11:43:39.318256 [info ] [Thread-2 (]: 2 of 8 START sql incremental model analytics_analytics.clean_table ............. [RUN]
+[0m11:43:39.319007 [debug] [Thread-2 (]: Acquiring new postgres connection 'model.redwatch.clean_table'
+[0m11:43:39.319651 [debug] [Thread-2 (]: Began compiling node model.redwatch.clean_table
+[0m11:43:39.337124 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.clean_table"
+[0m11:43:39.338613 [debug] [Thread-2 (]: Began executing node model.redwatch.clean_table
+[0m11:43:39.400384 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.401297 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+    
+  
+    
+
+  create temporary table "clean_table__dbt_tmp114339383447"
+  
+  
+    as
+  
+  (
+    
+
+WITH src AS (
+
+  SELECT
+    *
+  FROM "redset_db"."analytics_analytics"."stg_redset_events"
+
+  
+    WHERE raw_id > (SELECT COALESCE(MAX(raw_id), 0) FROM "redset_db"."analytics_analytics"."clean_table")
+  
+
+),
+
+/* 1) Normalize numeric fields (force non-nulls where you want zeros) */
+enriched AS (
+
+  SELECT
+    -- identifiers
+    raw_id,
+    instance_id,
+    user_id,
+    database_id,
+    query_id,
+
+    -- timestamps
+    arrival_timestamp,
+    DATE_TRUNC('minute', arrival_timestamp) AS minute_ts,
+
+    -- durations & resources (impute missing -> 0 here)
+    COALESCE(compile_duration_ms, 0)   AS compile_duration_ms,
+    COALESCE(queue_duration_ms, 0)     AS queue_duration_ms,
+    COALESCE(execution_duration_ms, 0) AS execution_duration_ms,
+    COALESCE(mbytes_scanned, 0)        AS mbytes_scanned,
+    COALESCE(mbytes_spilled, 0)        AS mbytes_spilled,
+
+    -- query metadata
+    feature_fingerprint,
+    (
+      feature_fingerprint IS NULL
+      OR feature_fingerprint = ''
+      OR UPPER(feature_fingerprint) IN ('UNKNOWN', 'UNKNOWN_FINGERPRINT')
+    ) AS is_unknown_fingerprint,
+
+    was_aborted,
+    was_cached,
+    query_type,
+
+    num_permanent_tables_accessed,
+    num_external_tables_accessed,
+    num_system_tables_accessed,
+
+    -- raw cluster size (may be null)
+    cluster_size AS cluster_size_raw,
+
+    has_read,
+    has_write,
+
+    -- query end timestamp (Postgres-safe)
+    arrival_timestamp
+      + (COALESCE(execution_duration_ms, 0)::double precision * INTERVAL '1 millisecond')
+      AS query_end_timestamp,
+
+    -- access_scope
+    CASE
+      WHEN COALESCE(num_external_tables_accessed, 0) > 0 THEN 'External (Data Lake)'
+      WHEN COALESCE(num_system_tables_accessed, 0) > 0 THEN 'System Internal'
+      WHEN COALESCE(num_permanent_tables_accessed, 0) > 0 THEN 'Core Warehousing'
+      ELSE 'Metadata only'
+    END AS access_scope,
+
+    -- workload_is_system_metadata
+    CASE
+      WHEN COALESCE(num_system_tables_accessed, 0) > 0 THEN TRUE
+      WHEN query_type IS NOT NULL AND LOWER(query_type) IN (
+        'analyze','vacuum','commit','rollback','begin','set','show','describe','explain'
+      ) THEN TRUE
+      ELSE FALSE
+    END AS workload_is_system_metadata
+
+  FROM src
+),
+
+/* 2) Precompute median cluster size per instance (fallback) */
+instance_median AS (
+  SELECT
+    instance_id,
+    percentile_cont(0.5) WITHIN GROUP (ORDER BY cluster_size_raw) AS median_cluster_size
+  FROM enriched
+  WHERE cluster_size_raw IS NOT NULL
+  GROUP BY 1
+),
+
+/* 3) Forward-fill + backward-fill within each instance (no IGNORE NULLS needed) */
+filled AS (
+  SELECT
+    e.*,
+    m.median_cluster_size,
+
+    -- forward-fill: create a running "group id" that increments when a non-null appears
+    COUNT(e.cluster_size_raw) FILTER (WHERE e.cluster_size_raw IS NOT NULL)
+      OVER (PARTITION BY e.instance_id ORDER BY e.arrival_timestamp, e.raw_id) AS ff_grp,
+
+    -- backward-fill: same idea, but from the end backwards
+    COUNT(e.cluster_size_raw) FILTER (WHERE e.cluster_size_raw IS NOT NULL)
+      OVER (PARTITION BY e.instance_id ORDER BY e.arrival_timestamp DESC, e.raw_id DESC) AS bf_grp
+
+  FROM enriched e
+  LEFT JOIN instance_median m
+    ON e.instance_id = m.instance_id
+),
+
+cluster_imputed AS (
+  SELECT
+    f.*,
+
+    -- forward filled value for this row
+    MAX(f.cluster_size_raw) OVER (PARTITION BY f.instance_id, f.ff_grp) AS cluster_size_ff,
+
+    -- backward filled value for this row
+    MAX(f.cluster_size_raw) OVER (PARTITION BY f.instance_id, f.bf_grp) AS cluster_size_bf
+
+  FROM filled f
+),
+
+final AS (
+
+  SELECT
+    -- carry everything, but replace cluster size with the imputed value (guaranteed non-null)
+    ci.raw_id,
+    ci.instance_id,
+    ci.user_id,
+    ci.database_id,
+    ci.query_id,
+
+    ci.arrival_timestamp,
+    ci.minute_ts,
+
+    ci.compile_duration_ms,
+    ci.queue_duration_ms,
+    ci.execution_duration_ms,
+    ci.mbytes_scanned,
+    ci.mbytes_spilled,
+
+    ci.feature_fingerprint,
+    ci.is_unknown_fingerprint,
+
+    ci.was_aborted,
+    ci.was_cached,
+    ci.query_type,
+
+    ci.num_permanent_tables_accessed,
+    ci.num_external_tables_accessed,
+    ci.num_system_tables_accessed,
+
+    -- cluster_size: forward-fill -> backward-fill -> median -> final fallback(1)
+    COALESCE(ci.cluster_size_ff, ci.cluster_size_bf, ci.median_cluster_size, 1)::numeric
+      AS cluster_size_clean,
+
+    ci.has_read,
+    ci.has_write,
+
+    ci.query_end_timestamp,
+
+    ci.access_scope,
+    ci.workload_is_system_metadata,
+
+    -- workload_classification
+    CASE
+      WHEN ci.workload_is_system_metadata THEN 'System/Metadata'
+      WHEN COALESCE(ci.has_read, FALSE) = TRUE AND COALESCE(ci.has_write, FALSE) = TRUE  THEN 'Read/Write'
+      WHEN COALESCE(ci.has_read, FALSE) = TRUE AND COALESCE(ci.has_write, FALSE) = FALSE THEN 'Read only'
+      WHEN COALESCE(ci.has_read, FALSE) = FALSE AND COALESCE(ci.has_write, FALSE) = TRUE THEN 'Write only'
+      ELSE 'Unknown/Other'
+    END AS workload_classification,
+
+    -- heavy_unit (same logic as before; inputs already zero-imputed)
+    CASE
+      WHEN ci.was_cached = 1 THEN 0.05
+      WHEN ci.was_cached <> 1 AND ci.was_aborted = 1 THEN 0.10
+      ELSE
+        LEAST(
+          1.0,
+          GREATEST(
+            0.05,
+            (
+              0.4 * LEAST(COALESCE(ci.execution_duration_ms, 0) / 300000.0, 1.0)
+            + 0.4 * LEAST(COALESCE(ci.mbytes_scanned, 0) / 10240.0, 1.0)
+            + 0.2 * LEAST(COALESCE(ci.mbytes_spilled, 0) / 1024.0, 1.0)
+            )
+          )
+        )
+    END AS heavy_unit
+
+  FROM cluster_imputed ci
+)
+
+SELECT * FROM final
+  );
+  
+  
+[0m11:43:39.402114 [debug] [Thread-2 (]: Opening a new connection, currently in state init
+[0m11:43:39.429261 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.027 seconds
+[0m11:43:39.456562 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.457234 [debug] [Thread-2 (]: On model.redwatch.clean_table: BEGIN
+[0m11:43:39.458492 [debug] [Thread-2 (]: SQL status: BEGIN in 0.001 seconds
+[0m11:43:39.458979 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.459511 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'clean_table__dbt_tmp114339383447'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.473667 [debug] [Thread-2 (]: SQL status: SELECT 28 in 0.013 seconds
+[0m11:43:39.485588 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.486242 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'clean_table'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.495453 [debug] [Thread-2 (]: SQL status: SELECT 28 in 0.008 seconds
+[0m11:43:39.511236 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.512225 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'clean_table'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.520642 [debug] [Thread-2 (]: SQL status: SELECT 28 in 0.007 seconds
+[0m11:43:39.552400 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.clean_table"
+[0m11:43:39.553171 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.553581 [debug] [Thread-2 (]: On model.redwatch.clean_table: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.clean_table"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."clean_table"
+            where (
+                raw_id) in (
+                select (raw_id)
+                from "clean_table__dbt_tmp114339383447"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."clean_table" ("raw_id", "instance_id", "user_id", "database_id", "query_id", "arrival_timestamp", "minute_ts", "compile_duration_ms", "queue_duration_ms", "execution_duration_ms", "mbytes_scanned", "mbytes_spilled", "feature_fingerprint", "is_unknown_fingerprint", "was_aborted", "was_cached", "query_type", "num_permanent_tables_accessed", "num_external_tables_accessed", "num_system_tables_accessed", "cluster_size_clean", "has_read", "has_write", "query_end_timestamp", "access_scope", "workload_is_system_metadata", "workload_classification", "heavy_unit")
+    (
+        select "raw_id", "instance_id", "user_id", "database_id", "query_id", "arrival_timestamp", "minute_ts", "compile_duration_ms", "queue_duration_ms", "execution_duration_ms", "mbytes_scanned", "mbytes_spilled", "feature_fingerprint", "is_unknown_fingerprint", "was_aborted", "was_cached", "query_type", "num_permanent_tables_accessed", "num_external_tables_accessed", "num_system_tables_accessed", "cluster_size_clean", "has_read", "has_write", "query_end_timestamp", "access_scope", "workload_is_system_metadata", "workload_classification", "heavy_unit"
+        from "clean_table__dbt_tmp114339383447"
+    )
+  
+[0m11:43:39.555005 [debug] [Thread-2 (]: SQL status: INSERT 0 0 in 0.001 seconds
+[0m11:43:39.557251 [debug] [Thread-2 (]: On model.redwatch.clean_table: COMMIT
+[0m11:43:39.558312 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.clean_table"
+[0m11:43:39.559377 [debug] [Thread-2 (]: On model.redwatch.clean_table: COMMIT
+[0m11:43:39.564315 [debug] [Thread-2 (]: SQL status: COMMIT in 0.004 seconds
+[0m11:43:39.566057 [debug] [Thread-2 (]: On model.redwatch.clean_table: Close
+[0m11:43:39.567491 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da739a410>]}
+[0m11:43:39.569190 [info ] [Thread-2 (]: 2 of 8 OK created sql incremental model analytics_analytics.clean_table ........ [[32mINSERT 0 0[0m in 0.25s]
+[0m11:43:39.570676 [debug] [Thread-2 (]: Finished running node model.redwatch.clean_table
+[0m11:43:39.574867 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_leaderboard_15m
+[0m11:43:39.576335 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:39.578104 [info ] [Thread-1 (]: 3 of 8 START sql incremental model analytics_analytics.kpi_leaderboard_15m ..... [RUN]
+[0m11:43:39.580149 [info ] [Thread-2 (]: 4 of 8 START sql incremental model analytics_analytics.kpi_minute_cluster_workload  [RUN]
+[0m11:43:39.581951 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.stg_redset_events, now model.redwatch.kpi_leaderboard_15m)
+[0m11:43:39.584942 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.clean_table, now model.redwatch.kpi_minute_cluster_workload)
+[0m11:43:39.586643 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_leaderboard_15m
+[0m11:43:39.588463 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:39.602141 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.610947 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.612334 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_leaderboard_15m
+[0m11:43:39.623175 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.623778 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:39.624405 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+    
+  
+    
+
+  create temporary table "kpi_leaderboard_15m__dbt_tmp114339618549"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(window_start), TIMESTAMP '1970-01-01') AS max_window_start
+    FROM "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+  
+
+),
+
+base AS (
+  SELECT
+    arrival_timestamp,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    was_cached,
+    was_aborted,
+    execution_duration_ms,
+    mbytes_scanned,
+    mbytes_spilled,
+
+    raw_id
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  
+    WHERE arrival_timestamp >= (SELECT max_window_start FROM bounds) - INTERVAL '2 hours'
+  
+),
+
+with_window AS (
+  SELECT
+    (
+      date_trunc('hour', arrival_timestamp)
+      + (floor(extract(minute from arrival_timestamp)::numeric / 15) * interval '15 minutes')
+    ) AS window_start,
+
+    (
+      date_trunc('hour', arrival_timestamp)
+      + (floor(extract(minute from arrival_timestamp)::numeric / 15) * interval '15 minutes')
+      + interval '15 minutes'
+    ) AS window_end,
+
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    CASE
+      WHEN was_cached = 1 THEN 0.05
+      WHEN was_cached <> 1 AND was_aborted = 1 THEN 0.10
+      ELSE LEAST(
+        1.0,
+        GREATEST(
+          0.05,
+          (
+            0.4 * LEAST(COALESCE(execution_duration_ms, 0) / 300000.0, 1.0)
+          + 0.4 * LEAST(COALESCE(mbytes_scanned, 0) / 10240.0, 1.0)
+          + 0.2 * LEAST(COALESCE(mbytes_spilled, 0) / 1024.0, 1.0)
+          )
+        )
+      )
+    END AS heavy_unit
+  FROM base
+),
+
+unioned AS (
+  SELECT window_start, window_end, 'user' AS dimension_type, CAST(user_id AS varchar) AS dimension_value, heavy_unit
+  FROM with_window
+  WHERE user_id IS NOT NULL
+
+  UNION ALL
+  SELECT window_start, window_end, 'query_type', COALESCE(query_type, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'workload', COALESCE(workload_classification, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'access_scope', COALESCE(access_scope, 'UNKNOWN'), heavy_unit
+  FROM with_window
+
+  UNION ALL
+  SELECT window_start, window_end, 'fingerprint', COALESCE(feature_fingerprint, 'UNKNOWN'), heavy_unit
+  FROM with_window
+),
+
+agg AS (
+  SELECT
+    window_start,
+    window_end,
+    dimension_type,
+    dimension_value,
+    COUNT(*) AS queries_count,
+    SUM(heavy_unit) AS heavy_units_sum
+  FROM unioned
+  GROUP BY 1,2,3,4
+),
+
+ranked AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY window_start, dimension_type
+      ORDER BY heavy_units_sum DESC
+    ) AS rank_position
+  FROM agg
+)
+
+SELECT
+  md5(
+    CAST(window_start AS varchar)
+    || '-' || dimension_type
+    || '-' || dimension_value
+  ) AS lb_key,
+
+  window_start,
+  window_end,
+  dimension_type,
+  dimension_value,
+  rank_position,
+  queries_count,
+  heavy_units_sum
+FROM ranked
+WHERE rank_position <= 10
+  );
+  
+  
+[0m11:43:39.628482 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.629038 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:39.629597 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+    
+  
+    
+
+  create temporary table "kpi_minute_cluster_workload__dbt_tmp114339626740"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
+    FROM "redset_db"."analytics_analytics"."kpi_minute_cluster_workload"
+  
+
+),
+
+-- ✅ gate: only produce KPI rows up to "clean_table is at least 10 minutes ahead"
+watermark AS (
+  SELECT
+    COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    workload_classification,
+    access_scope,
+    query_type,
+
+    heavy_unit,
+    mbytes_scanned,
+    mbytes_spilled,
+    execution_duration_ms,
+    queue_duration_ms,
+    cluster_size_clean,
+    raw_id
+
+  FROM "redset_db"."analytics_analytics"."clean_table"
+
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    workload_classification,
+    access_scope,
+    query_type,
+
+    COUNT(*) AS queries_count,
+    SUM(heavy_unit) AS heavy_units_sum,
+
+    SUM(COALESCE(mbytes_scanned, 0)) AS scanned_mb_sum,
+    SUM(COALESCE(mbytes_spilled, 0)) AS spilled_mb_sum,
+
+    SUM(COALESCE(execution_duration_ms, 0)) AS exec_ms_sum,
+    SUM(COALESCE(queue_duration_ms, 0)) AS queue_ms_sum,
+
+    MAX(cluster_size_clean) AS cluster_size_clean_max,
+    MAX(raw_id) AS source_max_raw_id
+
+  FROM base
+  GROUP BY 1,2,3,4,5
+)
+
+SELECT
+  MD5(
+    CAST(minute_ts AS VARCHAR) || '-' ||
+    CAST(instance_id AS VARCHAR) || '-' ||
+    COALESCE(workload_classification, 'UNKNOWN') || '-' ||
+    COALESCE(access_scope, 'UNKNOWN') || '-' ||
+    COALESCE(query_type, 'UNKNOWN')
+  ) AS kpi_key,
+
+  minute_ts,
+  instance_id,
+  workload_classification,
+  access_scope,
+  query_type,
+
+  queries_count,
+  heavy_units_sum,
+
+  scanned_mb_sum,
+  spilled_mb_sum,
+
+  exec_ms_sum,
+  queue_ms_sum,
+
+  cluster_size_clean_max,
+  source_max_raw_id
+
+FROM agg
+  );
+  
+  
+[0m11:43:39.630558 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:39.649381 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.019 seconds
+[0m11:43:39.650538 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.021 seconds
+[0m11:43:39.654634 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.657418 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.657901 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: BEGIN
+[0m11:43:39.658327 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: BEGIN
+[0m11:43:39.659107 [debug] [Thread-2 (]: SQL status: BEGIN in 0.000 seconds
+[0m11:43:39.659725 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.660892 [debug] [Thread-1 (]: SQL status: BEGIN in 0.002 seconds
+[0m11:43:39.661969 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_cluster_workload__dbt_tmp114339626740'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.662669 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.663210 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_leaderboard_15m__dbt_tmp114339618549'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.674604 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.011 seconds
+[0m11:43:39.675223 [debug] [Thread-2 (]: SQL status: SELECT 14 in 0.012 seconds
+[0m11:43:39.678336 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.681255 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.681759 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_leaderboard_15m'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.682230 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_cluster_workload'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.686110 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.003 seconds
+[0m11:43:39.689426 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.689834 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_leaderboard_15m'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.690274 [debug] [Thread-2 (]: SQL status: SELECT 14 in 0.008 seconds
+[0m11:43:39.694763 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.695295 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.005 seconds
+[0m11:43:39.695782 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_cluster_workload'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.697892 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.698682 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.699038 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_leaderboard_15m"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+            where (
+                lb_key) in (
+                select (lb_key)
+                from "kpi_leaderboard_15m__dbt_tmp114339618549"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_leaderboard_15m" ("lb_key", "window_start", "window_end", "dimension_type", "dimension_value", "rank_position", "queries_count", "heavy_units_sum")
+    (
+        select "lb_key", "window_start", "window_end", "dimension_type", "dimension_value", "rank_position", "queries_count", "heavy_units_sum"
+        from "kpi_leaderboard_15m__dbt_tmp114339618549"
+    )
+  
+[0m11:43:39.700240 [debug] [Thread-1 (]: SQL status: INSERT 0 0 in 0.001 seconds
+[0m11:43:39.701801 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: COMMIT
+[0m11:43:39.702336 [debug] [Thread-2 (]: SQL status: SELECT 14 in 0.004 seconds
+[0m11:43:39.702983 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_leaderboard_15m"
+[0m11:43:39.705521 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.706152 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: COMMIT
+[0m11:43:39.708097 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.709039 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_cluster_workload"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_minute_cluster_workload"
+            where (
+                kpi_key) in (
+                select (kpi_key)
+                from "kpi_minute_cluster_workload__dbt_tmp114339626740"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_minute_cluster_workload" ("kpi_key", "minute_ts", "instance_id", "workload_classification", "access_scope", "query_type", "queries_count", "heavy_units_sum", "scanned_mb_sum", "spilled_mb_sum", "exec_ms_sum", "queue_ms_sum", "cluster_size_clean_max", "source_max_raw_id")
+    (
+        select "kpi_key", "minute_ts", "instance_id", "workload_classification", "access_scope", "query_type", "queries_count", "heavy_units_sum", "scanned_mb_sum", "spilled_mb_sum", "exec_ms_sum", "queue_ms_sum", "cluster_size_clean_max", "source_max_raw_id"
+        from "kpi_minute_cluster_workload__dbt_tmp114339626740"
+    )
+  
+[0m11:43:39.711414 [debug] [Thread-1 (]: SQL status: COMMIT in 0.004 seconds
+[0m11:43:39.712985 [debug] [Thread-1 (]: On model.redwatch.kpi_leaderboard_15m: Close
+[0m11:43:39.713503 [debug] [Thread-2 (]: SQL status: INSERT 0 0 in 0.004 seconds
+[0m11:43:39.715340 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: COMMIT
+[0m11:43:39.715744 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_cluster_workload"
+[0m11:43:39.716409 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da5358350>]}
+[0m11:43:39.716870 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: COMMIT
+[0m11:43:39.717700 [info ] [Thread-1 (]: 3 of 8 OK created sql incremental model analytics_analytics.kpi_leaderboard_15m  [[32mINSERT 0 0[0m in 0.13s]
+[0m11:43:39.718690 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_leaderboard_15m
+[0m11:43:39.720840 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:39.721729 [debug] [Thread-2 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:39.722565 [info ] [Thread-1 (]: 5 of 8 START sql incremental model analytics_analytics.kpi_minute_concurrency_cluster  [RUN]
+[0m11:43:39.725585 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_cluster_workload: Close
+[0m11:43:39.727301 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_leaderboard_15m, now model.redwatch.kpi_minute_concurrency_cluster)
+[0m11:43:39.728047 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:39.734232 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da5359050>]}
+[0m11:43:39.735022 [info ] [Thread-2 (]: 4 of 8 OK created sql incremental model analytics_analytics.kpi_minute_cluster_workload  [[32mINSERT 0 0[0m in 0.15s]
+[0m11:43:39.736683 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.737573 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_cluster_workload
+[0m11:43:39.738408 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:39.738935 [info ] [Thread-2 (]: 6 of 8 START sql incremental model analytics_analytics.kpi_minute_query_efficiency  [RUN]
+[0m11:43:39.739494 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_cluster_workload, now model.redwatch.kpi_minute_query_efficiency)
+[0m11:43:39.740344 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:39.756806 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.757791 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:39.769680 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.770897 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+    
+  
+    
+
+  create temporary table "kpi_minute_concurrency_cluster__dbt_tmp114339762460"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
+    FROM "redset_db"."analytics_analytics"."kpi_minute_concurrency_cluster"
+  
+
+),
+
+-- ✅ gate: only compute up to minutes that are safely "closed"
+watermark AS (
+  SELECT
+    COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    raw_id,
+    instance_id,
+    minute_ts AS start_minute,
+    DATE_TRUNC('minute', query_end_timestamp) AS end_minute,
+    cluster_size_clean
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+),
+
+expanded AS (
+  -- expand each query into the minutes it overlaps
+  SELECT
+    b.instance_id,
+    gs.minute_ts,
+    b.raw_id,
+    b.start_minute,
+    b.end_minute
+  FROM base b
+  JOIN LATERAL generate_series(b.start_minute, b.end_minute, INTERVAL '1 minute') AS gs(minute_ts)
+    ON TRUE
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+
+    COUNT(DISTINCT raw_id) AS active_queries,
+    COUNT(DISTINCT CASE WHEN start_minute = minute_ts THEN raw_id END) AS started_queries,
+    COUNT(DISTINCT CASE WHEN end_minute = minute_ts THEN raw_id END) AS ended_queries
+  FROM expanded
+  GROUP BY 1, 2
+),
+
+cluster_size AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+
+  GROUP BY 1, 2
+)
+
+SELECT
+  MD5(CAST(a.minute_ts AS VARCHAR) || '-' || CAST(a.instance_id AS VARCHAR)) AS kpi_key,
+
+  a.minute_ts,
+  a.instance_id,
+
+  a.active_queries,
+  a.started_queries,
+  a.ended_queries,
+
+  cs.cluster_size_clean_max,
+
+  (a.active_queries::numeric / NULLIF(cs.cluster_size_clean_max, 0)) AS query_pressure
+
+FROM agg a
+LEFT JOIN cluster_size cs
+  ON a.minute_ts = cs.minute_ts
+ AND a.instance_id = cs.instance_id
+  );
+  
+  
+[0m11:43:39.771518 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:39.772333 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:39.776155 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.776933 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+    
+  
+    
+
+  create temporary table "kpi_minute_query_efficiency__dbt_tmp114339774673"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
+    FROM "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+  
+
+),
+
+-- ✅ compute only "closed" minutes (avoid late arriving / still-running distortion)
+watermark AS (
+  SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+base AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+
+    was_cached,
+    was_aborted,
+
+    execution_duration_ms,
+    queue_duration_ms,
+    compile_duration_ms,
+
+    mbytes_scanned,
+    mbytes_spilled,
+
+    raw_id
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+),
+
+row_metrics AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    user_id,
+    query_type,
+    workload_classification,
+    access_scope,
+    feature_fingerprint,
+    raw_id,
+
+    -- ✅ heavy_unit = your exact method (SQL translation)
+    CASE
+      WHEN was_cached = 1 THEN 0.05
+      WHEN was_cached <> 1 AND was_aborted = 1 THEN 0.10
+      ELSE
+        LEAST(
+          1.0,
+          GREATEST(
+            0.05,
+            (
+              0.4 * LEAST(COALESCE(execution_duration_ms, 0) / 300000.0, 1.0)
+            + 0.4 * LEAST(COALESCE(mbytes_scanned, 0) / 10240.0, 1.0)
+            + 0.2 * LEAST(COALESCE(mbytes_spilled, 0) / 1024.0, 1.0)
+            )
+          )
+        )
+    END AS heavy_unit
+  FROM base
+),
+
+agg AS (
+  SELECT
+    minute_ts,
+    instance_id,
+
+    COUNT(*) AS queries_count,
+
+    -- time
+    SUM(COALESCE(execution_duration_ms, 0)) AS exec_ms_sum,
+    AVG(COALESCE(execution_duration_ms, 0)) AS exec_ms_avg,
+    SUM(COALESCE(queue_duration_ms, 0))     AS queue_ms_sum,
+    AVG(COALESCE(queue_duration_ms, 0))     AS queue_ms_avg,
+    SUM(COALESCE(compile_duration_ms, 0))   AS compile_ms_sum,
+
+    -- scan/spill
+    SUM(COALESCE(mbytes_scanned, 0)) AS scanned_mb_sum,
+    SUM(COALESCE(mbytes_spilled, 0)) AS spilled_mb_sum,
+
+    -- heavy units
+    SUM(heavy_unit) AS heavy_units_sum,
+    AVG(heavy_unit) AS heavy_unit_avg,
+
+    -- quality flags
+    SUM(CASE WHEN COALESCE(was_cached, 0) = 1 THEN 1 ELSE 0 END) AS cached_queries,
+    SUM(CASE WHEN COALESCE(was_aborted, 0) = 1 THEN 1 ELSE 0 END) AS aborted_queries
+
+  FROM (
+    SELECT
+      b.minute_ts,
+      b.instance_id,
+      b.execution_duration_ms,
+      b.queue_duration_ms,
+      b.compile_duration_ms,
+      b.mbytes_scanned,
+      b.mbytes_spilled,
+      b.was_cached,
+      b.was_aborted,
+      rm.heavy_unit
+    FROM base b
+    JOIN row_metrics rm
+      ON b.raw_id = rm.raw_id
+  ) x
+  GROUP BY 1, 2
+)
+
+SELECT
+  MD5(CAST(minute_ts AS VARCHAR) || '-' || CAST(instance_id AS VARCHAR)) AS kpi_key,
+
+  minute_ts,
+  instance_id,
+
+  queries_count,
+
+  exec_ms_sum,
+  exec_ms_avg,
+  queue_ms_sum,
+  queue_ms_avg,
+  compile_ms_sum,
+
+  scanned_mb_sum,
+  spilled_mb_sum,
+
+  heavy_units_sum,
+  heavy_unit_avg,
+
+  cached_queries,
+  aborted_queries,
+
+  -- ✅ “waste” proxy (simple + explainable)
+  -- spilled / scanned (0..1+). If scanned is 0, waste is 0.
+  (spilled_mb_sum::numeric / NULLIF(scanned_mb_sum, 0)) AS spill_to_scan_ratio
+
+FROM agg
+  );
+  
+  
+[0m11:43:39.777419 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:39.790762 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.018 seconds
+[0m11:43:39.791356 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.014 seconds
+[0m11:43:39.794418 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.798875 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.799542 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: BEGIN
+[0m11:43:39.800119 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: BEGIN
+[0m11:43:39.801035 [debug] [Thread-2 (]: SQL status: BEGIN in 0.000 seconds
+[0m11:43:39.801553 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.802138 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_query_efficiency__dbt_tmp114339774673'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.803243 [debug] [Thread-1 (]: SQL status: BEGIN in 0.002 seconds
+[0m11:43:39.803866 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.804324 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_concurrency_cluster__dbt_tmp114339762460'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.809537 [debug] [Thread-2 (]: SQL status: SELECT 16 in 0.006 seconds
+[0m11:43:39.810114 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.005 seconds
+[0m11:43:39.814079 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.819090 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.819983 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_query_efficiency'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.820560 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_concurrency_cluster'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.827680 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.005 seconds
+[0m11:43:39.828336 [debug] [Thread-2 (]: SQL status: SELECT 16 in 0.006 seconds
+[0m11:43:39.831536 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.834738 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.835434 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_concurrency_cluster'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.836730 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_query_efficiency'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:39.843560 [debug] [Thread-1 (]: SQL status: SELECT 8 in 0.006 seconds
+[0m11:43:39.845994 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.846648 [debug] [Thread-2 (]: SQL status: SELECT 16 in 0.009 seconds
+[0m11:43:39.848937 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.849667 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.850124 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_concurrency_cluster"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_minute_concurrency_cluster"
+            where (
+                kpi_key) in (
+                select (kpi_key)
+                from "kpi_minute_concurrency_cluster__dbt_tmp114339762460"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_minute_concurrency_cluster" ("kpi_key", "minute_ts", "instance_id", "active_queries", "started_queries", "ended_queries", "cluster_size_clean_max", "query_pressure")
+    (
+        select "kpi_key", "minute_ts", "instance_id", "active_queries", "started_queries", "ended_queries", "cluster_size_clean_max", "query_pressure"
+        from "kpi_minute_concurrency_cluster__dbt_tmp114339762460"
+    )
+  
+[0m11:43:39.850851 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.851774 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_query_efficiency"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+            where (
+                kpi_key) in (
+                select (kpi_key)
+                from "kpi_minute_query_efficiency__dbt_tmp114339774673"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_minute_query_efficiency" ("kpi_key", "minute_ts", "instance_id", "queries_count", "exec_ms_sum", "exec_ms_avg", "queue_ms_sum", "queue_ms_avg", "compile_ms_sum", "scanned_mb_sum", "spilled_mb_sum", "heavy_units_sum", "heavy_unit_avg", "cached_queries", "aborted_queries", "spill_to_scan_ratio")
+    (
+        select "kpi_key", "minute_ts", "instance_id", "queries_count", "exec_ms_sum", "exec_ms_avg", "queue_ms_sum", "queue_ms_avg", "compile_ms_sum", "scanned_mb_sum", "spilled_mb_sum", "heavy_units_sum", "heavy_unit_avg", "cached_queries", "aborted_queries", "spill_to_scan_ratio"
+        from "kpi_minute_query_efficiency__dbt_tmp114339774673"
+    )
+  
+[0m11:43:39.852590 [debug] [Thread-1 (]: SQL status: INSERT 0 0 in 0.002 seconds
+[0m11:43:39.856333 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: COMMIT
+[0m11:43:39.857188 [debug] [Thread-2 (]: SQL status: INSERT 0 0 in 0.004 seconds
+[0m11:43:39.857784 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_minute_concurrency_cluster"
+[0m11:43:39.859453 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: COMMIT
+[0m11:43:39.859917 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: COMMIT
+[0m11:43:39.860401 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_query_efficiency"
+[0m11:43:39.860843 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: COMMIT
+[0m11:43:39.862721 [debug] [Thread-1 (]: SQL status: COMMIT in 0.002 seconds
+[0m11:43:39.863516 [debug] [Thread-1 (]: On model.redwatch.kpi_minute_concurrency_cluster: Close
+[0m11:43:39.864018 [debug] [Thread-2 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:39.864892 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_query_efficiency: Close
+[0m11:43:39.865580 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da739a410>]}
+[0m11:43:39.866850 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da420bb10>]}
+[0m11:43:39.866308 [info ] [Thread-1 (]: 5 of 8 OK created sql incremental model analytics_analytics.kpi_minute_concurrency_cluster  [[32mINSERT 0 0[0m in 0.14s]
+[0m11:43:39.870099 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_minute_concurrency_cluster
+[0m11:43:39.871104 [debug] [Thread-1 (]: Began running node model.redwatch.kpi_resource_predator_15m
+[0m11:43:39.868020 [info ] [Thread-2 (]: 6 of 8 OK created sql incremental model analytics_analytics.kpi_minute_query_efficiency  [[32mINSERT 0 0[0m in 0.13s]
+[0m11:43:39.873358 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_query_efficiency
+[0m11:43:39.872373 [info ] [Thread-1 (]: 7 of 8 START sql incremental model analytics_analytics.kpi_resource_predator_15m  [RUN]
+[0m11:43:39.875023 [debug] [Thread-1 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_concurrency_cluster, now model.redwatch.kpi_resource_predator_15m)
+[0m11:43:39.876475 [debug] [Thread-2 (]: Began running node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:39.877261 [debug] [Thread-1 (]: Began compiling node model.redwatch.kpi_resource_predator_15m
+[0m11:43:39.878054 [info ] [Thread-2 (]: 8 of 8 START sql incremental model analytics_analytics.kpi_minute_shadow_cost .. [RUN]
+[0m11:43:39.895749 [debug] [Thread-1 (]: Writing injected SQL for node "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:39.897094 [debug] [Thread-2 (]: Re-using an available connection from the pool (formerly model.redwatch.kpi_minute_query_efficiency, now model.redwatch.kpi_minute_shadow_cost)
+[0m11:43:39.897893 [debug] [Thread-2 (]: Began compiling node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:39.903293 [debug] [Thread-2 (]: Writing injected SQL for node "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:39.903901 [debug] [Thread-2 (]: Began executing node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:39.909370 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:39.910057 [debug] [Thread-1 (]: Began executing node model.redwatch.kpi_resource_predator_15m
+[0m11:43:39.911305 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+    
+  
+    
+
+  create temporary table "kpi_minute_shadow_cost__dbt_tmp114339906354"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
+    FROM "redset_db"."analytics_analytics"."kpi_minute_shadow_cost"
+  
+
+),
+
+-- ✅ closed-minute gate (same as other KPIs)
+watermark AS (
+  SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
+  FROM "redset_db"."analytics_analytics"."clean_table"
+),
+
+-- ✅ heavy units come from KPI 3
+eff AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    heavy_units_sum,
+    queries_count
+  FROM "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+),
+
+-- ✅ cluster size comes from clean_table (max seen that minute)
+cluster_size AS (
+  SELECT
+    minute_ts,
+    instance_id,
+    MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
+  FROM "redset_db"."analytics_analytics"."clean_table"
+  WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
+
+  
+    AND minute_ts >= (SELECT max_minute_ts FROM bounds) - INTERVAL '30 minutes'
+  
+  GROUP BY 1, 2
+),
+
+joined AS (
+  SELECT
+    e.minute_ts,
+    e.instance_id,
+    COALESCE(e.heavy_units_sum, 0) AS heavy_units_sum,
+    COALESCE(e.queries_count, 0)   AS queries_count,
+    COALESCE(cs.cluster_size_clean_max, 0) AS cluster_size_clean_max
+  FROM eff e
+  LEFT JOIN cluster_size cs
+    ON e.minute_ts = cs.minute_ts
+   AND e.instance_id = cs.instance_id
+),
+
+scored AS (
+  SELECT
+    *,
+    -- ✅ simple “shadow cost units per minute”
+    -- We keep this as “cost_units_per_min” (not dollars yet).
+    (heavy_units_sum::numeric) AS cost_units_per_min,
+
+    -- ✅ normalize for cluster size if you want a fairness metric
+    (heavy_units_sum::numeric / NULLIF(cluster_size_clean_max, 0)) AS cost_units_per_min_per_node
+  FROM joined
+)
+
+SELECT
+  MD5(CAST(minute_ts AS VARCHAR) || '-' || CAST(instance_id AS VARCHAR)) AS kpi_key,
+  minute_ts,
+  instance_id,
+
+  queries_count,
+  heavy_units_sum,
+  cluster_size_clean_max,
+
+  cost_units_per_min,
+  cost_units_per_min_per_node
+
+FROM scored
+  );
+  
+  
+[0m11:43:39.981043 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:39.982035 [debug] [Thread-2 (]: Opening a new connection, currently in state closed
+[0m11:43:39.982934 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+    
+  
+    
+
+  create temporary table "kpi_resource_predator_15m__dbt_tmp114339915384"
+  
+  
+    as
+  
+  (
+    
+
+WITH bounds AS (
+
+  
+    SELECT COALESCE(MAX(window_start), TIMESTAMP '1970-01-01') AS max_window_start
+    FROM "redset_db"."analytics_analytics"."kpi_resource_predator_15m"
+  
+
+),
+
+base AS (
+  SELECT
+    window_start,
+    window_end,
+    dimension_type,
+    dimension_value,
+    heavy_units_sum,
+    queries_count
+  FROM "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+  WHERE dimension_type IN ('user', 'fingerprint')
+  
+    AND window_start >= (SELECT max_window_start FROM bounds) - INTERVAL '2 hours'
+  
+),
+
+totals AS (
+  SELECT
+    window_start,
+    dimension_type,
+    SUM(heavy_units_sum) AS total_heavy_units
+  FROM base
+  GROUP BY 1,2
+),
+
+scored AS (
+  SELECT
+    b.window_start,
+    b.window_end,
+    b.dimension_type AS predator_type,
+    b.dimension_value AS predator_value,
+    b.queries_count,
+    b.heavy_units_sum,
+    t.total_heavy_units,
+    (b.heavy_units_sum::numeric / NULLIF(t.total_heavy_units, 0)) AS cost_share_pct
+  FROM base b
+  JOIN totals t
+    ON b.window_start = t.window_start
+   AND b.dimension_type = t.dimension_type
+),
+
+ranked AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY window_start, predator_type
+      ORDER BY cost_share_pct DESC, heavy_units_sum DESC
+    ) AS rank_position
+  FROM scored
+)
+
+SELECT
+  md5(CAST(window_start AS varchar) || '-' || predator_type || '-' || predator_value) AS pred_key,
+  window_start,
+  window_end,
+  predator_type,
+  predator_value,
+  rank_position,
+  queries_count,
+  heavy_units_sum,
+  total_heavy_units,
+  cost_share_pct
+FROM ranked
+WHERE rank_position <= 10
+  );
+  
+  
+[0m11:43:39.984563 [debug] [Thread-1 (]: Opening a new connection, currently in state closed
+[0m11:43:40.010141 [debug] [Thread-2 (]: SQL status: SELECT 0 in 0.028 seconds
+[0m11:43:40.016779 [debug] [Thread-1 (]: SQL status: SELECT 0 in 0.032 seconds
+[0m11:43:40.016241 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.023596 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.024655 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: BEGIN
+[0m11:43:40.025718 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: BEGIN
+[0m11:43:40.027550 [debug] [Thread-2 (]: SQL status: BEGIN in 0.001 seconds
+[0m11:43:40.028463 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.029930 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_shadow_cost__dbt_tmp114339906354'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.030979 [debug] [Thread-1 (]: SQL status: BEGIN in 0.004 seconds
+[0m11:43:40.031637 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.032265 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_resource_predator_15m__dbt_tmp114339915384'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.044273 [debug] [Thread-2 (]: SQL status: SELECT 8 in 0.013 seconds
+[0m11:43:40.052891 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.053944 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_shadow_cost'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.055495 [debug] [Thread-1 (]: SQL status: SELECT 10 in 0.023 seconds
+[0m11:43:40.064070 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.065630 [debug] [Thread-2 (]: SQL status: SELECT 8 in 0.010 seconds
+[0m11:43:40.067208 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_resource_predator_15m'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.075306 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.076765 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_minute_shadow_cost'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.080634 [debug] [Thread-1 (]: SQL status: SELECT 10 in 0.004 seconds
+[0m11:43:40.081245 [debug] [Thread-2 (]: SQL status: SELECT 8 in 0.004 seconds
+[0m11:43:40.085423 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.087740 [debug] [Thread-2 (]: Writing runtime sql for node "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.088436 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+      select
+          column_name,
+          data_type,
+          character_maximum_length,
+          numeric_precision,
+          numeric_scale
+
+      from "redset_db".INFORMATION_SCHEMA.columns
+      where table_name = 'kpi_resource_predator_15m'
+        
+        and table_schema = 'analytics_analytics'
+        
+      order by ordinal_position
+
+  
+[0m11:43:40.089764 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.090418 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_minute_shadow_cost"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_minute_shadow_cost"
+            where (
+                kpi_key) in (
+                select (kpi_key)
+                from "kpi_minute_shadow_cost__dbt_tmp114339906354"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_minute_shadow_cost" ("kpi_key", "minute_ts", "instance_id", "queries_count", "heavy_units_sum", "cluster_size_clean_max", "cost_units_per_min", "cost_units_per_min_per_node")
+    (
+        select "kpi_key", "minute_ts", "instance_id", "queries_count", "heavy_units_sum", "cluster_size_clean_max", "cost_units_per_min", "cost_units_per_min_per_node"
+        from "kpi_minute_shadow_cost__dbt_tmp114339906354"
+    )
+  
+[0m11:43:40.093516 [debug] [Thread-2 (]: SQL status: INSERT 0 0 in 0.002 seconds
+[0m11:43:40.095828 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: COMMIT
+[0m11:43:40.096587 [debug] [Thread-1 (]: SQL status: SELECT 10 in 0.007 seconds
+[0m11:43:40.097400 [debug] [Thread-2 (]: Using postgres connection "model.redwatch.kpi_minute_shadow_cost"
+[0m11:43:40.100822 [debug] [Thread-1 (]: Writing runtime sql for node "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.101456 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: COMMIT
+[0m11:43:40.102425 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.102896 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: /* {"app": "dbt", "dbt_version": "1.8.2", "profile_name": "redwatch_profile", "target_name": "dev", "node_id": "model.redwatch.kpi_resource_predator_15m"} */
+
+      
+        
+            delete from "redset_db"."analytics_analytics"."kpi_resource_predator_15m"
+            where (
+                pred_key) in (
+                select (pred_key)
+                from "kpi_resource_predator_15m__dbt_tmp114339915384"
+            );
+
+        
+    
+
+    insert into "redset_db"."analytics_analytics"."kpi_resource_predator_15m" ("pred_key", "window_start", "window_end", "predator_type", "predator_value", "rank_position", "queries_count", "heavy_units_sum", "total_heavy_units", "cost_share_pct")
+    (
+        select "pred_key", "window_start", "window_end", "predator_type", "predator_value", "rank_position", "queries_count", "heavy_units_sum", "total_heavy_units", "cost_share_pct"
+        from "kpi_resource_predator_15m__dbt_tmp114339915384"
+    )
+  
+[0m11:43:40.104185 [debug] [Thread-1 (]: SQL status: INSERT 0 0 in 0.001 seconds
+[0m11:43:40.104759 [debug] [Thread-2 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:40.106567 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: COMMIT
+[0m11:43:40.107584 [debug] [Thread-2 (]: On model.redwatch.kpi_minute_shadow_cost: Close
+[0m11:43:40.108426 [debug] [Thread-1 (]: Using postgres connection "model.redwatch.kpi_resource_predator_15m"
+[0m11:43:40.108996 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: COMMIT
+[0m11:43:40.109664 [debug] [Thread-2 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da5f89b50>]}
+[0m11:43:40.110388 [info ] [Thread-2 (]: 8 of 8 OK created sql incremental model analytics_analytics.kpi_minute_shadow_cost  [[32mINSERT 0 0[0m in 0.21s]
+[0m11:43:40.111052 [debug] [Thread-2 (]: Finished running node model.redwatch.kpi_minute_shadow_cost
+[0m11:43:40.112735 [debug] [Thread-1 (]: SQL status: COMMIT in 0.003 seconds
+[0m11:43:40.114087 [debug] [Thread-1 (]: On model.redwatch.kpi_resource_predator_15m: Close
+[0m11:43:40.114781 [debug] [Thread-1 (]: Sending event: {'category': 'dbt', 'action': 'run_model', 'label': 'bc831cd9-5359-4948-ab48-09c6da5f1f6b', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da84177d0>]}
+[0m11:43:40.115402 [info ] [Thread-1 (]: 7 of 8 OK created sql incremental model analytics_analytics.kpi_resource_predator_15m  [[32mINSERT 0 0[0m in 0.24s]
+[0m11:43:40.116147 [debug] [Thread-1 (]: Finished running node model.redwatch.kpi_resource_predator_15m
+[0m11:43:40.119224 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:40.119571 [debug] [MainThread]: On master: BEGIN
+[0m11:43:40.119937 [debug] [MainThread]: Opening a new connection, currently in state closed
+[0m11:43:40.133661 [debug] [MainThread]: SQL status: BEGIN in 0.013 seconds
+[0m11:43:40.135322 [debug] [MainThread]: On master: COMMIT
+[0m11:43:40.138313 [debug] [MainThread]: Using postgres connection "master"
+[0m11:43:40.139191 [debug] [MainThread]: On master: COMMIT
+[0m11:43:40.141119 [debug] [MainThread]: SQL status: COMMIT in 0.001 seconds
+[0m11:43:40.142015 [debug] [MainThread]: On master: Close
+[0m11:43:40.143093 [debug] [MainThread]: Connection 'master' was properly closed.
+[0m11:43:40.143479 [debug] [MainThread]: Connection 'model.redwatch.kpi_resource_predator_15m' was properly closed.
+[0m11:43:40.143668 [debug] [MainThread]: Connection 'model.redwatch.kpi_minute_shadow_cost' was properly closed.
+[0m11:43:40.144249 [info ] [MainThread]: 
+[0m11:43:40.145681 [info ] [MainThread]: Finished running 1 view model, 7 incremental models in 0 hours 0 minutes and 1.15 seconds (1.15s).
+[0m11:43:40.151379 [debug] [MainThread]: Command end result
+[0m11:43:40.181695 [info ] [MainThread]: 
+[0m11:43:40.182267 [info ] [MainThread]: [32mCompleted successfully[0m
+[0m11:43:40.182767 [info ] [MainThread]: 
+[0m11:43:40.183382 [info ] [MainThread]: Done. PASS=8 WARN=0 ERROR=0 SKIP=0 TOTAL=8
+[0m11:43:40.184716 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": true, "command_wall_clock_time": 1.7126975, "process_user_time": 2.252603, "process_kernel_time": 0.251097, "process_mem_max_rss": "119620", "process_out_blocks": "2232", "process_in_blocks": "0"}
+[0m11:43:40.185235 [debug] [MainThread]: Command `dbt run` succeeded at 11:43:40.185133 after 1.71 seconds
+[0m11:43:40.185573 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713da98d2ed0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713dac9bc790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x713dac9bc7d0>]}
+[0m11:43:40.185913 [debug] [MainThread]: Flushing usage events
