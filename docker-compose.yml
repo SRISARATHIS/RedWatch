@@ -134,8 +134,26 @@ services:
         done
       "
 
-
-
+  dashboard:
+    build: ./dashboard
+    container_name: redwatch-dashboard
+    ports: 
+      - "8501:8501"
+    environment:
+      PGHOST: ${POSTGRES_HOST}
+      PGPORT: ${POSTGRES_PORT}
+      PGDATABASE: ${POSTGRES_DB}
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      REFRESH_SECONDS: 15
+    depends_on:
+      postgres:
+        condition: service_healthy
+      consumer:
+        condition: service_started
+      dbt:
+        condition: service_started
+    restart: unless-stopped
 volumes:
   kafka_data:
   pgdata:
