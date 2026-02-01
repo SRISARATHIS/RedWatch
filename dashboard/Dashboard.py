@@ -177,7 +177,7 @@ section[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08); }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.rw-sidebar-sub { font-size: 11.5px; opacity: .70; margin-top: 2px; margin-bottom: 10px; }
+.rw-sidebar-sub { font-size: 20px; opacity: .70; margin-top: 2px; margin-bottom: 10px; }
 .rw-sidebar-divider { border:none; height:1px; background: rgba(255,255,255,0.12); margin: 10px 0 0 0; }
 
 /* ============================= */
@@ -193,7 +193,7 @@ section[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08); }
 
 /* ✅ UPDATED: bigger + gradient title on main window */
 .rw-brand {
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 1000;
   letter-spacing: 0.4px;
   background: linear-gradient(135deg, #ff4d9d, #7c5cff);
@@ -257,14 +257,14 @@ refresh_count = st_autorefresh(interval=REFRESH_SECONDS * 1000, key="auto_refres
 # -----------------------------
 # Sidebar (NO slider)
 # -----------------------------
-with st.sidebar:
-    st.header("Controls")
-    st.caption("Window: 5 minutes (static)")
-    st.caption(f"Auto-refresh: {REFRESH_SECONDS}s")
+# with st.sidebar:
+#     st.header("Controls")
+#     st.caption("Window: 5 minutes (static)")
+#     st.caption(f"Auto-refresh: {REFRESH_SECONDS}s")
 
-    with st.expander("Debug"):
-        st.caption("If the homepage shows blanks, expand this and check which dataframes are empty.")
-        st.caption("Inside Docker, DB host should be `postgres` (not 127.0.0.1).")
+#     with st.expander("Debug"):
+#         st.caption("If the homepage shows blanks, expand this and check which dataframes are empty.")
+#         st.caption("Inside Docker, DB host should be `postgres` (not 127.0.0.1).")
 
 # -----------------------------
 # Header row
@@ -277,7 +277,7 @@ with l:
         <div class="rw-header">
           <div>
             <div class="rw-brand">RedWatch</div>
-            <div class="rw-sub">Real-time cost • workload • query intelligence</div>
+            <div class="rw-sidebar-sub rw-sidebar-top">Always Watching You 🔍 </div>
           </div>
         </div>
         """,
@@ -314,21 +314,21 @@ conc_df, conc_t = load_window(Q.cluster_concurrency_window, time_candidates, win
 leader_df = _try_read(Q.leaderboard_15m(), None, show_error=False)
 pred_df = _try_read(Q.predator_15m(), None, show_error=False)
 
-with st.sidebar.expander("Debug: dataframes", expanded=False):
-    st.write(
-        {
-            "shadow_rows": int(len(shadow_df)),
-            "eff_rows": int(len(eff_df)),
-            "work_rows": int(len(work_df)),
-            "conc_rows": int(len(conc_df)),
-            "leader_rows": int(len(leader_df)),
-            "pred_rows": int(len(pred_df)),
-            "shadow_time_col": shadow_t,
-            "eff_time_col": eff_t,
-            "work_time_col": work_t,
-            "conc_time_col": conc_t,
-        }
-    )
+# with st.sidebar.expander("Debug: dataframes", expanded=False):
+#     st.write(
+#         {
+#             "shadow_rows": int(len(shadow_df)),
+#             "eff_rows": int(len(eff_df)),
+#             "work_rows": int(len(work_df)),
+#             "conc_rows": int(len(conc_df)),
+#             "leader_rows": int(len(leader_df)),
+#             "pred_rows": int(len(pred_df)),
+#             "shadow_time_col": shadow_t,
+#             "eff_time_col": eff_t,
+#             "work_time_col": work_t,
+#             "conc_time_col": conc_t,
+#         }
+#     )
 
 # -----------------------------
 # ✅ SHADOW COST: heavy_units_sum * 0.08 => USD/min
@@ -346,7 +346,9 @@ else:
 
 spend_col = "usd_per_min" if (not shadow_df.empty and "usd_per_min" in shadow_df.columns) else "usd_per_min"
 
-# Compute investor metrics from USD/min
+# -----------------------------
+# Compute investor metrics from USD/min  (FIXED)
+# -----------------------------
 current_spend_per_min = 0.0
 run_rate_per_day = 0.0
 projected_24h = 0.0
@@ -354,21 +356,23 @@ projected_7d = 0.0
 total_cost_window = 0.0
 delta_pct = 0.0
 
-if shadow_df is not None and not shadow_df.empty and spend_col in shadow_df.columns:
+if shadow_df is not None and (not shadow_df.empty) and spend_col in shadow_df.columns:
     s = pd.to_numeric(shadow_df[spend_col], errors="coerce").fillna(0.0)
-    current_spend_per_min = float(s.iloc[-1]) if len(s) else 0.0
-    total_cost_window = float(s.sum())
 
-    window_minutes = float(win)
-    avg_spend_per_min = (total_cost_window / window_minutes) if window_minutes > 0 else 0.0
+    if len(s) > 0:
+        current_spend_per_min = float(s.iloc[-1])
+        total_cost_window = float(s.sum())
 
-    run_rate_per_day = avg_spend_per_min * 60.0 * 24.0
-    projected_24h = run_rate_per_day
-    projected_7d = run_rate_per_day * 7.0
+        window_minutes = float(win)
+        avg_spend_per_min = (total_cost_window / window_minutes) if window_minutes > 0 else 0.0
 
-    if len(s) > 1:
-        prev = float(s.iloc[-2])
-        delta_pct = ((current_spend_per_min - prev) / max(prev, 1e-9)) * 100.0
+        run_rate_per_day = avg_spend_per_min * 60.0 * 24.0
+        projected_24h = run_rate_per_day
+        projected_7d = run_rate_per_day * 7.0
+
+        if len(s) > 1:
+            prev = float(s.iloc[-2])
+            delta_pct = ((current_spend_per_min - prev) / max(prev, 1e-9)) * 100.0
 
 # -----------------------------
 # Cluster KPIs
@@ -611,58 +615,145 @@ with colA:
     ):
         plot_df = shadow_df[[shadow_t, spend_col]].copy()
         plot_df[shadow_t] = pd.to_datetime(plot_df[shadow_t], errors="coerce", utc=True)
-        plot_df[shadow_t] = plot_df[shadow_t].dt.tz_convert("UTC").dt.tz_localize(None)
-        plot_df[spend_col] = pd.to_numeric(plot_df[spend_col], errors="coerce").fillna(0.0)
         plot_df = plot_df.dropna(subset=[shadow_t]).sort_values(shadow_t)
 
-        if len(plot_df) >= 1:
-            fig = go.Figure()
-            fig.add_trace(
-                go.Scatter(
-                    x=plot_df[shadow_t],
-                    y=plot_df[spend_col],
-                    mode="lines+markers",
-                    name="Spend rate ($/min)",
-                    line=dict(width=3),
-                    hovertemplate="Time: %{x}<br>$/min: %{y:.6f}<extra></extra>",
-                )
-            )
+        plot_df[spend_col] = pd.to_numeric(plot_df[spend_col], errors="coerce").fillna(0.0)
 
+        if len(plot_df) >= 2:
             data_max = plot_df[shadow_t].max()
             data_min = data_max - pd.Timedelta(minutes=win)
 
+            # ---- Build a smooth curve: resample + time interpolation ----
+            s = (
+                plot_df.set_index(shadow_t)[spend_col]
+                .sort_index()
+                .astype(float)
+            )
+
+            # Denser timeline for smooth curvature
+            smooth = s.resample("5S").mean().interpolate(method="time")
+            smooth_df = smooth.reset_index().rename(columns={shadow_t: "t", spend_col: "y"})
+            smooth_df = smooth_df[(smooth_df["t"] >= data_min) & (smooth_df["t"] <= data_max)]
+
+            y_min = float(smooth_df["y"].min())
+            y_max = float(smooth_df["y"].max())
+            pad = (y_max - y_min) * 0.20
+            if pad <= 0:
+                pad = max(abs(y_max) * 0.15, 0.001)
+
+            SMOOTH = 1.25  # ✅ Plotly limit is <= 1.3
+
+            fig = go.Figure()
+
+            # Glow underlay
+            fig.add_trace(
+                go.Scatter(
+                    x=smooth_df["t"],
+                    y=smooth_df["y"],
+                    mode="lines",
+                    line=dict(
+                        width=14,
+                        color="rgba(34,211,238,0.14)",
+                        shape="spline",
+                        smoothing=SMOOTH,
+                    ),
+                    hoverinfo="skip",
+                    showlegend=False,
+                )
+            )
+
+            # Main continuous curved line
+            fig.add_trace(
+                go.Scatter(
+                    x=smooth_df["t"],
+                    y=smooth_df["y"],
+                    mode="lines",
+                    name="Spend ($/min)",
+                    line=dict(
+                        width=4.5,
+                        color="rgba(34,211,238,0.98)",
+                        shape="spline",
+                        smoothing=SMOOTH,
+                    ),
+                    hovertemplate="Time: %{x|%H:%M:%S}<br>Spend: $%{y:.6f}/min<extra></extra>",
+                )
+            )
+
+            # Subtle fill (premium look)
+            fig.add_trace(
+                go.Scatter(
+                    x=smooth_df["t"],
+                    y=smooth_df["y"],
+                    mode="lines",
+                    line=dict(width=0, color="rgba(0,0,0,0)"),
+                    fill="tozeroy",
+                    fillcolor="rgba(34,211,238,0.08)",
+                    hoverinfo="skip",
+                    showlegend=False,
+                )
+            )
+
+            last_val = float(smooth_df["y"].iloc[-1])
+            fig.add_hline(
+                y=last_val,
+                line_width=1,
+                line_dash="dot",
+                line_color="rgba(255,255,255,0.28)",
+                annotation_text=f"Last: ${last_val:.6f}/min",
+                annotation_position="top left",
+                annotation_font=dict(size=11, color="rgba(255,255,255,0.75)"),
+            )
+
             fig.update_layout(
-                height=300,
-                margin=dict(l=10, r=10, t=10, b=10),
+                height=310,
+                margin=dict(l=10, r=10, t=6, b=10),
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0.0),
+                hovermode="x unified",
+                legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="left",
+                    x=0.0,
+                    font=dict(size=11),
+                ),
             )
 
             fig.update_xaxes(
-                showgrid=True,
-                gridcolor="rgba(255,255,255,0.08)",
-                zeroline=False,
+                showgrid=False,
                 range=[data_min, data_max],
                 tickformat="%H:%M:%S",
+                showspikes=True,
+                spikemode="across",
+                spikesnap="cursor",
+                spikedash="dot",
+                spikecolor="rgba(255,255,255,0.22)",
             )
 
             fig.update_yaxes(
                 title="$/min",
+                range=[y_min - pad, y_max + pad],
                 showgrid=True,
                 gridcolor="rgba(255,255,255,0.08)",
                 zeroline=False,
-                autorange=True,
             )
 
-            st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False},
-                            key=f"shadow_chart_{refresh_count}")
+            st.plotly_chart(
+                fig,
+                use_container_width=True,
+                config={"displayModeBar": False},
+                key=f"shadow_chart_smooth_{refresh_count}",
+            )
+
         else:
-            st.caption("No spend data points yet.")
+            st.caption("Not enough spend data points yet (need at least 2).")
     else:
         st.caption("No spend trend available yet.")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+
+
+
 
 # ---- Cluster Heat Visualizer card (interactive + instance_id hover)
 with colB:

@@ -62,6 +62,9 @@ section[data-testid="stSidebar"] * {
   -webkit-text-fill-color: transparent;
 }
 .rw-brand-title {
+  background: linear-gradient(135deg, #ff4d9d, #7c5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-size: 22px;
   font-weight: 900;
   letter-spacing: 0.4px;
@@ -104,10 +107,14 @@ section[data-testid="stSidebar"] * {
   margin: 6px 0 18px 0;
 }
 .rw-title{
-  font-size: 34px;
+  font-size: 50px;
   font-weight: 900;
   letter-spacing: 0.2px;
   line-height: 1.1;
+  background: linear-gradient(135deg, #f43f5e 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .rw-sub{
   font-size: 12px;
@@ -174,7 +181,7 @@ with st.sidebar:
           <div class="rw-logo">⚡</div>
           <div class="rw-brand-title">RedWatch</div>
         </div>
-        <div class="rw-sidebar-sub rw-sidebar-top">Real-time cost • workload • query intelligence</div>
+        <div class="rw-sidebar-sub rw-sidebar-top">Always Watching You 🔍 </div>
         <hr class="rw-sidebar-divider rw-sidebar-top"/>
         """,
         unsafe_allow_html=True,
@@ -183,15 +190,13 @@ with st.sidebar:
 # -----------------------------
 # Page header
 # -----------------------------
-PAGE_TITLE = "🏆 Leaderboard"
-PAGE_SUB = "Top consumers in the latest 15-minute window"
+PAGE_TITLE = " Leaderboard"
 
 st.markdown(
     f"""
     <div class="rw-topbar">
       <div>
         <div class="rw-title">{PAGE_TITLE}</div>
-        <div class="rw-sub">{PAGE_SUB}</div>
       </div>
       <div class="rw-status">
         <div class="k">Last refreshed</div>
@@ -272,12 +277,6 @@ if missing:
     st.dataframe(df, use_container_width=True)
     st.stop()
 
-st.markdown(
-    "<div style='display:inline-block;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);font-size:12px;opacity:.9;margin-bottom:14px;'>"
-    "Metric used: <b>heavy_units_sum</b> (higher = heavier/more expensive workload)"
-    "</div>",
-    unsafe_allow_html=True,
-)
 
 # Latest window only
 df[w_end_col] = pd.to_datetime(df[w_end_col], utc=True, errors="coerce")
@@ -355,21 +354,4 @@ for col, (label, dim_type_value, key_prefix) in zip(row2, CARDS[3:]):
     with col:
         render_dim_card(label, dim_type_value, key_prefix)
 
-# ---- Bottom explain box
-st.markdown(
-    """
-    <div style="
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 12px 14px;
-      margin-top: 18px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
-    ">
-      <b>How to interpret this</b><br>
-      This leaderboard is computed for the most recent <b>15-minute window</b>.
-      Items are ranked by <b>heavy_units_sum</b>.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+

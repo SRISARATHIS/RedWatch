@@ -21,29 +21,6 @@ def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
     return None
 
 
-def last_and_delta(df: pd.DataFrame, col: str):
-    """Returns (last_value, delta_from_prev)"""
-    if df is None or df.empty or col is None or col not in df.columns:
-        return 0.0, None
-    s = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
-    last = float(s.iloc[-1]) if len(s) else 0.0
-    if len(s) > 1:
-        return last, float(s.iloc[-1] - s.iloc[-2])
-    return last, None
-
-
-def to_ms(value: float, colname: str | None) -> float:
-    """If column name suggests ms -> keep; else treat as seconds -> ms."""
-    if colname and "ms" in colname.lower():
-        return float(value)
-    return float(value) * 1000.0
-
-
-def last_and_delta_ms(df: pd.DataFrame, col: str):
-    v, d = last_and_delta(df, col)
-    return to_ms(v, col), (None if d is None else to_ms(d, col))
-
-
 def _try_read(sql: str, show_error: bool = False) -> pd.DataFrame:
     try:
         return read_df(sql, show_error=show_error)
@@ -52,10 +29,6 @@ def _try_read(sql: str, show_error: bool = False) -> pd.DataFrame:
 
 
 def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
-    """
-    Tries candidate time columns until we get rows.
-    sql_builder: function(tcol, win)->SQL
-    """
     last_err = None
     for tcol in time_candidates:
         try:
@@ -67,7 +40,6 @@ def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
         except Exception as e:
             last_err = e
 
-    # final attempt with visible error
     try:
         sql = sql_builder(time_candidates[0], win)
         df = _try_read(sql, show_error=True)
@@ -89,47 +61,43 @@ def normalize_time(df: pd.DataFrame, tcol: str | None):
     return out
 
 
-def last_window_range(df: pd.DataFrame, tcol: str, win_min: int):
-    if df is None or df.empty or tcol not in df.columns:
+def latest_nonnull_and_delta(series: pd.Series):
+    if series is None or len(series) == 0:
         return None, None
-    x_max = pd.to_datetime(df[tcol], utc=True, errors="coerce").max()
-    if pd.isna(x_max):
+    s = pd.to_numeric(series, errors="coerce").dropna()
+    if s.empty:
         return None, None
-    x_max = x_max.tz_convert("UTC").tz_localize(None)
-    x_min = x_max - pd.Timedelta(minutes=win_min)
-    return x_min, x_max
-  
+    last = float(s.iloc[-1])
+    if len(s) > 1:
+        prev = float(s.iloc[-2])
+        return last, (last - prev)
+    return last, None
+
+
+def kpi_latest(df: pd.DataFrame, col: str | None):
+    if df is None or df.empty or not col or col not in df.columns:
+        return None, None
+    v, d = latest_nonnull_and_delta(df[col])
+    return v, d
+
+
 def prep_ts(df: pd.DataFrame, tcol: str, cols: list[str]) -> pd.DataFrame:
-    """
-    Make plotting-safe time series:
-    - coerce datetime
-    - keep only needed cols
-    - drop NaT
-    - aggregate to 1 row per minute (prevents vertical spikes)
-    """
     if df is None or df.empty or tcol not in df.columns:
         return pd.DataFrame()
-
     out = df.copy()
     out[tcol] = pd.to_datetime(out[tcol], utc=True, errors="coerce")
     out = out.dropna(subset=[tcol])
-
-    # floor to minute to ensure unique x
-    out["__minute__"] = out[tcol].dt.floor("min")
+    out["__minute__"] = out[tcol].dt.floor("min")  # tz-aware UTC
 
     keep = ["__minute__"] + [c for c in cols if c and c in out.columns]
-    out = out[keep]
+    out = out[keep].copy()
 
-    # numeric coercion
     for c in cols:
         if c and c in out.columns:
             out[c] = pd.to_numeric(out[c], errors="coerce")
 
-    # aggregate duplicates safely
-    out = out.groupby("__minute__", as_index=False).mean(numeric_only=True)
-    out = out.sort_values("__minute__")
+    out = out.groupby("__minute__", as_index=False).mean(numeric_only=True).sort_values("__minute__")
     return out
-
 
 
 # -----------------------------
@@ -139,17 +107,15 @@ st.set_page_config(page_title="Query Efficiency", page_icon="⚙️", layout="wi
 
 
 # -----------------------------
-# CSS (include SIDEBAR styling so it doesn't turn grey)
+# CSS (keep your exact design pattern)
 # -----------------------------
 st.markdown(
     """
 <style>
-/* ---- Sidebar layout ordering like other pages ---- */
 section[data-testid="stSidebar"] > div { display:flex; flex-direction:column; }
 div[data-testid="stSidebarNav"] { order: 2; margin-top: 10px; }
 .rw-sidebar-top { order: 1; margin-top: 0.2rem; margin-bottom: 0.8rem; }
 
-/* ---- Sidebar theme ---- */
 section[data-testid="stSidebar"] {
   background:
     radial-gradient(600px 600px at 15% 10%, rgba(255,0,120,0.18), transparent 55%),
@@ -158,45 +124,59 @@ section[data-testid="stSidebar"] {
 }
 section[data-testid="stSidebar"] * { color: #e9ecf1 !important; }
 
-/* Sidebar branding */
 .rw-sidebar-header { display:flex; align-items:center; gap:10px; margin-top:-0.2rem; margin-bottom:4px; }
 .rw-logo {
   font-size: 26px;
-  background: linear-gradient(135deg, #ff4d9d, #7c5cff);
+  background: linear-gradient(135deg, #ff2d55, #7c3aed);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.rw-brand-title { font-size: 22px; font-weight: 900; letter-spacing: 0.4px; }
+.rw-brand-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  background: linear-gradient(135deg, #ff2d55, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .rw-sidebar-sub { font-size: 11.5px; opacity: 0.7; margin-bottom: 10px; margin-left: 2px; }
 .rw-sidebar-divider { border:none; height:1px; background: rgba(255,255,255,0.12); margin-bottom:12px; }
 
-/* ---- App background + padding ---- */
-.main .block-container{ padding-top: 2.2rem !important; padding-bottom: 3rem !important; padding-left: 2.8rem !important; padding-right: 2.8rem !important; }
+.main .block-container{
+  padding-top: 2.2rem !important;
+  padding-bottom: 3rem !important;
+  padding-left: 2.8rem !important;
+  padding-right: 2.8rem !important;
+}
 .stApp {
   background: radial-gradient(1200px 800px at 10% 15%, rgba(255,0,120,0.12), transparent 55%),
-              radial-gradient(1200px 800px at 85% 30%, rgba(120,80,255,0.14), transparent 60%),
+              radial-gradient(1200px 800px at 85% 30%, rgba(124,58,237,0.14), transparent 60%),
               linear-gradient(180deg, #0a0b10 0%, #07080c 100%);
   color: #e9ecf1;
 }
 
-/* ---- Topbar ---- */
 .rw-topbar{ display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin: 6px 0 18px 0; }
-.rw-title{ font-size: 34px; font-weight: 900; letter-spacing: 0.2px; line-height: 1.1; }
+.rw-title{ font-size: 40px; font-weight: 900; letter-spacing: 0.2px; line-height: 1.1; background: linear-gradient(135deg, #f43f5e 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;}
 .rw-sub{ font-size: 12px; opacity: .75; margin-top: 4px; }
+
 .rw-status{
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 18px;
   padding: 12px 14px;
   text-align: right;
-  min-width: 300px;
+  min-width: 360px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 .rw-status .k{ font-size: 12px; opacity: .72; }
 .rw-status .v{ font-size: 13px; font-weight: 900; margin-top: 4px; }
+.rw-status .v2{ font-size: 12px; opacity: .78; margin-top: 2px; }
+
 .rw-divider{ border:none; height:1px; background: rgba(255,255,255,0.10); margin: 14px 0 18px 0; }
 
-/* ---- Cards ---- */
 div[data-testid="stVerticalBlockBorderWrapper"]{
   background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035)) !important;
   border: 1px solid rgba(255,255,255,0.12) !important;
@@ -205,17 +185,20 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
   padding: 16px 16px 12px 16px !important;
 }
 
-/* ---- “Colored” KPI pills for cached/aborted ---- */
 .rw-pill {
   background: rgba(0,0,0,0.20);
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 16px;
   padding: 10px 12px;
+  height: 88px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 .rw-pill .t { font-size: 12px; opacity: .72; }
-.rw-pill .v { font-size: 22px; font-weight: 900; margin-top: 4px; }
-.rw-pill.cached { border-color: rgba(255, 215, 0, 0.45); box-shadow: inset 0 0 0 1px rgba(255,215,0,0.15); }
-.rw-pill.aborted { border-color: rgba(255, 60, 60, 0.45); box-shadow: inset 0 0 0 1px rgba(255,60,60,0.15); }
+.rw-pill .v { font-size: 24px; font-weight: 900; margin-top: 4px; }
+.rw-pill.cached { border-color: rgba(255, 215, 0, 0.55); box-shadow: 0 0 0 1px rgba(255,215,0,0.12) inset; }
+.rw-pill.aborted { border-color: rgba(255, 60, 60, 0.55); box-shadow: 0 0 0 1px rgba(255,60,60,0.12) inset; }
 </style>
 """,
     unsafe_allow_html=True,
@@ -223,7 +206,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
 
 
 # -----------------------------
-# Auto-refresh + static window
+# Auto-refresh + window
 # -----------------------------
 REFRESH_SECONDS = 15
 WIN_MIN = 5
@@ -231,7 +214,7 @@ refresh_count = st_autorefresh(interval=REFRESH_SECONDS * 1000, key="qe_autorefr
 
 
 # -----------------------------
-# Sidebar header
+# Sidebar
 # -----------------------------
 with st.sidebar:
     st.markdown(
@@ -240,13 +223,86 @@ with st.sidebar:
           <div class="rw-logo">⚡</div>
           <div class="rw-brand-title">RedWatch</div>
         </div>
-        <div class="rw-sidebar-sub rw-sidebar-top">Real-time cost • workload • query intelligence</div>
+        <div class="rw-sidebar-sub rw-sidebar-top">Always Watching You 🔍 </div>
         <hr class="rw-sidebar-divider rw-sidebar-top"/>
         """,
         unsafe_allow_html=True,
     )
 
-debug = st.sidebar.checkbox("Debug", value=False)
+
+# -----------------------------
+# Load data (ONLY kpi_minute_query_efficiency now)
+# -----------------------------
+time_candidates = ["minute_ts", "timestamp", "ts", "minute"]
+eff_df, eff_t = load_window(Q.efficiency_window, time_candidates, WIN_MIN, "efficiency_window")
+eff_df = normalize_time(eff_df, eff_t)
+
+# Columns (based on your screenshot + queries.py output)
+tcol = pick_col(eff_df, ["minute_ts"])
+queries_col = pick_col(eff_df, ["queries_count"])
+exec_col = pick_col(eff_df, ["exec_ms_avg"])
+queue_col = pick_col(eff_df, ["queue_ms_avg"])
+compile_col = pick_col(eff_df, ["compile_ms_avg"])
+scan_col = pick_col(eff_df, ["scanned_mb_sum"])
+spill_col = pick_col(eff_df, ["spilled_mb_sum"])
+ratio_col = pick_col(eff_df, ["spill_to_scan_ratio"])
+cached_col = pick_col(eff_df, ["cached_queries"])
+aborted_col = pick_col(eff_df, ["aborted_queries"])
+heavy_sum_col = pick_col(eff_df, ["heavy_units_sum"])
+heavy_avg_col = pick_col(eff_df, ["heavy_unit_avg"])
+
+# Plot frame
+eff_plot = pd.DataFrame()
+if eff_df is not None and not eff_df.empty and tcol:
+    eff_plot = prep_ts(
+        eff_df,
+        tcol,
+        [
+            queries_col,
+            exec_col, queue_col, compile_col,
+            scan_col, spill_col, ratio_col,
+            cached_col, aborted_col,
+            heavy_sum_col, heavy_avg_col,
+        ],
+    )
+
+latest_db_ts = eff_plot["__minute__"].max() if (eff_plot is not None and not eff_plot.empty) else None
+x_range = None
+if latest_db_ts is not None:
+    x_range = [latest_db_ts - pd.Timedelta(minutes=WIN_MIN), latest_db_ts]
+
+db_ts_str = "—"
+if latest_db_ts is not None:
+    db_ts_str = pd.to_datetime(latest_db_ts).strftime("%Y-%m-%d %H:%M UTC")
+
+
+# -----------------------------
+# KPIs (only necessary)
+# -----------------------------
+exec_ms, exec_d = kpi_latest(eff_df, exec_col)
+queue_ms, queue_d = kpi_latest(eff_df, queue_col)
+compile_ms, compile_d = kpi_latest(eff_df, compile_col)
+qpm, qpm_d = kpi_latest(eff_df, queries_col)
+
+scanned_mb, scan_d = kpi_latest(eff_df, scan_col)
+spilled_mb, spill_d = kpi_latest(eff_df, spill_col)
+ratio, ratio_d = kpi_latest(eff_df, ratio_col)
+
+cached_cnt, cached_d = kpi_latest(eff_df, cached_col)
+aborted_cnt, aborted_d = kpi_latest(eff_df, aborted_col)
+
+def dv(x, default=0.0):
+    return default if x is None else x
+
+exec_ms = dv(exec_ms, 0.0)
+queue_ms = dv(queue_ms, 0.0)
+compile_ms = dv(compile_ms, 0.0)
+qpm = dv(qpm, 0.0)
+scanned_mb = dv(scanned_mb, 0.0)
+spilled_mb = dv(spilled_mb, 0.0)
+ratio = dv(ratio, 0.0)
+cached_cnt = dv(cached_cnt, 0.0)
+aborted_cnt = dv(aborted_cnt, 0.0)
 
 
 # -----------------------------
@@ -256,12 +312,12 @@ st.markdown(
     f"""
     <div class="rw-topbar">
       <div>
-        <div class="rw-title">⚙️ Query Efficiency</div>
-        <div class="rw-sub">Execution, queueing, scan/spill, cached/aborted — last {WIN_MIN} minutes</div>
+        <div class="rw-title">Query Efficiency</div>
       </div>
       <div class="rw-status">
         <div class="k">Last refreshed</div>
         <div class="v">{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}</div>
+        <div class="v2">Latest data minute: <b>{db_ts_str}</b></div>
       </div>
     </div>
     <hr class="rw-divider"/>
@@ -269,348 +325,201 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # -----------------------------
-# Load KPI minute table (existing)
-# -----------------------------
-time_candidates = ["minute_ts", "window_end", "ts", "timestamp", "arrival_minute", "minute"]
-eff_df, eff_t = load_window(Q.efficiency_window, time_candidates, WIN_MIN, "efficiency_window")
-eff_df = normalize_time(eff_df, eff_t)
-
-
-# -----------------------------
-# Load clean_table aggregation (ROBUST)
-# IMPORTANT: clean_table has minute_ts; we should anchor to latest minute_ts instead of NOW().
-# This avoids “empty window” KPIs while charts still show something elsewhere.
-# -----------------------------
-clean_df = _try_read(Q.clean_efficiency_window("minute_ts", WIN_MIN), show_error=False)
-if clean_df is None:
-    clean_df = pd.DataFrame()
-
-c_min_col = pick_col(clean_df, ["minute_ts"])
-clean_df = normalize_time(clean_df, c_min_col)
-
-
-# -----------------------------
-# Pick columns
-# -----------------------------
-exec_col = pick_col(eff_df, ["avg_exec_ms", "avg_execution_ms", "avg_exec_s", "avg_exec_sec", "exec_ms_avg"])
-queue_col = pick_col(eff_df, ["avg_queue_ms", "queue_wait_ms", "avg_queue_s", "avg_queue_sec", "queue_ms_avg"])
-spill_ratio_eff_col = pick_col(eff_df, ["spill_to_scan_ratio", "waste_pct", "waste_percent", "waste_percentage"])
-scan_eff_col = pick_col(eff_df, ["scanned_mb_sum", "scan_mb", "scanned_mb", "mbytes_scanned", "scanned_gb", "scan_gb"])
-
-# clean_efficiency_window output columns
-c_spilled_col = pick_col(clean_df, ["spilled_mb_sum"])
-c_scanned_col = pick_col(clean_df, ["scanned_mb_sum"])
-c_cached_col = pick_col(clean_df, ["cached_count"])
-c_aborted_col = pick_col(clean_df, ["aborted_count"])
-c_ratio_col = pick_col(clean_df, ["spill_to_scan_ratio"])
-
-
-if debug:
-    st.sidebar.write(
-        {
-            "eff_rows": int(len(eff_df)) if eff_df is not None else 0,
-            "eff_time_col": eff_t,
-            "eff_cols": list(eff_df.columns) if eff_df is not None else [],
-            "clean_rows": int(len(clean_df)) if clean_df is not None else 0,
-            "clean_time_col": c_min_col,
-            "clean_cols": list(clean_df.columns) if clean_df is not None else [],
-        }
-    )
-
-
-# -----------------------------
-# Compute KPIs
-# -----------------------------
-avg_exec_ms, exec_delta_ms = (0.0, None)
-queue_ms, queue_delta_ms = (0.0, None)
-if exec_col:
-    avg_exec_ms, exec_delta_ms = last_and_delta_ms(eff_df, exec_col)
-if queue_col:
-    queue_ms, queue_delta_ms = last_and_delta_ms(eff_df, queue_col)
-
-# Prefer clean_table scanned/spilled (same source as cached/aborted)
-scanned_mb, scanned_delta = (0.0, None)
-if c_scanned_col:
-    scanned_mb, scanned_delta = last_and_delta(clean_df, c_scanned_col)
-elif scan_eff_col:
-    scanned_mb, scanned_delta = last_and_delta(eff_df, scan_eff_col)
-
-spilled_mb, spilled_delta = (0.0, None)
-cached_cnt, cached_delta = (0.0, None)
-aborted_cnt, aborted_delta = (0.0, None)
-
-if c_spilled_col:
-    spilled_mb, spilled_delta = last_and_delta(clean_df, c_spilled_col)
-if c_cached_col:
-    cached_cnt, cached_delta = last_and_delta(clean_df, c_cached_col)
-if c_aborted_col:
-    aborted_cnt, aborted_delta = last_and_delta(clean_df, c_aborted_col)
-
-spill_ratio, spill_ratio_delta = (0.0, None)
-if c_ratio_col:
-    spill_ratio, spill_ratio_delta = last_and_delta(clean_df, c_ratio_col)
-elif spill_ratio_eff_col:
-    spill_ratio, spill_ratio_delta = last_and_delta(eff_df, spill_ratio_eff_col)
-
-
-# -----------------------------
-# KPIs (border=True like your leaderboard page)
-# Cached yellow when >0, Aborted red when >0
+# KPI Cards (clean + symmetric)
 # -----------------------------
 with st.container(border=True):
-    st.markdown("### KPIs (latest point)")
-    st.caption(f"Window is fixed: {WIN_MIN} minutes • Auto-refresh: {REFRESH_SECONDS}s")
+    st.markdown("### Key Performance Metrics")
+    r1 = st.columns(4, gap="large")
+    r1[0].metric("Exec avg (ms)", f"{exec_ms:,.0f}", None if exec_d is None else f"{exec_d:+,.0f}")
+    r1[1].metric("Queue avg (ms)", f"{queue_ms:,.0f}", None if queue_d is None else f"{queue_d:+,.0f}")
+    r1[2].metric("Compile avg (ms)", f"{compile_ms:,.0f}", None if compile_d is None else f"{compile_d:+,.0f}")
+    r1[3].metric("Queries/min", f"{qpm:,.0f}", None if qpm_d is None else f"{qpm_d:+,.0f}")
 
-    r1c1, r1c2, r1c3, r1c4 = st.columns(4, gap="large")
-    r1c1.metric("Exec avg (ms)", f"{avg_exec_ms:,.0f}", None if exec_delta_ms is None else f"{exec_delta_ms:+,.0f}")
-    r1c2.metric("Queue avg (ms)", f"{queue_ms:,.0f}", None if queue_delta_ms is None else f"{queue_delta_ms:+,.0f}")
-    r1c3.metric("Scanned (MB)", f"{scanned_mb:,.2f}", None if scanned_delta is None else f"{scanned_delta:+,.2f}")
-    r1c4.metric("Spilled (MB)", f"{spilled_mb:,.2f}", None if spilled_delta is None else f"{spilled_delta:+,.2f}")
-
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4, gap="large")
-
-    cached_cls = "rw-pill cached" if cached_cnt > 0 else "rw-pill"
-    aborted_cls = "rw-pill aborted" if aborted_cnt > 0 else "rw-pill"
-
-    with r2c1:
-        st.markdown(
-            f"""<div class="{cached_cls}"><div class="t">Cached (count)</div><div class="v">{int(cached_cnt):,d}</div></div>""",
-            unsafe_allow_html=True,
-        )
-    with r2c2:
-        st.markdown(
-            f"""<div class="{aborted_cls}"><div class="t">Aborted (count)</div><div class="v">{int(aborted_cnt):,d}</div></div>""",
-            unsafe_allow_html=True,
-        )
-    r2c3.metric("Spill/Scan ratio", f"{spill_ratio:.3f}", None if spill_ratio_delta is None else f"{spill_ratio_delta:+.3f}")
-    r2c4.metric("Window", f"{WIN_MIN} min", f"+ refresh {REFRESH_SECONDS}s")
-
+    r2 = st.columns(4, gap="large")
+    r2[0].metric("Scanned (MB)", f"{scanned_mb:,.2f}", None if scan_d is None else f"{scan_d:+,.2f}")
+    r2[1].metric("Spilled (MB)", f"{spilled_mb:,.2f}", None if spill_d is None else f"{spill_d:+,.2f}")
+    r2[2].metric("Spill/Scan ratio", f"{ratio:.3f}", None if ratio_d is None else f"{ratio_d:+.3f}")
+    r2[3].metric("Cached / Aborted", f"{int(cached_cnt):,d} / {int(aborted_cnt):,d}", None)
 
 st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
 
-left, right = st.columns([0.58, 0.42], gap="large")
-
 
 # -----------------------------
-# Chart 1: Latency trend (ms) + ratio
+# 4 Novel, user-friendly, colorful graphs (2x2 symmetric)
 # -----------------------------
-with left:
+row1 = st.columns(2, gap="large")
+row2 = st.columns(2, gap="large")
+
+# Graph 1: Latency Breakdown (stacked area) = Exec + Queue + Compile
+with row1[0]:
     with st.container(border=True):
-        st.markdown("### Latency + efficiency trend")
-        st.caption("Exec + Queue on the left axis (ms), Spill/Scan ratio on the right axis.")
+        st.markdown("### Latency breakdown")
+        st.caption("Stacked per-minute latency composition (ms). Easy to see what dominates.")
 
         fig = go.Figure()
+        if eff_plot is not None and not eff_plot.empty:
+            x = eff_plot["__minute__"]
 
-        # ---- Build a clean per-minute series from efficiency table
-        eff_plot = pd.DataFrame()
-        if eff_df is not None and not eff_df.empty and eff_t and eff_t in eff_df.columns:
-            need_cols = [exec_col, queue_col]
-            eff_plot = prep_ts(eff_df, eff_t, need_cols)
+            def add_stack(col, name, color):
+                if col and col in eff_plot.columns:
+                    y = pd.to_numeric(eff_plot[col], errors="coerce").fillna(0.0)
+                    fig.add_trace(go.Scatter(
+                        x=x, y=y, mode="lines",
+                        name=name, stackgroup="one",
+                        line=dict(width=2, color=color)
+                    ))
 
-            if not eff_plot.empty:
-                x = eff_plot["__minute__"].dt.tz_convert("UTC").dt.tz_localize(None)
-
-                if exec_col and exec_col in eff_plot.columns:
-                    y = eff_plot[exec_col].fillna(0.0)
-                    # convert to ms if needed
-                    if "ms" not in (exec_col or "").lower():
-                        y = y * 1000.0
-                    fig.add_trace(
-                        go.Scatter(
-                            x=x, y=y,
-                            mode="lines",
-                            name="Exec avg (ms)",
-                            line=dict(width=3),
-                            connectgaps=True,
-                            line_shape="spline",
-                        )
-                    )
-
-                if queue_col and queue_col in eff_plot.columns:
-                    y = eff_plot[queue_col].fillna(0.0)
-                    if "ms" not in (queue_col or "").lower():
-                        y = y * 1000.0
-                    fig.add_trace(
-                        go.Scatter(
-                            x=x, y=y,
-                            mode="lines",
-                            name="Queue avg (ms)",
-                            line=dict(width=3, dash="dot"),
-                            connectgaps=True,
-                            line_shape="spline",
-                        )
-                    )
-
-        # ---- Ratio: prefer clean_df ratio (same source as scanned/spilled)
-        ratio_plot = pd.DataFrame()
-        if clean_df is not None and not clean_df.empty and c_min_col and c_ratio_col:
-            ratio_plot = prep_ts(clean_df, c_min_col, [c_ratio_col])
-
-            if not ratio_plot.empty:
-                x2 = ratio_plot["__minute__"].dt.tz_convert("UTC").dt.tz_localize(None)
-                r = ratio_plot[c_ratio_col].fillna(0.0)
-                fig.add_trace(
-                    go.Scatter(
-                        x=x2, y=r,
-                        mode="lines",
-                        name="Spill/Scan ratio",
-                        yaxis="y2",
-                        line=dict(width=3, dash="dash"),
-                        connectgaps=True,
-                        line_shape="spline",
-                    )
-                )
-
-        # ---- Smart axis scaling: cap latency y-axis so spikes don’t ruin readability
-        # (still shows spikes, but keeps typical range readable)
-        y_cap = None
-        lat_vals = []
-        for tr in fig.data:
-            if tr.yaxis in (None, "y"):  # left axis traces
-                try:
-                    lat_vals.extend([v for v in tr.y if v is not None])
-                except Exception:
-                    pass
-        if lat_vals:
-            s = pd.Series(lat_vals).dropna()
-            if not s.empty:
-                y_cap = float(s.quantile(0.98))  # adjust to 0.95 if you want stronger cap
-                if y_cap <= 0:
-                    y_cap = None
-
-        # ---- Rolling X-range (last WIN_MIN minutes)
-        x_min, x_max = (None, None)
-        if not eff_plot.empty:
-            x_max = eff_plot["__minute__"].max()
-            x_min = x_max - pd.Timedelta(minutes=WIN_MIN)
+            add_stack(exec_col, "Exec (ms)", "#a855f7")     # purple
+            add_stack(queue_col, "Queue (ms)", "#fb7185")  # pink/red
+            add_stack(compile_col, "Compile (ms)", "#22d3ee")  # cyan
 
         fig.update_layout(
-            height=380,
+            height=360,
             margin=dict(l=10, r=10, t=10, b=10),
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             hovermode="x unified",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-            xaxis=dict(
-                showgrid=False,
-                tickformat="%H:%M",
-                range=None if x_min is None else [x_min, x_max],
-            ),
-            yaxis=dict(
-                title="Milliseconds",
-                gridcolor="rgba(255,255,255,0.08)",
-                zeroline=False,
-                range=None if y_cap is None else [0, y_cap],
-            ),
-            yaxis2=dict(
-                title="Ratio",
-                overlaying="y",
-                side="right",
-                gridcolor="rgba(255,255,255,0.05)",
-                zeroline=False,
-            ),
+            legend=dict(orientation="h", y=1.02, x=1, xanchor="right", yanchor="bottom"),
+            xaxis=dict(showgrid=False, tickformat="%H:%M", range=x_range),
+            yaxis=dict(title="Milliseconds", gridcolor="rgba(255,255,255,0.08)", zeroline=False),
         )
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g1_{refresh_count}")
 
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_lat_{refresh_count}")
-
-
-
-
-# -----------------------------
-# Chart 2: I/O outcomes (THIS is the “I/O outcome graph”)
-# Uses ONLY clean_df so it won't be empty/ mismatched sources
-# Cached yellow + Aborted red
-# -----------------------------
-with right:
+# Graph 2: Volume + Outcomes (Queries + Cached/Aborted)
+with row1[1]:
     with st.container(border=True):
-        st.markdown("### I/O outcomes")
+        st.markdown("### Volume & outcomes")
+        st.caption("Queries/min line + cached/aborted bars (count).")
 
-        fig2 = go.Figure()
+        fig = go.Figure()
+        if eff_plot is not None and not eff_plot.empty:
+            x = eff_plot["__minute__"]
 
-        if clean_df is not None and not clean_df.empty and c_min_col and c_min_col in clean_df.columns:
-            x2 = clean_df[c_min_col].dt.tz_convert("UTC").dt.tz_localize(None)
+            if queries_col and queries_col in eff_plot.columns:
+                q = pd.to_numeric(eff_plot[queries_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=q, mode="lines",
+                    name="Queries/min",
+                    line=dict(width=3, color="#60a5fa")  # blue
+                ))
 
-            # Lines: scanned + spilled
-            if c_scanned_col and c_scanned_col in clean_df.columns:
-                scan2 = pd.to_numeric(clean_df[c_scanned_col], errors="coerce").fillna(0.0)
-                fig2.add_trace(go.Scatter(x=x2, y=scan2, mode="lines", name="Scanned (MB)", line=dict(width=2)))
+            if cached_col and cached_col in eff_plot.columns:
+                c = pd.to_numeric(eff_plot[cached_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Bar(
+                    x=x, y=c, name="Cached",
+                    yaxis="y2",
+                    marker_color="rgba(255, 215, 0, 0.80)", opacity=0.85
+                ))
 
-            if c_spilled_col and c_spilled_col in clean_df.columns:
-                spill2 = pd.to_numeric(clean_df[c_spilled_col], errors="coerce").fillna(0.0)
-                fig2.add_trace(go.Scatter(x=x2, y=spill2, mode="lines", name="Spilled (MB)", line=dict(width=2, dash="dash")))
+            if aborted_col and aborted_col in eff_plot.columns:
+                a = pd.to_numeric(eff_plot[aborted_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Bar(
+                    x=x, y=a, name="Aborted",
+                    yaxis="y2",
+                    marker_color="rgba(255, 60, 60, 0.75)", opacity=0.85
+                ))
 
-            # Bars: cached + aborted on secondary axis
-            cached_max = 0.0
-            aborted_max = 0.0
-
-            if c_cached_col and c_cached_col in clean_df.columns:
-                cached = pd.to_numeric(clean_df[c_cached_col], errors="coerce").fillna(0.0)
-                cached_max = float(cached.max()) if len(cached) else 0.0
-                fig2.add_trace(
-                    go.Bar(
-                        x=x2,
-                        y=cached,
-                        name="Cached",
-                        yaxis="y2",
-                        marker_color="rgba(255, 215, 0, 0.75)",  # yellow
-                        opacity=0.85,
-                    )
-                )
-
-            if c_aborted_col and c_aborted_col in clean_df.columns:
-                aborted = pd.to_numeric(clean_df[c_aborted_col], errors="coerce").fillna(0.0)
-                aborted_max = float(aborted.max()) if len(aborted) else 0.0
-                fig2.add_trace(
-                    go.Bar(
-                        x=x2,
-                        y=aborted,
-                        name="Aborted",
-                        yaxis="y2",
-                        marker_color="rgba(255, 60, 60, 0.75)",  # red
-                        opacity=0.85,
-                    )
-                )
-
-            # Axis range: keep last WIN_MIN minutes and make y2 readable even if small
-            x_max = x2.max()
-            x_min = x_max - pd.Timedelta(minutes=WIN_MIN)
-            x_range = [x_min, x_max]
-
-            y2max = max(cached_max, aborted_max)
-            y2max = 1.0 if y2max <= 0 else (y2max * 1.25)
-
-        else:
-            x_range = None
-            y2max = 1.0
-
-        fig2.update_layout(
+        fig.update_layout(
             barmode="overlay",
             height=360,
             margin=dict(l=10, r=10, t=10, b=10),
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-            xaxis=dict(showgrid=False, tickformat="%H:%M:%S", range=x_range),
-            yaxis=dict(title="MB", autorange=True, gridcolor="rgba(255,255,255,0.08)", zeroline=False),
-            yaxis2=dict(
-                title="Count",
-                range=[0, y2max],
-                overlaying="y",
-                side="right",
-                gridcolor="rgba(255,255,255,0.05)",
-                zeroline=False,
-            ),
+            hovermode="x unified",
+            legend=dict(orientation="h", y=1.02, x=1, xanchor="right", yanchor="bottom"),
+            xaxis=dict(showgrid=False, tickformat="%H:%M", range=x_range),
+            yaxis=dict(title="Queries/min", gridcolor="rgba(255,255,255,0.08)", zeroline=False),
+            yaxis2=dict(title="Count", overlaying="y", side="right", gridcolor="rgba(255,255,255,0.05)", zeroline=False),
         )
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g2_{refresh_count}")
 
-        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False}, key=f"qe_io_{refresh_count}")
+# Graph 3: Data movement (Scanned/Spilled) + Ratio overlay
+with row2[0]:
+    with st.container(border=True):
+        st.markdown("### Data movement")
+        st.caption("Scanned vs spilled (MB) + spill/scan ratio (right axis).")
+
+        fig = go.Figure()
+        if eff_plot is not None and not eff_plot.empty:
+            x = eff_plot["__minute__"]
+
+            if scan_col and scan_col in eff_plot.columns:
+                s = pd.to_numeric(eff_plot[scan_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=s, mode="lines",
+                    name="Scanned (MB)",
+                    line=dict(width=3, color="#34d399")  # green
+                ))
+
+            if spill_col and spill_col in eff_plot.columns:
+                sp = pd.to_numeric(eff_plot[spill_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=sp, mode="lines",
+                    name="Spilled (MB)",
+                    line=dict(width=3, color="#f97316", dash="dash")  # orange
+                ))
+
+            if ratio_col and ratio_col in eff_plot.columns:
+                r = pd.to_numeric(eff_plot[ratio_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=r, mode="lines",
+                    name="Spill/Scan ratio",
+                    yaxis="y2",
+                    line=dict(width=3, color="#22d3ee", dash="dot")  # cyan
+                ))
+
+        fig.update_layout(
+            height=360,
+            margin=dict(l=10, r=10, t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            hovermode="x unified",
+            legend=dict(orientation="h", y=1.02, x=1, xanchor="right", yanchor="bottom"),
+            xaxis=dict(showgrid=False, tickformat="%H:%M", range=x_range),
+            yaxis=dict(title="MB", gridcolor="rgba(255,255,255,0.08)", zeroline=False),
+            yaxis2=dict(title="Ratio", overlaying="y", side="right", gridcolor="rgba(255,255,255,0.05)", zeroline=False),
+        )
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g3_{refresh_count}")
+
+# Graph 4: Heavy compute pressure (sum + avg)
+with row2[1]:
+    with st.container(border=True):
+        st.markdown("### Compute pressure")
+        st.caption("Heavy units sum (left) + heavy unit avg (right). Helps spot expensive minutes.")
+
+        fig = go.Figure()
+        if eff_plot is not None and not eff_plot.empty:
+            x = eff_plot["__minute__"]
+
+            if heavy_sum_col and heavy_sum_col in eff_plot.columns:
+                hs = pd.to_numeric(eff_plot[heavy_sum_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=hs, mode="lines",
+                    name="Heavy units (sum)",
+                    line=dict(width=3, color="#e879f9")  # magenta
+                ))
+
+            if heavy_avg_col and heavy_avg_col in eff_plot.columns:
+                ha = pd.to_numeric(eff_plot[heavy_avg_col], errors="coerce").fillna(0.0)
+                fig.add_trace(go.Scatter(
+                    x=x, y=ha, mode="lines",
+                    name="Heavy unit (avg)",
+                    yaxis="y2",
+                    line=dict(width=3, color="#facc15", dash="dot")  # yellow
+                ))
+
+        fig.update_layout(
+            height=360,
+            margin=dict(l=10, r=10, t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            hovermode="x unified",
+            legend=dict(orientation="h", y=1.02, x=1, xanchor="right", yanchor="bottom"),
+            xaxis=dict(showgrid=False, tickformat="%H:%M", range=x_range),
+            yaxis=dict(title="Heavy units (sum)", gridcolor="rgba(255,255,255,0.08)", zeroline=False),
+            yaxis2=dict(title="Heavy unit (avg)", overlaying="y", side="right", gridcolor="rgba(255,255,255,0.05)", zeroline=False),
+        )
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g4_{refresh_count}")
 
 
-# -----------------------------
-# Note
-# -----------------------------
-st.caption(
-    "If Cached/Aborted/Spilled are still 0 while the chart is non-zero, check whether your clean-table query is aggregating "
-    "the right fields (mbytes_scanned/mbytes_spilled/was_cached/was_aborted) and that they’re populated in the last 5 minutes."
-)

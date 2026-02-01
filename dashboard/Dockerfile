@@ -14,4 +14,4 @@ COPY . .
 EXPOSE 8501
 
 # Wait for Postgres socket before starting Streamlit
-CMD sh -c "until nc -z $PGHOST $PGPORT; do echo '[dashboard] waiting for postgres...'; sleep 2; done; streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0"
+CMD sh -c "until nc -z $PGHOST $PGPORT; do echo '[dashboard] waiting for postgres...'; sleep 2; done; streamlit run Dashboard.py --server.port=8501 --server.address=0.0.0.0"

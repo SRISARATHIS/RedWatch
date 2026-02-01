@@ -97,7 +97,11 @@ section[data-testid="stSidebar"] * {
   margin: 6px 0 18px 0;
 }
 .rw-title{
-  font-size: 34px;
+  background: linear-gradient(135deg, #f43f5e 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  font-size: 50px;
   font-weight: 900;
   letter-spacing: 0.2px;
   line-height: 1.1;
@@ -273,15 +277,13 @@ small, .stCaption { opacity: 0.75 !important; }
 
 from datetime import datetime, timezone
 
-PAGE_TITLE = "🔥 Cluster Heat"
-PAGE_SUB   = "Live workload distribution across clusters"
+PAGE_TITLE = " Cluster Heat"
 
 st.markdown(
     f"""
     <div class="rw-topbar">
       <div>
         <div class="rw-title">{PAGE_TITLE}</div>
-        <div class="rw-sub">{PAGE_SUB}</div>
       </div>
       <div class="rw-status">
         <div class="k">Last refreshed</div>
@@ -465,7 +467,7 @@ st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
 
 # ---- optional: details panel
 st.divider()
-col1, col2 = st.columns([0.55, 0.45])
+col1, col2 = st.columns([0.55, 0.55])
 
 with col1:
     st.subheader("Top clusters summary")
@@ -483,5 +485,5 @@ with col2:
     sub = agg[agg[cid] == str(choice)].sort_values("bucket_ts")
     st.line_chart(sub.set_index("bucket_ts")[[metric]])
 
-with st.expander("Raw KPI tail"):
-    st.dataframe(work_df.tail(200), use_container_width=True)
+# with st.expander("Raw KPI tail"):
+#     st.dataframe(work_df.tail(200), use_container_width=True)

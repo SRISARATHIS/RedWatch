@@ -64,6 +64,10 @@ section[data-testid="stSidebar"] * {
   -webkit-text-fill-color: transparent;
 }
 .rw-brand-title {
+  background: linear-gradient(135deg, #ff4d9d, #7c5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
   font-size: 22px;
   font-weight: 900;
   letter-spacing: 0.4px;
@@ -106,10 +110,14 @@ section[data-testid="stSidebar"] * {
   margin: 6px 0 18px 0;
 }
 .rw-title{
-  font-size: 34px;
+  font-size: 50px;
   font-weight: 900;
   letter-spacing: 0.2px;
   line-height: 1.1;
+  background: linear-gradient(135deg, #f43f5e 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .rw-sub{
   font-size: 12px;
@@ -146,12 +154,13 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
 }
 
 /* Metric tiles */
-div[data-testid="stMetric"]{
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 10px 12px;
-}
+# div[data-testid="stMetric"]{
+#   background: rgba(255,255,255,0.04);
+#   border: 1px solid rgba(255,255,255,0.08);
+#   border-radius: 16px;
+#   padding: 10px 12px;
+# }
+
 </style>
 """,
     unsafe_allow_html=True,
@@ -196,7 +205,7 @@ with st.sidebar:
           <div class="rw-logo">⚡</div>
           <div class="rw-brand-title">RedWatch</div>
         </div>
-        <div class="rw-sidebar-sub rw-sidebar-top">Real-time cost • workload • query intelligence</div>
+        <div class="rw-sidebar-sub rw-sidebar-top">Always Watching You 🔍 </div>
         <hr class="rw-sidebar-divider rw-sidebar-top"/>
         """,
         unsafe_allow_html=True,
@@ -205,26 +214,23 @@ with st.sidebar:
 # -----------------------------
 # Page header
 # -----------------------------
-PAGE_TITLE = "📈 Cost Trends"
-PAGE_SUB = "Live windowed metrics and trends"
+last_refresh = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
 st.markdown(
     f"""
     <div class="rw-topbar">
       <div>
-        <div class="rw-title">{PAGE_TITLE}</div>
-        <div class="rw-sub">{PAGE_SUB}</div>
+        <div class="rw-title"> Cost Trends</div>
       </div>
+
       <div class="rw-status">
         <div class="k">Last refreshed</div>
-        <div class="v">{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}</div>
+        <div class="v">{last_refresh}</div>
       </div>
     </div>
-    <hr class="rw-divider"/>
     """,
     unsafe_allow_html=True,
 )
-
 # -----------------------------
 # Window from dashboard slider
 # -----------------------------
@@ -310,7 +316,7 @@ if queries_col:
 latest = df_plot.iloc[-1]
 
 
-c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3,  = st.columns(3)
 # show all-time total, with window total in the delta
 c1.metric(
     "Queries (total)",
@@ -521,7 +527,8 @@ with cC:
     fig_dist.update_layout(
         height=260,
         margin=dict(l=10, r=10, t=10, b=10),
-        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         yaxis_title="$ / min",
     )
     st.plotly_chart(fig_dist, use_container_width=True)
@@ -554,7 +561,8 @@ with cD:
     fig_cum.update_layout(
         height=260,
         margin=dict(l=10, r=10, t=10, b=10),
-        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         xaxis_title="Time",
         yaxis_title="$",
     )
@@ -565,5 +573,5 @@ st.divider()
 # -----------------------------
 # Latest rows
 # -----------------------------
-st.subheader("Latest rows")
-st.dataframe(df_plot.tail(200), use_container_width=True)
+# st.subheader("Latest rows")
+# st.dataframe(df_plot.tail(200), use_container_width=True)
