@@ -4,10 +4,10 @@ WITH src AS (
 
   SELECT
     *
-  FROM "redset_db"."analytics_analytics"."stg_redset_events"
+  FROM "redset_db"."analytics"."stg_redset_events"
 
   
-    WHERE raw_id > (SELECT COALESCE(MAX(raw_id), 0) FROM "redset_db"."analytics_analytics"."clean_table")
+    WHERE raw_id > (SELECT COALESCE(MAX(raw_id), 0) FROM "redset_db"."analytics"."clean_table")
   
 
 ),

@@ -4,7 +4,7 @@ WITH bounds AS (
 
   
     SELECT COALESCE(MAX(window_start), TIMESTAMP '1970-01-01') AS max_window_start
-    FROM "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+    FROM "redset_db"."analytics"."kpi_leaderboard_15m"
   
 
 ),
@@ -25,7 +25,7 @@ base AS (
     mbytes_spilled,
 
     raw_id
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
   
     WHERE arrival_timestamp >= (SELECT max_window_start FROM bounds) - INTERVAL '2 hours'
   

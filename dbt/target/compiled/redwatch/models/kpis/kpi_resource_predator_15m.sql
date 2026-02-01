@@ -4,7 +4,7 @@ WITH bounds AS (
 
   
     SELECT COALESCE(MAX(window_start), TIMESTAMP '1970-01-01') AS max_window_start
-    FROM "redset_db"."analytics_analytics"."kpi_resource_predator_15m"
+    FROM "redset_db"."analytics"."kpi_resource_predator_15m"
   
 
 ),
@@ -17,7 +17,7 @@ base AS (
     dimension_value,
     heavy_units_sum,
     queries_count
-  FROM "redset_db"."analytics_analytics"."kpi_leaderboard_15m"
+  FROM "redset_db"."analytics"."kpi_leaderboard_15m"
   WHERE dimension_type IN ('user', 'fingerprint')
   
     AND window_start >= (SELECT max_window_start FROM bounds) - INTERVAL '2 hours'

@@ -4,7 +4,7 @@ WITH bounds AS (
 
   
     SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
-    FROM "redset_db"."analytics_analytics"."kpi_minute_concurrency_cluster"
+    FROM "redset_db"."analytics"."kpi_minute_concurrency_cluster"
   
 
 ),
@@ -13,7 +13,7 @@ WITH bounds AS (
 watermark AS (
   SELECT
     COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
 ),
 
 base AS (
@@ -23,7 +23,7 @@ base AS (
     minute_ts AS start_minute,
     DATE_TRUNC('minute', query_end_timestamp) AS end_minute,
     cluster_size_clean
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
   WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
 
   
@@ -61,7 +61,7 @@ cluster_size AS (
     minute_ts,
     instance_id,
     MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
   WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
 
   

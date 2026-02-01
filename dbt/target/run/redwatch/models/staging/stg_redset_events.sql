@@ -1,5 +1,5 @@
 
-  create view "redset_db"."analytics_analytics"."stg_redset_events__dbt_tmp"
+  create view "redset_db"."analytics"."stg_redset_events__dbt_tmp"
     
     
   as (

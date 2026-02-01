@@ -4,7 +4,7 @@ WITH bounds AS (
 
   
     SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
-    FROM "redset_db"."analytics_analytics"."kpi_minute_shadow_cost"
+    FROM "redset_db"."analytics"."kpi_minute_shadow_cost"
   
 
 ),
@@ -12,7 +12,7 @@ WITH bounds AS (
 -- ✅ closed-minute gate (same as other KPIs)
 watermark AS (
   SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
 ),
 
 -- ✅ heavy units come from KPI 3
@@ -22,7 +22,7 @@ eff AS (
     instance_id,
     heavy_units_sum,
     queries_count
-  FROM "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+  FROM "redset_db"."analytics"."kpi_minute_query_efficiency"
   WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
 
   
@@ -36,7 +36,7 @@ cluster_size AS (
     minute_ts,
     instance_id,
     MAX(COALESCE(cluster_size_clean, 0)) AS cluster_size_clean_max
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
   WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
 
   

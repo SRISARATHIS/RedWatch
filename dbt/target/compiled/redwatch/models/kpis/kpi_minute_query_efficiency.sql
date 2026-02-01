@@ -4,7 +4,7 @@ WITH bounds AS (
 
   
     SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_minute_ts
-    FROM "redset_db"."analytics_analytics"."kpi_minute_query_efficiency"
+    FROM "redset_db"."analytics"."kpi_minute_query_efficiency"
   
 
 ),
@@ -12,7 +12,7 @@ WITH bounds AS (
 -- ✅ compute only "closed" minutes (avoid late arriving / still-running distortion)
 watermark AS (
   SELECT COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
 ),
 
 base AS (
@@ -36,7 +36,7 @@ base AS (
     mbytes_spilled,
 
     raw_id
-  FROM "redset_db"."analytics_analytics"."clean_table"
+  FROM "redset_db"."analytics"."clean_table"
   WHERE minute_ts <= (SELECT max_clean_minute FROM watermark) - INTERVAL '10 minutes'
 
   

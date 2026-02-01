@@ -1,7 +1,7 @@
 import os
 
 def schema() -> str:
-    return os.getenv("DBT_SCHEMA", "analytics_analytics")
+    return os.getenv("DBT_SCHEMA", "analytics")
 
 def T(name: str) -> str:
     return f"{schema()}.{name}"
