@@ -15,7 +15,6 @@ WITH bounds AS (
 
 ),
 
--- ✅ gate: only compute up to minutes that are safely "closed"
 watermark AS (
   SELECT
     COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
@@ -38,7 +37,6 @@ base AS (
 ),
 
 expanded AS (
-  -- expand each query into the minutes it overlaps
   SELECT
     b.instance_id,
     gs.minute_ts,
@@ -95,3 +93,4 @@ FROM agg a
 LEFT JOIN cluster_size cs
   ON a.minute_ts = cs.minute_ts
  AND a.instance_id = cs.instance_id
+
