@@ -148,12 +148,6 @@ This project demonstrates:
 - ✅ End-to-end data engineering ownership
 
 It is designed to reflect how **modern data platform teams actually work**.
----
-
-## 👥 Team & Credits
-
-Built as a **Data Engineering Capstone Project**  
-Focused on **performance, cost, and system observability**
 
 ---
 
@@ -165,4 +159,5 @@ they fail because teams can’t see what’s happening inside.**
 **RedWatch turns the warehouse from a black box into a control panel.**
 
 ---
+
 
