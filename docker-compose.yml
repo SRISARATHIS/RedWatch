@@ -154,6 +154,8 @@ services:
       dbt:
         condition: service_started
     restart: unless-stopped
+
 volumes:
   kafka_data:
   pgdata:
+
