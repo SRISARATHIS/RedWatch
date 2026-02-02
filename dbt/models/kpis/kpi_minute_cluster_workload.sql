@@ -15,7 +15,6 @@ WITH bounds AS (
 
 ),
 
--- ✅ gate: only produce KPI rows up to "clean_table is at least 10 minutes ahead"
 watermark AS (
   SELECT
     COALESCE(MAX(minute_ts), TIMESTAMP '1970-01-01') AS max_clean_minute
@@ -99,3 +98,4 @@ SELECT
   source_max_raw_id
 
 FROM agg
+
