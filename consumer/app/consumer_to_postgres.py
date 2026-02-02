@@ -1,3 +1,11 @@
+"""
+Kafka Consumer 
+
+This module consumes Redset events from a Kafka topic and persists them into a Postgres
+table as JSONB. It is designed for append-only and to avoid reducundancy.
+Kafka offsets are committed only after a successful Postgres insert/commit.
+"""
+
 import os
 import json
 import time
@@ -22,6 +30,10 @@ PG_TABLE = os.getenv("PG_RAW_TABLE", "redset_events")
 
 
 def sanitize_for_json(x: Any) -> Any:
+    """
+    Recursively sanitize a Python object so it can be safely JSON-serialized.
+    Returns: JSON-safe version of `x`
+    """
     if isinstance(x, float):
         if math.isnan(x) or math.isinf(x):
             return None
@@ -32,7 +44,12 @@ def sanitize_for_json(x: Any) -> Any:
         return [sanitize_for_json(v) for v in x]
     return x
 
+
 def safe_json_loads(b: Optional[bytes]) -> Optional[Dict[str, Any]]:
+    """
+    Decode bytes into UTF-8 and parse a JSON object.
+    Returns: A dictionary if the payload is valid JSON and decodes cleanly, otherwise None.
+    """
     if not b:
         return None
     try:
@@ -42,26 +59,36 @@ def safe_json_loads(b: Optional[bytes]) -> Optional[Dict[str, Any]]:
 
 
 def make_consumer() -> KafkaConsumer:
+    """
+    Create and configure a KafkaConsumer for the configured topic.
+    Returns: A configured KafkaConsumer instance subscribed to TOPIC.
+    """
     return KafkaConsumer(
         TOPIC,
         bootstrap_servers=BOOTSTRAP,
         group_id=GROUP_ID,
         enable_auto_commit=False,  # commit only after Postgres insert succeeds
         auto_offset_reset="earliest",
-        value_deserializer=lambda v: v,
+        value_deserializer=lambda v: v,  # keep raw bytes; we'll parse manually
         key_deserializer=lambda k: k.decode("utf-8") if k else None,
         max_poll_records=BATCH_SIZE,
     )
 
 
 def pg_connect():
-    # autocommit False: we commit only after batch insert success
+    """
+    Create a Postgres connection with autocommit disabled.
+    Returns: A psycopg2 connection with autocommit set to False.
+    """
     conn = psycopg2.connect(PG_DSN)
     conn.autocommit = False
     return conn
 
 
 def ensure_table(conn) -> None:
+    """
+    Ensure the target Postgres table and idempotency constraint exist.
+    """
     ddl = f"""
     CREATE TABLE IF NOT EXISTS {PG_TABLE} (
       id BIGSERIAL PRIMARY KEY,
@@ -97,8 +124,11 @@ def ensure_table(conn) -> None:
         cur.close()
 
 
-
 def enrich_event(msg, payload: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Add ingestion + Kafka metadata fields into the event payload.
+    Returns: The same dict instance with additional metadata keys injected.
+    """
     payload["_ingest_ts_utc"] = datetime.now(timezone.utc).isoformat()
     payload["_kafka_topic"] = msg.topic
     payload["_kafka_partition"] = msg.partition
@@ -109,14 +139,14 @@ def enrich_event(msg, payload: Dict[str, Any]) -> Dict[str, Any]:
 
 def to_rows(events: List[Dict[str, Any]]) -> List[Tuple[str, str, str, int, int, Optional[str]]]:
     """
-    Returns rows for INSERT:
-      event_json, ingest_ts, topic, partition, offset, key
+    Convert enriched events into a list of rows suitable for executemany().
+    Returns : List of tuples to be passed into cursor.executemany().
     """
     rows = []
     for e in events:
         rows.append(
             (
-                json.dumps(sanitize_for_json(e), separators=(",", ":"), allow_nan=False),  # compact JSON string
+                json.dumps(sanitize_for_json(e), separators=(",", ":"), allow_nan=False),
                 e.get("_ingest_ts_utc"),
                 e.get("_kafka_topic"),
                 int(e.get("_kafka_partition", 0)),
@@ -126,8 +156,10 @@ def to_rows(events: List[Dict[str, Any]]) -> List[Tuple[str, str, str, int, int,
         )
     return rows
 
-
 def flush_to_postgres(conn, events: List[Dict[str, Any]]) -> None:
+    """
+    Insert a batch of events into Postgres within a single transaction.
+    """
     sql = f"""
         INSERT INTO {PG_TABLE}
             (event, ingest_ts, kafka_topic, kafka_partition, kafka_offset, kafka_key)
@@ -147,6 +179,9 @@ def flush_to_postgres(conn, events: List[Dict[str, Any]]) -> None:
 
 
 def main() -> None:
+    """
+    Run the Kafka → Postgres sink loop indefinitely.
+    """
     print(f"[consumer_pg] bootstrap={BOOTSTRAP} topic={TOPIC} group_id={GROUP_ID}")
     print(f"[consumer_pg] target={PG_TABLE} dsn={PG_DSN}")
 
@@ -172,7 +207,6 @@ def main() -> None:
                     continue
                 buffer.append(enrich_event(msg, payload))
 
-        # ✅ NEW: flush on size OR time
         if buffer and (
             len(buffer) >= BATCH_SIZE
             or (time.time() - last_flush) >= FLUSH_SECONDS
@@ -180,7 +214,6 @@ def main() -> None:
             try:
                 flush_to_postgres(conn, buffer)
 
-                # Commit Kafka offsets only after Postgres insert success
                 consumer.commit()
 
                 first = buffer[0]
@@ -215,7 +248,6 @@ def main() -> None:
 
         if not got_any:
             time.sleep(0.05)
-
 
 
 if __name__ == "__main__":
