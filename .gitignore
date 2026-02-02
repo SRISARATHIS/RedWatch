@@ -28,4 +28,3 @@ data/
 *.pth
 *.h5
 *.onnx
-models/
