@@ -5,16 +5,14 @@ from datetime import datetime, timezone
 from streamlit_autorefresh import st_autorefresh
 import plotly.express as px
 import plotly.graph_objects as go
-
-# NOTE: expects your project to provide these modules.
 from src.db import read_df
 from src import queries as Q
 
-
-# -----------------------------
-# Helpers
-# -----------------------------
 def safe_float(x, default=0.0):
+    """
+    Convert a value to float safely.
+    Returns: Parsed float or default.
+    """
     try:
         return float(x)
     except Exception:
@@ -22,7 +20,9 @@ def safe_float(x, default=0.0):
 
 
 def last_and_delta(df: pd.DataFrame, col: str):
-    """Returns (last_value, delta_from_prev)"""
+    """
+    Return the latest value and its change from the previous row.
+    """
     if df is None or df.empty or col is None or col not in df.columns:
         return 0.0, None
     s = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
@@ -33,6 +33,10 @@ def last_and_delta(df: pd.DataFrame, col: str):
 
 
 def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
+    """
+    Pick the first matching column name from a list.
+    Returns: The actual column name if found, else None.
+    """
     cols = {c.lower(): c for c in df.columns}
     for cand in candidates:
         if cand.lower() in cols:
@@ -41,10 +45,18 @@ def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
 
 
 def pick_time_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
+    """
+    Convenience wrapper for picking a timestamp column.
+    Returns: The actual column name if found, else None.
+    """
     return pick_col(df, candidates)
 
 
 def _try_read(sql: str, params: dict | None, show_error: bool) -> pd.DataFrame:
+    """
+    Execute a SQL query via `read_df`, supporting different function signatures.
+    Returns: DataFrame result.
+    """
     try:
         if params is None:
             return read_df(sql, show_error=show_error)
@@ -55,8 +67,10 @@ def _try_read(sql: str, params: dict | None, show_error: bool) -> pd.DataFrame:
 
 def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
     """
-    Your queries.py expects builders like builder(tcol, win).
-    This tries candidate time columns until we get rows.
+    Load a windowed KPI table by trying multiple timestamp column names.
+    Returns a tuple:
+          - df is the returned DataFrame.
+          - used_tcol is the time column that worked.
     """
     last_err = None
     for tcol in time_candidates:
@@ -69,7 +83,7 @@ def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
         except Exception as e:
             last_err = e
 
-    # final attempt with visible error
+
     try:
         sql = sql_builder(time_candidates[0], win)
         df = _try_read(sql, None, show_error=True)
@@ -81,19 +95,13 @@ def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
             st.caption(f"Previous attempt error: {last_err}")
         return pd.DataFrame(), None
 
-
-# -----------------------------
-# Page config (MUST be first Streamlit call)
-# -----------------------------
 st.set_page_config(page_title="RedWatch", page_icon="⚡", layout="wide")
 
-# -----------------------------
-# Theme + layout CSS
-# -----------------------------
+
 st.markdown(
     """
 <style>
-/* ===== Global page spacing (same on every page) ===== */
+
 .main .block-container{
   padding-top: 2.2rem !important;
   padding-bottom: 3rem !important;
@@ -101,7 +109,7 @@ st.markdown(
   padding-right: 2.8rem !important;
 }
 
-/* ===== Standard header row ===== */
+
 .rw-topbar{
   display:flex;
   align-items:flex-start;
@@ -121,7 +129,6 @@ st.markdown(
   margin-top: 4px;
 }
 
-/* Right side “status” box (optional) */
 .rw-status{
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
@@ -134,7 +141,6 @@ st.markdown(
 .rw-status .k{ font-size: 11px; opacity: .72; }
 .rw-status .v{ font-size: 13px; font-weight: 900; margin-top: 4px; }
 
-/* ===== Divider ===== */
 .rw-divider{
   border: none;
   height: 1px;
@@ -142,9 +148,6 @@ st.markdown(
   margin: 14px 0 18px 0;
 }
 
-/* ============================= */
-/* SIDEBAR BACKGROUND */
-/* ============================= */
 section[data-testid="stSidebar"] {
   background:
     radial-gradient(600px 600px at 15% 10%, rgba(255,0,120,0.18), transparent 55%),
@@ -154,7 +157,6 @@ section[data-testid="stSidebar"] {
 section[data-testid="stSidebar"] > div { padding-top: 0.9rem; }
 section[data-testid="stSidebar"] * { color: #e9ecf1 !important; font-weight: 600; }
 
-/* Sidebar inputs */
 section[data-testid="stSidebar"] div[data-baseweb="select"] > div,
 section[data-testid="stSidebar"] input,
 section[data-testid="stSidebar"] textarea {
@@ -180,9 +182,6 @@ section[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08); }
 .rw-sidebar-sub { font-size: 20px; opacity: .70; margin-top: 2px; margin-bottom: 10px; }
 .rw-sidebar-divider { border:none; height:1px; background: rgba(255,255,255,0.12); margin: 10px 0 0 0; }
 
-/* ============================= */
-/* DASHBOARD BACKGROUND + CARDS  */
-/* ============================= */
 .stApp {
   background: radial-gradient(1200px 800px at 10% 15%, rgba(255,0,120,0.12), transparent 55%),
               radial-gradient(1200px 800px at 85% 30%, rgba(120,80,255,0.14), transparent 60%),
@@ -191,7 +190,6 @@ section[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08); }
 }
 .rw-header { display:flex; justify-content:space-between; align-items:flex-end; margin: 6px 0 12px 0;}
 
-/* ✅ UPDATED: bigger + gradient title on main window */
 .rw-brand {
   font-size: 50px;
   font-weight: 1000;
@@ -245,30 +243,10 @@ section[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08); }
     unsafe_allow_html=True,
 )
 
-# -----------------------------
-# Auto-refresh + STATIC window (5 min)
-# -----------------------------
-REFRESH_SECONDS = 15  # refresh every 15 seconds
-WIN_MIN = 5          # fixed 5-minute window/bucket (no UI control)
+REFRESH_SECONDS = 15 
+WIN_MIN = 5         
 
 refresh_count = st_autorefresh(interval=REFRESH_SECONDS * 1000, key="auto_refresh")
-
-
-# -----------------------------
-# Sidebar (NO slider)
-# -----------------------------
-# with st.sidebar:
-#     st.header("Controls")
-#     st.caption("Window: 5 minutes (static)")
-#     st.caption(f"Auto-refresh: {REFRESH_SECONDS}s")
-
-#     with st.expander("Debug"):
-#         st.caption("If the homepage shows blanks, expand this and check which dataframes are empty.")
-#         st.caption("Inside Docker, DB host should be `postgres` (not 127.0.0.1).")
-
-# -----------------------------
-# Header row
-# -----------------------------
 l, r = st.columns([0.72, 0.28], vertical_alignment="top")
 
 with l:
@@ -298,12 +276,8 @@ with r:
         unsafe_allow_html=True,
     )
 
-# IMPORTANT: include window_end too (shadow_cost uses that in your db)
-time_candidates = ["minute_ts", "window_end", "ts", "timestamp", "arrival_minute", "minute"]
 
-# -----------------------------
-# Load KPI tables (STATIC 5 min)
-# -----------------------------
+time_candidates = ["minute_ts", "window_end", "ts", "timestamp", "arrival_minute", "minute"]
 win = WIN_MIN
 
 shadow_df, shadow_t = load_window(Q.shadow_cost_window, time_candidates, win, "shadow_cost_window")
@@ -313,27 +287,7 @@ conc_df, conc_t = load_window(Q.cluster_concurrency_window, time_candidates, win
 
 leader_df = _try_read(Q.leaderboard_15m(), None, show_error=False)
 pred_df = _try_read(Q.predator_15m(), None, show_error=False)
-
-# with st.sidebar.expander("Debug: dataframes", expanded=False):
-#     st.write(
-#         {
-#             "shadow_rows": int(len(shadow_df)),
-#             "eff_rows": int(len(eff_df)),
-#             "work_rows": int(len(work_df)),
-#             "conc_rows": int(len(conc_df)),
-#             "leader_rows": int(len(leader_df)),
-#             "pred_rows": int(len(pred_df)),
-#             "shadow_time_col": shadow_t,
-#             "eff_time_col": eff_t,
-#             "work_time_col": work_t,
-#             "conc_time_col": conc_t,
-#         }
-#     )
-
-# -----------------------------
-# ✅ SHADOW COST: heavy_units_sum * 0.08 => USD/min
-# -----------------------------
-C_NODE_USD_PER_MIN = float(os.getenv("C_NODE_USD_PER_MIN", "0.08"))  # $ per node per minute
+C_NODE_USD_PER_MIN = float(os.getenv("C_NODE_USD_PER_MIN", "0.08"))  
 
 hu_col = pick_col(shadow_df, ["heavy_units_sum"])
 if not shadow_df.empty and hu_col:
@@ -341,14 +295,9 @@ if not shadow_df.empty and hu_col:
         pd.to_numeric(shadow_df[hu_col], errors="coerce").fillna(0.0) * C_NODE_USD_PER_MIN
     )
 else:
-    # ensure column exists to avoid KeyErrors later
     shadow_df["usd_per_min"] = 0.0
 
 spend_col = "usd_per_min" if (not shadow_df.empty and "usd_per_min" in shadow_df.columns) else "usd_per_min"
-
-# -----------------------------
-# Compute investor metrics from USD/min  (FIXED)
-# -----------------------------
 current_spend_per_min = 0.0
 run_rate_per_day = 0.0
 projected_24h = 0.0
@@ -374,9 +323,6 @@ if shadow_df is not None and (not shadow_df.empty) and spend_col in shadow_df.co
             prev = float(s.iloc[-2])
             delta_pct = ((current_spend_per_min - prev) / max(prev, 1e-9)) * 100.0
 
-# -----------------------------
-# Cluster KPIs
-# -----------------------------
 cid_col = pick_col(work_df, ["instance_id"])
 wl_col = pick_col(work_df, ["workload", "workload_score", "query_pressure", "pressure", "cpu_pressure", "heavy_units_sum"])
 
@@ -392,9 +338,6 @@ if not work_df.empty and wl_col:
     thr = wls.quantile(0.80) if len(wls) > 5 else wls.max()
     hot_clusters = int((wls >= thr).sum())
 
-# -----------------------------
-# Leaderboards
-# -----------------------------
 dim_type_col = pick_col(leader_df, ["dimension_type"])
 dim_val_col = pick_col(leader_df, ["dimension_value"])
 rank_col = pick_col(leader_df, ["rank_position", "rank"])
@@ -404,8 +347,8 @@ w_end_col = pick_col(leader_df, ["window_end", "minute_ts", "ts", "timestamp"])
 
 def top_value_for_dimtype(dim_type_value: str, fallbacks: list[str] | None = None) -> str:
     """
-    Returns just the TOP (rank 1) dimension_value for a given dimension_type,
-    from the latest window_end snapshot.
+    Return the top (rank 1) `dimension_value` for a given `dimension_type`, using the latest leaderboard window.
+    Returns: The top value as a string, or "—" if unavailable.
     """
     if leader_df is None or leader_df.empty:
         return "—"
@@ -431,7 +374,6 @@ def top_value_for_dimtype(dim_type_value: str, fallbacks: list[str] | None = Non
             return "—"
         return str(sub.iloc[0][dim_val_col])
 
-    # try primary + fallbacks
     val = _pick(dim_type_value)
     if val != "—":
         return val
@@ -441,8 +383,6 @@ def top_value_for_dimtype(dim_type_value: str, fallbacks: list[str] | None = Non
             return val
     return "—"
 
-
-# ---- Winners for the homepage card (5 dimension types)
 most_exp_query       = top_value_for_dimtype("query_type",   fallbacks=["read"])
 most_exp_user        = top_value_for_dimtype("user",         fallbacks=["user_id", "instance_id"])
 most_exp_instance_id = top_value_for_dimtype("instance_id",  fallbacks=["warehouse", "cluster_id"])
@@ -451,9 +391,6 @@ most_exp_fingerprint = top_value_for_dimtype("fingerprint")
 most_exp_workload    = top_value_for_dimtype("workload",     fallbacks=["workload_type"])
 
 
-# -----------------------------
-# Efficiency KPIs
-# -----------------------------
 waste_col = pick_col(
     eff_df,
     ["waste_pct", "waste_percent", "waste_percentage", "spill_to_scan_ratio", "spilled_mb_sum"],
@@ -472,7 +409,6 @@ scan_col = pick_col(
 )
 spilled_sum_col = pick_col(eff_df, ["spilled_mb_sum", "spill_mb_sum", "spilled_mb"])
 
-# Defaults to avoid "referenced before assignment"
 avg_exec_s = 0.0
 exec_delta = None
 queue_s = 0.0
@@ -499,15 +435,11 @@ if eff_df is not None and not eff_df.empty:
     if scan_col:
         scanned, scan_delta = last_and_delta(eff_df, scan_col)
 
-# -----------------------------
-# Resource Predator (robust: pred_df first, fallback to leader_df)
-# -----------------------------
 pred_total = 0.0
 top_fp = "—"
 top_fp_cost = 0.0
 top_pred_user = "—"
-
-# ---- 1) Try real predictor table first
+     
 pred_cost_col = pick_col(
     pred_df,
     ["pred_cost_7d", "predicted_cost_7d", "cost_7d", "next_7d_cost", "forecast_7d_cost"],
@@ -531,12 +463,7 @@ if pred_df is not None and (not pred_df.empty) and pred_cost_col:
     if pred_user_col and pred_user_col in ps.columns:
         top_pred_user = str(ps[pred_user_col].iloc[0])
 
-# ---- 2) Fallback: use leaderboard_15m if predictor is empty / unusable
 else:
-    # We’ll compute a “resource predator” proxy from the latest leaderboard window:
-    # - top fingerprint by heavy_units_sum
-    # - top user by heavy_units_sum
-    # Note: this is NOT a 7-day forecast; it’s “most expensive in latest 15m window”.
     if leader_df is not None and (not leader_df.empty):
         dim_type_col = pick_col(leader_df, ["dimension_type"])
         dim_val_col = pick_col(leader_df, ["dimension_value"])
@@ -556,30 +483,25 @@ else:
                 tmp[dim_type_col] = tmp[dim_type_col].astype(str)
                 tmp[dim_val_col] = tmp[dim_val_col].astype(str)
 
-                # Top fingerprint
                 fp_rows = tmp[tmp[dim_type_col].isin(["fingerprint", "feature_fingerprint"])].copy()
                 if not fp_rows.empty:
                     fp_rows = fp_rows.sort_values(heavy_col, ascending=False)
                     top_fp = fp_rows[dim_val_col].iloc[0]
-                    top_fp_cost = float(fp_rows[heavy_col].iloc[0])  # proxy “cost” = heavy units
-
-                # Top user (your env often stores it as instance_id or user)
+                    top_fp_cost = float(fp_rows[heavy_col].iloc[0])  
                 user_rows = tmp[tmp[dim_type_col].isin(["user", "user_id", "instance_id"])].copy()
                 if not user_rows.empty:
                     user_rows = user_rows.sort_values(heavy_col, ascending=False)
                     top_pred_user = user_rows[dim_val_col].iloc[0]
 
-                # proxy total
+    
                 pred_total = float(tmp[heavy_col].sum())
 
-
-# -----------------------------
-# Layout
-# -----------------------------
 colA, colB, colC = st.columns([0.36, 0.44, 0.20], gap="large")
 
-# ---- Shadow Costing card
 with colA:
+    """
+    Plotting graph for `$/min` with time and dollar value.
+    """
     st.markdown('<div class="rw-card">', unsafe_allow_html=True)
     st.markdown("<h3>Shadow Costing</h3>", unsafe_allow_html=True)
 
@@ -623,14 +545,11 @@ with colA:
             data_max = plot_df[shadow_t].max()
             data_min = data_max - pd.Timedelta(minutes=win)
 
-            # ---- Build a smooth curve: resample + time interpolation ----
             s = (
                 plot_df.set_index(shadow_t)[spend_col]
                 .sort_index()
                 .astype(float)
             )
-
-            # Denser timeline for smooth curvature
             smooth = s.resample("5S").mean().interpolate(method="time")
             smooth_df = smooth.reset_index().rename(columns={shadow_t: "t", spend_col: "y"})
             smooth_df = smooth_df[(smooth_df["t"] >= data_min) & (smooth_df["t"] <= data_max)]
@@ -641,11 +560,9 @@ with colA:
             if pad <= 0:
                 pad = max(abs(y_max) * 0.15, 0.001)
 
-            SMOOTH = 1.25  # ✅ Plotly limit is <= 1.3
+            SMOOTH = 1.25 
 
             fig = go.Figure()
-
-            # Glow underlay
             fig.add_trace(
                 go.Scatter(
                     x=smooth_df["t"],
@@ -661,8 +578,6 @@ with colA:
                     showlegend=False,
                 )
             )
-
-            # Main continuous curved line
             fig.add_trace(
                 go.Scatter(
                     x=smooth_df["t"],
@@ -678,8 +593,6 @@ with colA:
                     hovertemplate="Time: %{x|%H:%M:%S}<br>Spend: $%{y:.6f}/min<extra></extra>",
                 )
             )
-
-            # Subtle fill (premium look)
             fig.add_trace(
                 go.Scatter(
                     x=smooth_df["t"],
@@ -752,11 +665,10 @@ with colA:
         st.caption("No spend trend available yet.")
 
 
-
-
-
-# ---- Cluster Heat Visualizer card (interactive + instance_id hover)
 with colB:
+    """
+    Plotting graph for Cluster heater Visualizer.
+    """
     st.markdown('<div class="rw-card">', unsafe_allow_html=True)
     st.markdown("<h3>Cluster Heat Visualizer</h3>", unsafe_allow_html=True)
 
@@ -785,8 +697,6 @@ with colB:
         tmp[work_t] = pd.to_datetime(tmp[work_t], errors="coerce", utc=True)
         tmp[wl_col] = pd.to_numeric(tmp[wl_col], errors="coerce")
         tmp = tmp.dropna(subset=[work_t, cid_col, wl_col])
-
-        # IMPORTANT: force categorical IDs to prevent numeric axis artifacts (like negative ids)
         tmp[cid_col] = tmp[cid_col].astype(str)
 
         top_clusters = (
@@ -815,23 +725,21 @@ with colB:
             if len(z_flat) == 0:
                 st.caption("No cluster workload data available yet.")
             else:
-                # Better color scaling: clip outliers using percentiles
                 zmin = float(pd.Series(z_flat).quantile(0.05))
                 zmax = float(pd.Series(z_flat).quantile(0.95))
                 if zmax <= zmin:
                     zmin = float(z_flat.min())
                     zmax = float(z_flat.max())
 
-                # Visual compression for readability (hover still shows RAW)
                 heat_vis = heat_raw.clip(lower=zmin, upper=zmax).applymap(lambda v: v ** 0.5)
 
                 fig = go.Figure(
                     data=go.Heatmap(
-                        x=heat_vis.index,                 # time
-                        y=heat_vis.columns.astype(str),    # instance_id labels
-                        z=heat_vis.T.values,               # clusters x time
-                        customdata=heat_raw.T.values,      # RAW workload for hover
-                        colorscale="Turbo",                # nicer contrast
+                        x=heat_vis.index,               
+                        y=heat_vis.columns.astype(str),   
+                        z=heat_vis.T.values,           
+                        customdata=heat_raw.T.values,  
+                        colorscale="Turbo",          
                         hovertemplate=(
                             "Instance ID: %{y}<br>"
                             "Time: %{x|%H:%M:%S}<br>"
@@ -858,9 +766,10 @@ with colB:
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---- Leaderboards card
-# ---- Leaderboards card
 with colC:
+    """
+    Leaderboard Card Designs and Values.
+    """
     st.markdown('<div class="rw-card">', unsafe_allow_html=True)
     st.markdown("<h3>Leaderboards</h3>", unsafe_allow_html=True)
 
@@ -880,8 +789,10 @@ with colC:
 
 colD, colE = st.columns([0.70, 0.30], gap="large")
 
-# ---- Query Efficiency card
 with colD:
+    """
+    Query Efficiency Graph and cards.
+    """
     st.markdown('<div class="rw-card">', unsafe_allow_html=True)
     st.markdown("<h3>Query Efficiency</h3>", unsafe_allow_html=True)
 
@@ -936,14 +847,15 @@ with colD:
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ---- Resource Predictor card
+
 with colE:
+    """
+    Resource Predator Cards designs.
+    """
     st.markdown('<div class="rw-card">', unsafe_allow_html=True)
     st.markdown("<h3>Resource Predator</h3>", unsafe_allow_html=True)
 
-    # Detect whether we’re showing forecast or fallback proxy
     using_forecast = (pred_df is not None and (not pred_df.empty) and pred_cost_col is not None)
-
     subtitle = "Next 7d predicted cost" if using_forecast else "Next 7d predicted cost"
 
     st.markdown(
