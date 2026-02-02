@@ -1,76 +1,188 @@
-# RedWatch — Streaming Warehouse Observability (Capstone)
+# 🔴 RedWatch — Real-Time Cost & Query Observability for Amazon Redshift
 
-RedWatch is a **streaming analytics system** that ingests query-level warehouse events via Kafka, cleans and enriches them in Postgres using dbt, and produces **accurate, time-aware KPIs** for cost, concurrency, and workload behavior.
-
-This project is fully **Dockerized**—no local installation of Python, dbt, Kafka, or Postgres is required.
-
----
-
-## 🏗 Architecture Overview
-
-
-1. **Ingestion**: Kafka → Postgres (`public.redset_events`)
-2. **Transformation**: dbt (Incremental models → `analytics.clean_table`)
-3. **Analytics**: dbt KPI Models (Minute / 15m aggregates)
-4. **Visualization**: Streamlit (Optional)
-
-### Core Principles
-* **Single Source of Truth**: All KPIs derive from the enriched `clean_table`.
-* **Time-Consistent**: KPIs lag ingestion to prevent partial-minute data errors.
-* **Efficiency**: Incremental dbt models ensure no redundant recomputation.
+> **“Most teams see the cloud bill *after* the damage is done.  
+RedWatch shows who burned the money, why it spiked, and how to fix it — in real time.”**
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Project Vision
 
-### Prerequisites
-* **Docker** & **Docker Compose**
-* *Note: Do NOT install Python, dbt, or Kafka manually.*
+Modern cloud data warehouses like **Amazon Redshift** run **hundreds of queries per minute** — across ETL jobs, dashboards, analysts, and ad-hoc workloads.  
 
-### Configuration
-Review the `.env` file before launching. 
-* **Change**: `POSTGRES_PASSWORD` for security.
-* **Do Not Change**: `POSTGRES_HOST`, `DBT_SCHEMA`, or `PG_DSN` (internal Docker networking).
+Yet most teams operate **blind**:
+- ❌ No real-time visibility into *who* is expensive  
+- ❌ No clarity on *why* costs spike  
+- ❌ No way to detect inefficient workloads before the bill arrives  
 
-### Operation Commands
-| Action | Command |
-| :--- | :--- |
-| **Start System** | `docker compose up --build -d` |
-| **Check Status** | `docker compose ps` |
-| **Stop (Keep Data)** | `docker compose down` |
-| **Full Reset (Delete Data)** | `docker compose down -v` |
+**RedWatch** is built to solve exactly this problem.
 
----
+It is a **Database Observability & Cost Intelligence Platform** that:
+- Replays historical Redshift query workloads as a **live data stream**
+- Calculates **shadow cost ($/min)** in real time
+- Identifies **resource predators**, waste, and contention
+- Recommends **actionable optimizations**
 
-## 📊 Data Flow & KPIs
-
-### The Clean Table
-An incremental, enriched table where each row represents one query, including:
-* **Durations** and **Workload Class**
-* **Heavy Units** and **Cluster Size**
-
-### Implemented KPIs
-| KPI Model | Description |
-| :--- | :--- |
-| `kpi_minute_cluster_workload` | Cost & workload intensity per minute. |
-| `kpi_minute_concurrency` | Active/Started/Ended query counts. |
-| `kpi_leaderboard_15m` | Top users/fingerprints by cost. |
-| `kpi_resource_predator_15m` | Cost share % per user. |
-| `kpi_offpeak_flags_minute` | Recommendations for workload shifting. |
+This project was built as a **Data Engineering Capstone**, but designed with **production-grade architecture principles**.
 
 ---
 
-## 🔍 Validation & Debugging
-Run these inside your Postgres instance to verify health:
+## 🧠 What Makes RedWatch Different?
 
-```sql
--- Check ingestion volume
-SELECT COUNT(*) FROM public.redset_events;
+RedWatch does **not** analyze business data (sales, users, revenue).
 
--- Check KPI freshness
-SELECT MAX(minute_ts) FROM analytics.kpi_minute_cluster_workload;
+Instead, it analyzes **query behavior itself**.
 
--- Verify 'Heavy Unit' consistency
-SELECT minute_ts, instance_id, SUM(heavy_unit) 
-FROM analytics.clean_table 
-GROUP BY 1, 2;
+Think of it as:
+> 🕹️ **Mission Control for your Data Warehouse**
+
+### 🔥 Core Innovation: Shadow Costing
+We translate query execution behavior into:
+- **Current Spend Rate ($/min)**
+- **Daily Cost Trends**
+- **Cost Spikes during Peak Load**
+
+This allows teams to *see the bill forming in real time*, not weeks later.
+
+---
+
+## 📊 Key Features
+
+### 1️⃣ Shadow Cost Panel
+- Real-time **$ / minute burn rate**
+- Cost spikes correlated with workload patterns
+- Peak vs off-peak cost behavior
+
+---
+
+### 2️⃣ Leaderboard Rankings
+Ranked views of:
+- 💸 Most expensive queries
+- 👤 Most expensive users
+- 🧠 Most expensive query types (SELECT, ANALYZE, ETL, etc.)
+
+Each ranking clearly explains **what metric the rank is based on**.
+
+---
+
+### 3️⃣ Query Efficiency Panel
+Identify waste using:
+- Execution time vs scanned bytes
+- Waste percentage
+- CPU pressure
+- Queue wait time
+- Concurrent query pressure
+- Scan-heavy vs output-light queries
+
+---
+
+### 4️⃣ Cluster Heat Visualizer
+- Each cluster visualized as a **polygon heatmap**
+- Color-coded load intensity
+- Instantly spot under-utilized vs overloaded clusters
+
+---
+
+### 5️⃣ Resource Predator Tracker
+Groups queries by:
+- Query fingerprint
+- Workload type
+- Resource usage
+- Cost impact
+
+Shows which **patterns**, not just users, are burning money.
+
+---
+
+### 6️⃣ Recommendation Engine
+Actionable suggestions such as:
+- Shift workloads to off-peak hours
+- Reduce query overlap
+- Optimize scan-heavy queries
+- Improve concurrency handling
+
+---
+
+## 🏗️ System Architecture
+
+RedWatch is built as a **fully dockerized streaming data pipeline**.
+
+<img width="1024" height="683" alt="image" src="https://github.com/user-attachments/assets/6b5a059b-2a18-4ffd-aca6-f37a0156c728" />
+
+
+
+### Why this architecture?
+- **Kafka** decouples producers and consumers
+- **Time-Warp Replay** simulates real-time behavior from static data
+- **Postgres** handles transformations & feature engineering
+- **Streamlit** enables rapid, live visualization
+
+This mirrors **real production streaming architectures** used in industry.
+
+---
+
+## 🧪 Dataset
+
+- **Source:** Redset (Amazon Redshift query traces)
+- **Type:** Metadata / Observability data
+- **Contains:**
+  - Query timings
+  - Resource usage
+  - Scan statistics
+  - Concurrency behavior
+  - Query fingerprints
+
+No business or sensitive data is used.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-----|-----------|
+| Data Replay | Python |
+| Streaming | Apache Kafka |
+| Storage & Processing | PostgreSQL |
+| Orchestration | Docker & Docker Compose |
+| Dashboard | Streamlit |
+| Data Format | Parquet / CSV |
+
+---
+
+## 🎯 Why This Project Matters
+
+This project demonstrates:
+- ✅ Real-time data streaming
+- ✅ Event-driven architecture
+- ✅ Cost modeling from system metrics
+- ✅ Observability-first thinking
+- ✅ End-to-end data engineering ownership
+
+It is designed to reflect how **modern data platform teams actually work**.
+
+---
+
+## 📌 Future Enhancements
+
+- Predictive cost alerts
+- Auto-classification of workload types
+- Integration with Redshift system tables
+- Query optimization recommendations using ML
+- Multi-warehouse observability
+
+---
+
+## 👥 Team & Credits
+
+Built as a **Data Engineering Capstone Project**  
+Focused on **performance, cost, and system observability**
+
+---
+
+## 🧭 Final Thought
+
+> **Data warehouses don’t fail because of scale —  
+they fail because teams can’t see what’s happening inside.**
+
+**RedWatch turns the warehouse from a black box into a control panel.**
+
+---
