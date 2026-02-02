@@ -7,36 +7,27 @@ from streamlit_autorefresh import st_autorefresh
 from src.db import read_df
 from src import queries as Q
 
-
-# MUST be first Streamlit call
 st.set_page_config(page_title="Leaderboards", page_icon="🏆", layout="wide")
 
-# -----------------------------
-# Styles (your existing CSS kept as-is) + small spacing improvements
-# -----------------------------
 st.markdown(
     """
 <style>
-/* Make sidebar a flex column so we can reorder */
 section[data-testid="stSidebar"] > div {
   display: flex;
   flex-direction: column;
 }
 
-/* Push Streamlit multipage nav BELOW our custom header */
 div[data-testid="stSidebarNav"] {
   order: 2;
   margin-top: 10px;
 }
 
-/* Put anything we add in st.sidebar at the top */
 .rw-sidebar-top {
   order: 1;
   margin-top: 0.2rem;
   margin-bottom: 0.8rem;
 }
 
-/* Sidebar theme */
 section[data-testid="stSidebar"] {
   background:
     radial-gradient(600px 600px at 15% 10%, rgba(255,0,120,0.18), transparent 55%),
@@ -47,7 +38,6 @@ section[data-testid="stSidebar"] * {
   color: #e9ecf1 !important;
 }
 
-/* Sidebar branding */
 .rw-sidebar-header {
   display: flex;
   align-items: center;
@@ -82,7 +72,6 @@ section[data-testid="stSidebar"] * {
   margin-bottom: 12px;
 }
 
-/* Main background */
 .stApp {
   background: radial-gradient(1200px 800px at 12% 12%, rgba(255,0,120,0.12), transparent 55%),
               radial-gradient(1200px 800px at 88% 28%, rgba(120,80,255,0.14), transparent 60%),
@@ -90,7 +79,6 @@ section[data-testid="stSidebar"] * {
   color: #e9ecf1;
 }
 
-/* Global padding */
 .main .block-container{
   padding-top: 2.4rem;
   padding-bottom: 3rem;
@@ -98,7 +86,6 @@ section[data-testid="stSidebar"] * {
   padding-right: 3rem;
 }
 
-/* Topbar */
 .rw-topbar{
   display:flex;
   align-items:flex-start;
@@ -140,7 +127,6 @@ section[data-testid="stSidebar"] * {
   margin: 14px 0 18px 0;
 }
 
-/* Make Streamlit bordered containers look like cards */
 div[data-testid="stVerticalBlockBorderWrapper"]{
   background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035)) !important;
   border: 1px solid rgba(255,255,255,0.12) !important;
@@ -150,7 +136,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
   padding: 16px 16px 12px 16px !important;
 }
 
-/* Metric tiles */
+
 div[data-testid="stMetric"]{
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
@@ -158,7 +144,7 @@ div[data-testid="stMetric"]{
   padding: 10px 12px;
 }
 
-/* Slightly nicer spacing for topN buttons inside cards */
+
 .lb-topn-row div[data-testid="column"] {
   padding-top: 2px;
 }
@@ -167,13 +153,10 @@ div[data-testid="stMetric"]{
     unsafe_allow_html=True,
 )
 
-# auto-refresh
+
 REFRESH_SECONDS = int(os.getenv("REFRESH_SECONDS", "5"))
 st_autorefresh(interval=REFRESH_SECONDS * 1000, key="lb_autorefresh")
 
-# -----------------------------
-# Sidebar header
-# -----------------------------
 with st.sidebar:
     st.markdown(
         """
@@ -187,10 +170,7 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-# -----------------------------
-# Page header
-# -----------------------------
-PAGE_TITLE = " Leaderboard"
+PAGE_TITLE = "Leaderboard"
 
 st.markdown(
     f"""
@@ -208,10 +188,12 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -----------------------------
-# Helpers
-# -----------------------------
 def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
+     """
+    Pick the first column that exists in the DataFrame from a list of candidates. This helps the page survive small schema changes (e.g., `rank` vs `rank_position`).
+    Returns: The actual column name from `df` if found, else None.
+    """
+    
     cols = {c.lower(): c for c in df.columns}
     for cand in candidates:
         if cand.lower() in cols:
@@ -219,23 +201,42 @@ def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
     return None
 
 def shorten(s: str, n=28) -> str:
+    """
+    Shorten long labels for cleaner tables.
+    Returns: A shortened string with an ellipsis in the middle if needed.
+    """
+    
     s = str(s)
     return s if len(s) <= n else f"{s[:12]}…{s[-10:]}"
 
 def fmt_heavy(x) -> str:
+    """
+    Format heavy unit values in a human-friendly way.
+    Returns: A formatted number string (2 decimals) or raw string fallback.
+    """
+    
     try:
         return f"{float(x):,.2f}"
     except Exception:
         return str(x)
 
 def fmt_int(x) -> str:
+    """
+    Format integer-like values with thousand separators.
+    Returns: A formatted integer string or raw string fallback.
+    """
+    
     try:
         return f"{int(float(x)):,d}"
     except Exception:
         return str(x)
 
 def topn_controls(key_prefix: str) -> int:
-    """Reusable Top N buttons that persist across refresh."""
+    """
+    Render Top-N buttons (Top 5 / Top 10 / Top 20) and persist selection.
+    Returns: The chosen N value.
+    """
+    
     if key_prefix not in st.session_state:
         st.session_state[key_prefix] = 10
 
@@ -255,15 +256,11 @@ def topn_controls(key_prefix: str) -> int:
     return st.session_state[key_prefix]
 
 
-# -----------------------------
-# Load table
-# -----------------------------
 df = read_df(Q.leaderboard_15m(), show_error=False)
 if df.empty:
     st.info("No leaderboard data yet.")
     st.stop()
 
-# dimension schema is what you're using
 dim_type_col = pick_col(df, ["dimension_type"])
 dim_val_col = pick_col(df, ["dimension_value"])
 rank_col = pick_col(df, ["rank_position", "rank"])
@@ -278,7 +275,6 @@ if missing:
     st.stop()
 
 
-# Latest window only
 df[w_end_col] = pd.to_datetime(df[w_end_col], utc=True, errors="coerce")
 latest_window_end = df[w_end_col].max()
 df = df[df[w_end_col] == latest_window_end].copy()
@@ -289,17 +285,20 @@ if df.empty:
 
 available_dim_types = set(df[dim_type_col].dropna().astype(str).unique().tolist())
 
-# -----------------------------
-# Card renderer
-# -----------------------------
+
 def render_dim_card(label: str, dim_type_value: str, key_prefix: str):
+    """
+    Render leaderboard cards for a specific dimension type (e.g., user, workload).
+    
+    """
+    
     with st.container(border=True):
         st.markdown(f"### {label}")
         st.caption("Ranked by heavy_units_sum. Use search + Top-N to explore.")
 
         topn = topn_controls(f"topn_{key_prefix}")
 
-        # quick search per card (interactive)
+
         q = st.text_input("Search", value="", key=f"search_{key_prefix}", placeholder=f"Filter {label}…")
 
         if dim_type_value not in available_dim_types:
@@ -311,7 +310,7 @@ def render_dim_card(label: str, dim_type_value: str, key_prefix: str):
         if heavy_col and heavy_col in sub.columns:
             sub[heavy_col] = pd.to_numeric(sub[heavy_col], errors="coerce").fillna(0.0)
 
-        # apply search
+
         if q.strip():
             sub = sub[sub[dim_val_col].astype(str).str.contains(q.strip(), case=False, na=False)].copy()
 
@@ -331,18 +330,14 @@ def render_dim_card(label: str, dim_type_value: str, key_prefix: str):
 
         st.dataframe(out, use_container_width=True, hide_index=True, height=280)
 
-# -----------------------------
-# ✅ Your 5 categories (including WORKLOAD)
-# -----------------------------
 CARDS = [
     ("Query", "query_type", "query"),
-    ("Workload", "workload", "workload"),          # ✅ ADDED
+    ("Workload", "workload", "workload"),        
     ("Access scope", "access_scope", "scope"),
     ("Fingerprint", "fingerprint", "fp"),
     ("User", "user", "user"),
 ]
 
-# Layout: 3 cards on first row, 2 on second row (looks clean)
 row1 = st.columns(3, gap="large")
 row2 = st.columns(2, gap="large")
 
@@ -353,5 +348,6 @@ for col, (label, dim_type_value, key_prefix) in zip(row1, CARDS[:3]):
 for col, (label, dim_type_value, key_prefix) in zip(row2, CARDS[3:]):
     with col:
         render_dim_card(label, dim_type_value, key_prefix)
+
 
 
