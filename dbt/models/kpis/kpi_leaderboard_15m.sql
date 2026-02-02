@@ -3,16 +3,13 @@
     unique_key='lb_key',
     incremental_strategy='delete+insert'
 ) }}
-
 WITH bounds AS (
-
   {% if is_incremental() %}
     SELECT COALESCE(MAX(window_start), TIMESTAMP '1970-01-01') AS max_window_start
     FROM {{ this }}
   {% else %}
     SELECT TIMESTAMP '1970-01-01' AS max_window_start
   {% endif %}
-
 ),
 
 base AS (
@@ -23,20 +20,17 @@ base AS (
     workload_classification,
     access_scope,
     feature_fingerprint,
-
     was_cached,
     was_aborted,
     execution_duration_ms,
     mbytes_scanned,
     mbytes_spilled,
-
     raw_id
   FROM {{ ref('clean_table') }}
   {% if is_incremental() %}
     WHERE arrival_timestamp >= (SELECT max_window_start FROM bounds) - INTERVAL '2 hours'
   {% endif %}
 ),
-
 with_window AS (
   SELECT
     (
@@ -49,13 +43,11 @@ with_window AS (
       + (floor(extract(minute from arrival_timestamp)::numeric / 15) * interval '15 minutes')
       + interval '15 minutes'
     ) AS window_end,
-
     user_id,
     query_type,
     workload_classification,
     access_scope,
     feature_fingerprint,
-
     CASE
       WHEN was_cached = 1 THEN 0.05
       WHEN was_cached <> 1 AND was_aborted = 1 THEN 0.10
@@ -78,19 +70,15 @@ unioned AS (
   SELECT window_start, window_end, 'user' AS dimension_type, CAST(user_id AS varchar) AS dimension_value, heavy_unit
   FROM with_window
   WHERE user_id IS NOT NULL
-
   UNION ALL
   SELECT window_start, window_end, 'query_type', COALESCE(query_type, 'UNKNOWN'), heavy_unit
   FROM with_window
-
   UNION ALL
   SELECT window_start, window_end, 'workload', COALESCE(workload_classification, 'UNKNOWN'), heavy_unit
   FROM with_window
-
   UNION ALL
   SELECT window_start, window_end, 'access_scope', COALESCE(access_scope, 'UNKNOWN'), heavy_unit
   FROM with_window
-
   UNION ALL
   SELECT window_start, window_end, 'fingerprint', COALESCE(feature_fingerprint, 'UNKNOWN'), heavy_unit
   FROM with_window
@@ -124,7 +112,6 @@ SELECT
     || '-' || dimension_type
     || '-' || dimension_value
   ) AS lb_key,
-
   window_start,
   window_end,
   dimension_type,
@@ -134,3 +121,4 @@ SELECT
   heavy_units_sum
 FROM ranked
 WHERE rank_position <= 10
+
