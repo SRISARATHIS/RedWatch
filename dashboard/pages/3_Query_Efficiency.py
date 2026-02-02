@@ -7,11 +7,11 @@ import plotly.graph_objects as go
 from src.db import read_df
 from src import queries as Q
 
-
-# -----------------------------
-# Helpers
-# -----------------------------
 def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
+    """
+    Pick the first matching column name from a list (case-insensitive).
+    Returns: The actual column name from the DataFrame if found, else None.
+    """
     if df is None or df.empty:
         return None
     cols = {c.lower(): c for c in df.columns}
@@ -22,6 +22,10 @@ def pick_col(df: pd.DataFrame, candidates: list[str]) -> str | None:
 
 
 def _try_read(sql: str, show_error: bool = False) -> pd.DataFrame:
+     """
+    Execute a SQL query via `read_df`, supporting older signatures.
+    Returns: DataFrame result.
+    """
     try:
         return read_df(sql, show_error=show_error)
     except TypeError:
@@ -29,6 +33,12 @@ def _try_read(sql: str, show_error: bool = False) -> pd.DataFrame:
 
 
 def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
+    """
+    Load windowed data by trying multiple time column candidates. The query builder is expected to accept.
+    Returns a tuple:
+          - df is the returned DataFrame (possibly empty)
+          - used_tcol is the timestamp column that worked (or None)
+    """
     last_err = None
     for tcol in time_candidates:
         try:
@@ -53,6 +63,10 @@ def load_window(sql_builder, time_candidates: list[str], win: int, label: str):
 
 
 def normalize_time(df: pd.DataFrame, tcol: str | None):
+    """
+    Ensure the timestamp column is parsed to UTC and sorted.
+    Returns: DataFrame with UTC timestamps (invalid timestamps removed) sorted by time.
+    """
     if df is None or df.empty or not tcol or tcol not in df.columns:
         return df
     out = df.copy()
@@ -62,6 +76,12 @@ def normalize_time(df: pd.DataFrame, tcol: str | None):
 
 
 def latest_nonnull_and_delta(series: pd.Series):
+    """
+    Get the most recent numeric value and change vs the previous point.
+    Returns a tuple:
+          - latest_value is float or None
+          - delta is float difference vs previous value (or None if unavailable)
+    """
     if series is None or len(series) == 0:
         return None, None
     s = pd.to_numeric(series, errors="coerce").dropna()
@@ -75,6 +95,10 @@ def latest_nonnull_and_delta(series: pd.Series):
 
 
 def kpi_latest(df: pd.DataFrame, col: str | None):
+    """
+    Convenience wrapper to read a KPI column from a DataFrame.
+    Returns: `latest_nonnull_and_delta`, or (None).
+    """
     if df is None or df.empty or not col or col not in df.columns:
         return None, None
     v, d = latest_nonnull_and_delta(df[col])
@@ -82,6 +106,13 @@ def kpi_latest(df: pd.DataFrame, col: str | None):
 
 
 def prep_ts(df: pd.DataFrame, tcol: str, cols: list[str]) -> pd.DataFrame:
+    """
+    Build a clean per-minute time series for plotting.
+    Returns:
+        DataFrame with:
+          - __minute__ column
+          - numeric metric columns averaged per minute
+    """
     if df is None or df.empty or tcol not in df.columns:
         return pd.DataFrame()
     out = df.copy()
@@ -99,16 +130,8 @@ def prep_ts(df: pd.DataFrame, tcol: str, cols: list[str]) -> pd.DataFrame:
     out = out.groupby("__minute__", as_index=False).mean(numeric_only=True).sort_values("__minute__")
     return out
 
-
-# -----------------------------
-# Page config
-# -----------------------------
 st.set_page_config(page_title="Query Efficiency", page_icon="⚙️", layout="wide")
 
-
-# -----------------------------
-# CSS (keep your exact design pattern)
-# -----------------------------
 st.markdown(
     """
 <style>
@@ -204,18 +227,10 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
     unsafe_allow_html=True,
 )
 
-
-# -----------------------------
-# Auto-refresh + window
-# -----------------------------
 REFRESH_SECONDS = 15
 WIN_MIN = 5
 refresh_count = st_autorefresh(interval=REFRESH_SECONDS * 1000, key="qe_autorefresh")
 
-
-# -----------------------------
-# Sidebar
-# -----------------------------
 with st.sidebar:
     st.markdown(
         """
@@ -230,14 +245,10 @@ with st.sidebar:
     )
 
 
-# -----------------------------
-# Load data (ONLY kpi_minute_query_efficiency now)
-# -----------------------------
 time_candidates = ["minute_ts", "timestamp", "ts", "minute"]
 eff_df, eff_t = load_window(Q.efficiency_window, time_candidates, WIN_MIN, "efficiency_window")
 eff_df = normalize_time(eff_df, eff_t)
 
-# Columns (based on your screenshot + queries.py output)
 tcol = pick_col(eff_df, ["minute_ts"])
 queries_col = pick_col(eff_df, ["queries_count"])
 exec_col = pick_col(eff_df, ["exec_ms_avg"])
@@ -251,7 +262,7 @@ aborted_col = pick_col(eff_df, ["aborted_queries"])
 heavy_sum_col = pick_col(eff_df, ["heavy_units_sum"])
 heavy_avg_col = pick_col(eff_df, ["heavy_unit_avg"])
 
-# Plot frame
+
 eff_plot = pd.DataFrame()
 if eff_df is not None and not eff_df.empty and tcol:
     eff_plot = prep_ts(
@@ -275,10 +286,6 @@ db_ts_str = "—"
 if latest_db_ts is not None:
     db_ts_str = pd.to_datetime(latest_db_ts).strftime("%Y-%m-%d %H:%M UTC")
 
-
-# -----------------------------
-# KPIs (only necessary)
-# -----------------------------
 exec_ms, exec_d = kpi_latest(eff_df, exec_col)
 queue_ms, queue_d = kpi_latest(eff_df, queue_col)
 compile_ms, compile_d = kpi_latest(eff_df, compile_col)
@@ -304,10 +311,6 @@ ratio = dv(ratio, 0.0)
 cached_cnt = dv(cached_cnt, 0.0)
 aborted_cnt = dv(aborted_cnt, 0.0)
 
-
-# -----------------------------
-# Header
-# -----------------------------
 st.markdown(
     f"""
     <div class="rw-topbar">
@@ -325,9 +328,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -----------------------------
-# KPI Cards (clean + symmetric)
-# -----------------------------
 with st.container(border=True):
     st.markdown("### Key Performance Metrics")
     r1 = st.columns(4, gap="large")
@@ -344,14 +344,9 @@ with st.container(border=True):
 
 st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
 
-
-# -----------------------------
-# 4 Novel, user-friendly, colorful graphs (2x2 symmetric)
-# -----------------------------
 row1 = st.columns(2, gap="large")
 row2 = st.columns(2, gap="large")
 
-# Graph 1: Latency Breakdown (stacked area) = Exec + Queue + Compile
 with row1[0]:
     with st.container(border=True):
         st.markdown("### Latency breakdown")
@@ -370,9 +365,9 @@ with row1[0]:
                         line=dict(width=2, color=color)
                     ))
 
-            add_stack(exec_col, "Exec (ms)", "#a855f7")     # purple
-            add_stack(queue_col, "Queue (ms)", "#fb7185")  # pink/red
-            add_stack(compile_col, "Compile (ms)", "#22d3ee")  # cyan
+            add_stack(exec_col, "Exec (ms)", "#a855f7")     
+            add_stack(queue_col, "Queue (ms)", "#fb7185")  
+            add_stack(compile_col, "Compile (ms)", "#22d3ee") 
 
         fig.update_layout(
             height=360,
@@ -386,8 +381,11 @@ with row1[0]:
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g1_{refresh_count}")
 
-# Graph 2: Volume + Outcomes (Queries + Cached/Aborted)
+
 with row1[1]:
+    """
+    The graph plot between Volume and curresponding Outcome
+    """
     with st.container(border=True):
         st.markdown("### Volume & outcomes")
         st.caption("Queries/min line + cached/aborted bars (count).")
@@ -401,7 +399,7 @@ with row1[1]:
                 fig.add_trace(go.Scatter(
                     x=x, y=q, mode="lines",
                     name="Queries/min",
-                    line=dict(width=3, color="#60a5fa")  # blue
+                    line=dict(width=3, color="#60a5fa")  
                 ))
 
             if cached_col and cached_col in eff_plot.columns:
@@ -434,8 +432,11 @@ with row1[1]:
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g2_{refresh_count}")
 
-# Graph 3: Data movement (Scanned/Spilled) + Ratio overlay
+
 with row2[0]:
+    """
+    The graph plot between Scanned vs spilled (MB) and also this graph has spill/scan ratio (right axis).
+    """
     with st.container(border=True):
         st.markdown("### Data movement")
         st.caption("Scanned vs spilled (MB) + spill/scan ratio (right axis).")
@@ -449,7 +450,7 @@ with row2[0]:
                 fig.add_trace(go.Scatter(
                     x=x, y=s, mode="lines",
                     name="Scanned (MB)",
-                    line=dict(width=3, color="#34d399")  # green
+                    line=dict(width=3, color="#34d399") 
                 ))
 
             if spill_col and spill_col in eff_plot.columns:
@@ -457,7 +458,7 @@ with row2[0]:
                 fig.add_trace(go.Scatter(
                     x=x, y=sp, mode="lines",
                     name="Spilled (MB)",
-                    line=dict(width=3, color="#f97316", dash="dash")  # orange
+                    line=dict(width=3, color="#f97316", dash="dash")  
                 ))
 
             if ratio_col and ratio_col in eff_plot.columns:
@@ -466,7 +467,7 @@ with row2[0]:
                     x=x, y=r, mode="lines",
                     name="Spill/Scan ratio",
                     yaxis="y2",
-                    line=dict(width=3, color="#22d3ee", dash="dot")  # cyan
+                    line=dict(width=3, color="#22d3ee", dash="dot")  
                 ))
 
         fig.update_layout(
@@ -482,8 +483,11 @@ with row2[0]:
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g3_{refresh_count}")
 
-# Graph 4: Heavy compute pressure (sum + avg)
+
 with row2[1]:
+    """
+    The graph plotted between Heavy units sum (left) + heavy unit avg (right), which Helps spot expensive minutes.
+    """
     with st.container(border=True):
         st.markdown("### Compute pressure")
         st.caption("Heavy units sum (left) + heavy unit avg (right). Helps spot expensive minutes.")
@@ -497,7 +501,7 @@ with row2[1]:
                 fig.add_trace(go.Scatter(
                     x=x, y=hs, mode="lines",
                     name="Heavy units (sum)",
-                    line=dict(width=3, color="#e879f9")  # magenta
+                    line=dict(width=3, color="#e879f9")  
                 ))
 
             if heavy_avg_col and heavy_avg_col in eff_plot.columns:
@@ -506,7 +510,7 @@ with row2[1]:
                     x=x, y=ha, mode="lines",
                     name="Heavy unit (avg)",
                     yaxis="y2",
-                    line=dict(width=3, color="#facc15", dash="dot")  # yellow
+                    line=dict(width=3, color="#facc15", dash="dot")  
                 ))
 
         fig.update_layout(
@@ -521,5 +525,6 @@ with row2[1]:
             yaxis2=dict(title="Heavy unit (avg)", overlaying="y", side="right", gridcolor="rgba(255,255,255,0.05)", zeroline=False),
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False}, key=f"qe_g4_{refresh_count}")
+
 
 
