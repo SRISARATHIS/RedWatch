@@ -1,3 +1,8 @@
+"""
+Loader 
+
+Safely connects to the Postgres Table which then accessed by Dbt to perform Data Cleaning and Feature Transformation
+"""
 import os
 import time
 import json
@@ -7,7 +12,6 @@ from psycopg2.extras import RealDictCursor
 
 load_dotenv()
 
-# ---------- ENV ----------
 PG_HOST = os.getenv("POSTGRES_HOST", "postgres")
 PG_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
 PG_DATABASE = os.getenv("POSTGRES_DATABASE", "redset_db")
@@ -23,8 +27,10 @@ CLEANER_NAME = os.getenv("CLEANER_NAME", "cleaner_v1")
 
 PG_DSN = os.getenv("PG_DSN")
 
-
 def get_conn():
+    """
+    Connnect to the Postgres Database
+    """
     if PG_DSN:
         return psycopg2.connect(PG_DSN)
     return psycopg2.connect(
@@ -35,11 +41,12 @@ def get_conn():
         password=PG_PASSWORD,
     )
 
-
 def ensure_tables():
+    """
+    Ensure the the tables exixts else creates them to store required data.
+    """
     with get_conn() as conn:
         with conn.cursor() as cur:
-            # watermark table (same idea as your cleaner_state)
             cur.execute(f"""
             CREATE TABLE IF NOT EXISTS {PG_STATE_TABLE} (
               cleaner_name TEXT PRIMARY KEY,
@@ -47,9 +54,6 @@ def ensure_tables():
               updated_ts  TIMESTAMPTZ NOT NULL DEFAULT now()
             );
             """)
-
-            # raw table: minimal schema
-            # (Assumes consumer inserts here or loader inserts here depending on your setup)
             cur.execute(f"""
             CREATE TABLE IF NOT EXISTS {PG_RAW_TABLE} (
               id BIGSERIAL PRIMARY KEY,
@@ -61,6 +65,9 @@ def ensure_tables():
 
 
 def get_watermark() -> int:
+    """
+    Returns the last_raw_id updated to avoid redundancy when the service is restarted
+    """
     with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(f"""
@@ -76,6 +83,9 @@ def get_watermark() -> int:
 
 
 def set_watermark(last_raw_id: int):
+    """
+    To store the last_raw_id to update when service is restarted
+    """
     with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(f"""
@@ -87,9 +97,6 @@ def set_watermark(last_raw_id: int):
 
 
 def fetch_raw_batch(last_id: int, limit: int):
-    # This function depends on where “raw events” currently live.
-    # If your consumer already writes into PG_RAW_TABLE, then loader does nothing.
-    # If you have a separate "raw ingest table" already, point PG_RAW_TABLE to that and use this.
     with get_conn() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(f"""
@@ -106,20 +113,14 @@ def main():
     ensure_tables()
     watermark = get_watermark()
     print(f"[{CLEANER_NAME}] starting. watermark id={watermark}")
-
-    # Loader is now just “monitor raw arrival” and advance watermark.
-    # dbt will transform from raw table -> clean tables.
     while True:
         rows = fetch_raw_batch(watermark, BATCH_SIZE)
-
         if not rows:
             time.sleep(POLL_SECONDS)
             continue
-
         watermark = int(rows[-1]["id"])
         set_watermark(watermark)
         print(f"[{CLEANER_NAME}] observed batch={len(rows)} up to id={watermark}")
-
-
 if __name__ == "__main__":
     main()
+
