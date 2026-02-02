@@ -90,16 +90,6 @@ Groups queries by:
 - Cost impact
 
 Shows which **patterns**, not just users, are burning money.
-
----
-
-### 6️⃣ Recommendation Engine
-Actionable suggestions such as:
-- Shift workloads to off-peak hours
-- Reduce query overlap
-- Optimize scan-heavy queries
-- Improve concurrency handling
-
 ---
 
 ## 🏗️ System Architecture
@@ -158,17 +148,6 @@ This project demonstrates:
 - ✅ End-to-end data engineering ownership
 
 It is designed to reflect how **modern data platform teams actually work**.
-
----
-
-## 📌 Future Enhancements
-
-- Predictive cost alerts
-- Auto-classification of workload types
-- Integration with Redshift system tables
-- Query optimization recommendations using ML
-- Multi-warehouse observability
-
 ---
 
 ## 👥 Team & Credits
@@ -186,3 +165,4 @@ they fail because teams can’t see what’s happening inside.**
 **RedWatch turns the warehouse from a black box into a control panel.**
 
 ---
+
