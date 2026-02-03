@@ -20,11 +20,8 @@ import psycopg2
 BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "broker:9092")
 TOPIC = os.getenv("KAFKA_TOPIC", "REDSET")
 GROUP_ID = os.getenv("KAFKA_GROUP_ID", "redset_postgres_sink")
-
 BATCH_SIZE = int(os.getenv("BATCH_SIZE", "500"))
 POLL_TIMEOUT_MS = int(os.getenv("POLL_TIMEOUT_MS", "1000"))
-
-# Postgres env vars
 PG_DSN = os.getenv("PG_DSN", "postgresql://redset:redset@postgres:5432/redset_db")
 PG_TABLE = os.getenv("PG_RAW_TABLE", "redset_events")
 
@@ -67,9 +64,9 @@ def make_consumer() -> KafkaConsumer:
         TOPIC,
         bootstrap_servers=BOOTSTRAP,
         group_id=GROUP_ID,
-        enable_auto_commit=False,  # commit only after Postgres insert succeeds
+        enable_auto_commit=False,
         auto_offset_reset="earliest",
-        value_deserializer=lambda v: v,  # keep raw bytes; we'll parse manually
+        value_deserializer=lambda v: v,
         key_deserializer=lambda k: k.decode("utf-8") if k else None,
         max_poll_records=BATCH_SIZE,
     )
@@ -103,8 +100,6 @@ def ensure_table(conn) -> None:
     cur = conn.cursor()
     try:
         cur.execute(ddl)
-
-        # add unique constraint if missing (safe to run repeatedly)
         cur.execute(f"""
         DO $$
         BEGIN
@@ -123,7 +118,6 @@ def ensure_table(conn) -> None:
     finally:
         cur.close()
 
-
 def enrich_event(msg, payload: Dict[str, Any]) -> Dict[str, Any]:
     """
     Add ingestion + Kafka metadata fields into the event payload.
@@ -135,7 +129,6 @@ def enrich_event(msg, payload: Dict[str, Any]) -> Dict[str, Any]:
     payload["_kafka_offset"] = msg.offset
     payload["_kafka_key"] = msg.key
     return payload
-
 
 def to_rows(events: List[Dict[str, Any]]) -> List[Tuple[str, str, str, int, int, Optional[str]]]:
     """
@@ -252,3 +245,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
